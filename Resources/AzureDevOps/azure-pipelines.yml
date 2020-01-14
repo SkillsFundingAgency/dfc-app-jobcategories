@@ -1,5 +1,5 @@
 variables:
-    SolutionBaseName: '__SolutionBaseName__'
+    SolutionBaseName: 'Dfc.App.Categories'
     BuildPlatform: 'any cpu'
     BuildConfiguration: 'release'
 
