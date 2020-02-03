@@ -1,5 +1,5 @@
 variables:
-    SolutionBaseName: 'Dfc.App.Categories'
+    SolutionBaseName: 'Dfc.App.JobCategories'
     BuildPlatform: 'any cpu'
     BuildConfiguration: 'release'
 
@@ -28,3 +28,4 @@ stages:
         SolutionBaseName: $(SolutionBaseName)
         BuildPlatform: 'any cpu'
         BuildConfiguration: 'release'
+        TestSuffix: 'UnitTests'
