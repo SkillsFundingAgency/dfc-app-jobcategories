@@ -26,14 +26,14 @@ stages:
   #Build and test resources
   - job: ARMtemplates
     steps:
-    - template: AzureDevOpsTemplates/Build/dfc-arm-build.yml@dfc-devops
+    - template: AzureDevOpsTemplates/Build/StepTemplates/dfc-arm-build.yml@dfc-devops
       parameters:
         ArmTemplateRoot: $(ArmTemplateRoot)
 
   #Build and test web application
   - job: BuildTestAndAnalyzeWeb
     steps:
-    - template: AzureDevOpsTemplates\Build\StepTemplates\dfc-dotnetcore-build-sonar.yml@dfc-devops
+    - template: AzureDevOpsTemplates/Build/StepTemplates/dfc-dotnetcore-build-sonar.yml@dfc-devops
       parameters:
         SolutionBaseName: $(SolutionBaseName)
         BuildPlatform: 'any cpu'
@@ -44,7 +44,7 @@ stages:
   #Build and test function application
   - job: BuildTestAndAnalyzeFunction
     steps:
-    - template: AzureDevOpsTemplates\Build\StepTemplates\dfc-dotnetcore-build-sonar.yml@dfc-devops
+    - template: AzureDevOpsTemplates/Build/StepTemplates/dfc-dotnetcore-build-sonar.yml@dfc-devops
       parameters:
         SolutionBaseName: $(SolutionBaseName).MessageFunctionApp
         BuildPlatform: 'any cpu'
