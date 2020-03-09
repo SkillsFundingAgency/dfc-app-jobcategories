@@ -28,6 +28,9 @@
         },
         "sharedAppServicePlanResourceGroup": {
             "value": "__appSharedResourceGroup__"
+        },
+        "enableAlerts": {
+            "value": __EnableAzureMonitorAlerting__
         }
     }
 }
