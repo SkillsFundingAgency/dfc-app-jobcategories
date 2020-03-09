@@ -16,6 +16,9 @@
         },
         "sharedAppServicePlanResourceGroup": {
             "value": "dfc-dev-app-sharedresources-rg"
+        },
+        "enableAlerts": {
+            "value": false
         }
     }
 }
