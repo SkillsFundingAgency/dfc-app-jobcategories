@@ -14,7 +14,7 @@ namespace DFC.App.JobCategories.Controllers
 {
     public class PagesController : Controller
     {
-        public const string RegistrationPath = "jobcategories";
+        public const string RegistrationPath = "job-categories";
         public const string LocalPath = "pages";
 
         private readonly ILogger<PagesController> logger;
