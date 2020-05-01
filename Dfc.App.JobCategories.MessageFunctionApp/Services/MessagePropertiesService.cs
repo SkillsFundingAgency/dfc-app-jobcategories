@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.ServiceBus;
 
-namespace Dfc.App.JobCategories.MessageFunctionApp.Services
+namespace DFC.App.JobCategories.MessageFunctionApp.Services
 {
     public class MessagePropertiesService : IMessagePropertiesService
     {

@@ -1,64 +1,67 @@
-﻿using Dfc.App.JobCategories.Extensions;
-using Dfc.App.JobCategories.Services;
-using Dfc.App.JobCategories.ViewModels.Health;
-using DFC.Logger.AppInsights.Contracts;
+﻿using DFC.App.JobCategories.Extensions;
+using DFC.App.JobCategories.PageService;
+using DFC.App.JobCategories.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Dfc.App.JobCategories.Controllers
+namespace DFC.App.JobCategories.Controllers
 {
     public class HealthController : Controller
     {
-        private readonly ILogService logService;
-        private readonly IJobCategoriesService jobCategoriesService;
+        private readonly ILogger<HealthController> logger;
+        private readonly IContentPageService contentPageService;
+        private readonly string resourceName = typeof(Program).Namespace!;
 
-        public HealthController(ILogService logService, IJobCategoriesService jobCategoriesService)
+        public HealthController(ILogger<HealthController> logger, IContentPageService contentPageService)
         {
-            this.logService = logService;
-            this.jobCategoriesService = jobCategoriesService;
+            this.logger = logger;
+            this.contentPageService = contentPageService;
         }
 
         [HttpGet]
         [Route("health")]
         public async Task<IActionResult> Health()
         {
-            var resourceName = typeof(Program).Namespace;
-            logService.LogInformation($"{nameof(Health)} has been called");
+            logger.LogInformation($"{nameof(Health)} has been called");
 
             try
             {
-                var isHealthy = await jobCategoriesService.PingAsync().ConfigureAwait(false);
+                var isHealthy = await contentPageService.PingAsync().ConfigureAwait(false);
+
                 if (isHealthy)
                 {
                     const string message = "Document store is available";
-                    logService.LogInformation($"{nameof(Health)} responded with: {resourceName} - {message}");
+                    logger.LogInformation($"{nameof(Health)} responded with: {resourceName} - {message}");
 
-                    var viewModel = CreateHealthViewModel(resourceName, message);
+                    var viewModel = CreateHealthViewModel(message);
 
                     return this.NegotiateContentResult(viewModel, viewModel.HealthItems);
                 }
 
-                logService.LogError($"{nameof(Health)}: Ping to {resourceName} has failed");
+                logger.LogError($"{nameof(Health)}: Ping to {resourceName} has failed");
             }
             catch (Exception ex)
             {
-                logService.LogError($"{nameof(Health)}: {resourceName} exception: {ex.Message}");
+                logger.LogError(ex, $"{nameof(Health)}: {resourceName} exception: {ex.Message}");
             }
 
             return StatusCode((int)HttpStatusCode.ServiceUnavailable);
         }
 
         [HttpGet]
+        [Route("health/ping")]
         public IActionResult Ping()
         {
-            logService.LogVerbose($"{nameof(Ping)} has been called");
+            logger.LogInformation($"{nameof(Ping)} has been called");
+
             return Ok();
         }
 
-        private static HealthViewModel CreateHealthViewModel(string resourceName, string message)
+        private HealthViewModel CreateHealthViewModel(string message)
         {
             return new HealthViewModel
             {

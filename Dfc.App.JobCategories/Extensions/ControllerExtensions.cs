@@ -5,34 +5,34 @@ using System.Linq;
 using System.Net;
 using System.Net.Mime;
 
-namespace Dfc.App.JobCategories.Extensions
+namespace DFC.App.JobCategories.Extensions
 {
     public static class ControllerExtensions
     {
-        public static IActionResult NegotiateContentResult(this Controller controller, object viewModel, object dataModel = null)
+        public static IActionResult NegotiateContentResult(this Controller controller, object viewModel, object? dataModel = null)
         {
             if (controller == null)
             {
                 throw new ArgumentNullException(nameof(controller));
             }
 
-            if (!controller.Request.Headers.Keys.Contains(HeaderNames.Accept))
+            if (controller.Request.Headers.Keys.Contains(HeaderNames.Accept))
             {
-                return controller.StatusCode((int)HttpStatusCode.NotAcceptable);
-            }
+                var acceptHeaders = controller.Request.Headers[HeaderNames.Accept].ToString().Split(';');
 
-            var acceptHeaders = controller.Request.Headers[HeaderNames.Accept].ToString().ToUpperInvariant().Split(';');
-            foreach (var acceptHeader in acceptHeaders)
-            {
-                var items = acceptHeader.Split(',');
-                if (items.Contains(MediaTypeNames.Application.Json.ToUpperInvariant()))
+                foreach (var acceptHeader in acceptHeaders)
                 {
-                    return controller.Ok(dataModel ?? viewModel);
-                }
+                    var items = acceptHeader.Split(',');
 
-                if (items.Contains(MediaTypeNames.Text.Html) || items.Contains("*/*"))
-                {
-                    return controller.View(viewModel);
+                    if (items.Contains(MediaTypeNames.Application.Json, StringComparer.OrdinalIgnoreCase))
+                    {
+                        return controller.Ok(dataModel ?? viewModel);
+                    }
+
+                    if (items.Contains(MediaTypeNames.Text.Html, StringComparer.OrdinalIgnoreCase) || items.Contains("*/*"))
+                    {
+                        return controller.View(viewModel);
+                    }
                 }
             }
 

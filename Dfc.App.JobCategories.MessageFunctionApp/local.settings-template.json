@@ -3,13 +3,12 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-    "service-bus-connection-string": "[Placeholder]",
-    "cms-messages-topic": "cms-messages",
-    "cms-messages-subscription": "job-categories",
-    "APPINSIGHTS_INSTRUMENTATIONKEY": "[instrumentation key]"
+    "service-bus-connection-string": "[service bus connection string]",
+    "cms-messages-topic": "cms-sample",
+    "cms-messages-subscription": "sample-pages"
   },
-  "JobCategoriesClientOptions": {
-    "Timeout": "00:00:10",
+  "ContentPageClientOptions": {
+    "Timeout": "00:00:30",
     "BaseAddress": "https://localhost/"
   }
 }

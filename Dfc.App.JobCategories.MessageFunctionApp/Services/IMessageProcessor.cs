@@ -1,8 +1,8 @@
-﻿using Dfc.App.JobCategories.Data.Enums;
+﻿using DFC.App.JobCategories.Data.Enums;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Dfc.App.JobCategories.MessageFunctionApp.Services
+namespace DFC.App.JobCategories.MessageFunctionApp.Services
 {
     public interface IMessageProcessor
     {

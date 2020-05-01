@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
-using Dfc.App.JobCategories.Data.Models;
-using Dfc.App.JobCategories.Repositories;
-using Dfc.App.JobCategories.Services;
-using DFC.Logger.AppInsights.Extensions;
+using DFC.App.JobCategories.Data.Contracts;
+using DFC.App.JobCategories.Data.Models;
+using DFC.App.JobCategories.Filters;
+using DFC.App.JobCategories.Framework;
+using DFC.App.JobCategories.PageService;
+using DFC.App.JobCategories.Repository.CosmosDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,12 +14,15 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Dfc.App.JobCategories
+namespace DFC.App.JobCategories
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
-        public const string CosmosDbConfigAppSettings = "Configuration:CosmosDbConnections:JobCategories";
+        public const string CosmosDbConfigAppSettings = "Configuration:CosmosDbConnections:ContentPages";
 
         private readonly IConfiguration configuration;
 
@@ -26,7 +31,6 @@ namespace Dfc.App.JobCategories
             this.configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMapper mapper)
         {
             if (env.IsDevelopment())
@@ -36,21 +40,20 @@ namespace Dfc.App.JobCategories
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
-            app.UseRouting();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseRouting();
             app.UseEndpoints(endpoints =>
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Health}/{action=Ping}"));
+            {
+                endpoints.MapRazorPages();
 
+                // add the default route
+                endpoints.MapControllerRoute("default", "{controller=Health}/{action=Ping}");
+            });
             mapper?.ConfigurationProvider.AssertConfigurationIsValid();
         }
 
@@ -64,16 +67,24 @@ namespace Dfc.App.JobCategories
             });
 
             var cosmosDbConnection = configuration.GetSection(CosmosDbConfigAppSettings).Get<CosmosDbConnection>();
-            var documentClient = new DocumentClient(cosmosDbConnection.EndpointUrl, cosmosDbConnection.AccessKey);
-
-            services.AddSingleton(cosmosDbConnection);
+            var documentClient = new DocumentClient(cosmosDbConnection!.EndpointUrl, cosmosDbConnection!.AccessKey);
             services.AddApplicationInsightsTelemetry();
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICorrelationIdProvider, CorrelationIdProvider>();
+            services.AddSingleton(cosmosDbConnection);
             services.AddSingleton<IDocumentClient>(documentClient);
-            services.AddSingleton<ICosmosRepository<JobCategoriesDataModel>, CosmosRepository<JobCategoriesDataModel>>();
-            services.AddScoped<IJobCategoriesService, JobCategoriesService>();
+            services.AddSingleton<ICosmosRepository<ContentPageModel>, CosmosRepository<ContentPageModel>>();
+            services.AddScoped<IContentPageService, ContentPageService>();
             services.AddAutoMapper(typeof(Startup).Assembly);
-            services.AddDFCLogging(configuration["ApplicationInsights:InstrumentationKey"]);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            services.AddMvc(config =>
+                {
+                    config.Filters.Add<LoggingAsynchActionFilter>();
+                    config.RespectBrowserAcceptHeader = true;
+                    config.ReturnHttpNotAcceptable = true;
+                })
+                .AddNewtonsoftJson()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using Dfc.App.JobCategories.ViewModels.Error;
+﻿using DFC.App.JobCategories.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Dfc.App.JobCategories.Controllers
+namespace DFC.App.JobCategories.Controllers
 {
     public class HomeController : Controller
     {
