@@ -21,7 +21,8 @@ namespace DFC.App.JobCategories.Extensions
 
                 if (validSchemes.Contains(request.Scheme))
                 {
-                    return string.IsNullOrWhiteSpace(request.Scheme) ? default : new Uri($"{request.Scheme}://{request.Host}{urlHelper?.Content("~")}");
+                    return "bla";
+                    //return string.IsNullOrWhiteSpace(request.Scheme) ? default : new Uri($"{request.Scheme}://{request.Host}{urlHelper?.Content("~")}");
                 }
             }
 
