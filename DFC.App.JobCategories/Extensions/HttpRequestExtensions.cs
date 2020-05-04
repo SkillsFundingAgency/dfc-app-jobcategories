@@ -20,7 +20,8 @@ namespace DFC.App.JobCategories.Extensions
 
                 var destinationUri = string.IsNullOrWhiteSpace(request.Scheme) ? default : new Uri($"{request.Scheme}://{request.Host}{urlHelper?.Content("~")}");
 
-                if (destinationUri != null && validSchemes.Contains(destinationUri.Scheme){
+                if (destinationUri != null && validSchemes.Contains(destinationUri.Scheme))
+                {
                     return destinationUri;
                 }
             }
