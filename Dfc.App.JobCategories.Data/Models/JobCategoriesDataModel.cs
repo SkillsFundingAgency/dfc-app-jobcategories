@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DFC.App.JobCategories.Data.Models;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 
