@@ -30,6 +30,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\DFC.App.JobCategories.Data\DFC.App.JobCategories.Data.csproj" />
+    <ProjectReference Include="..\DFC.App.JobCategories\DFC.App.JobCategories.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
