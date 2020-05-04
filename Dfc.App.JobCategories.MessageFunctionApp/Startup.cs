@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
+using DFC.App.JobCategories.Framework;
 using Dfc.App.JobCategories.MessageFunctionApp.HttpClientPolicies;
-using Dfc.App.JobCategories.MessageFunctionApp.Services;
+using DFC.App.JobCategories.MessageFunctionApp.Services;
 using DFC.Functions.DI.Standard;
-using DFC.Logger.AppInsights.Contracts;
-using DFC.Logger.AppInsights.CorrelationIdProviders;
-using DFC.Logger.AppInsights.Extensions;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.Configuration;
