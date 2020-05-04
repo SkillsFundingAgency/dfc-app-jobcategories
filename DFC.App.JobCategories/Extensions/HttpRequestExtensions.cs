@@ -8,7 +8,6 @@ namespace DFC.App.JobCategories.Extensions
     public static class HttpRequestExtensions
     {
         private static List<string> validSchemes = new List<string> { "http://", "https://" };
-
         public static Uri? GetBaseAddress(this HttpRequest request, IUrlHelper? urlHelper = null)
         {
             if (request != null)
@@ -19,11 +18,10 @@ namespace DFC.App.JobCategories.Extensions
                     return new Uri($"{forwardedProtocol}://{originalHost}");
                 }
 
-                if (validSchemes.Contains(request.Scheme))
-                {
-                    return new Uri("bla");
+                var destinationUri = string.IsNullOrWhiteSpace(request.Scheme) ? default : new Uri($"{request.Scheme}://{request.Host}{urlHelper?.Content("~")}");
 
-                    //return string.IsNullOrWhiteSpace(request.Scheme) ? default : new Uri($"{request.Scheme}://{request.Host}{urlHelper?.Content("~")}");
+                if (destinationUri != null && validSchemes.Contains(destinationUri.Scheme){
+                    return destinationUri;
                 }
             }
 
