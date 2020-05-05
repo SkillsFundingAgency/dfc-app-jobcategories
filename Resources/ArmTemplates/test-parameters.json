@@ -19,6 +19,15 @@
         },
         "enableAlerts": {
             "value": false
+        },
+        "cosmosDBName": {
+            "value": "dfc-dev-app-sharedresources-cdb"
+        },
+        "cosmosDbKey": {
+            "value": "not-a-real-key"
+        },
+        "cosmosDbCollectionName": {
+            "value": "a-test-collection"
         }
     }
 }

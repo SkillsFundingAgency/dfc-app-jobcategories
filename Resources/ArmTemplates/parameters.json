@@ -31,6 +31,15 @@
         },
         "enableAlerts": {
             "value": __EnableAzureMonitorAlerting__
+        },
+        "cosmosDBName": {
+            "value": "__appSharedCosmosDBName__"
+        },
+        "cosmosDbKey": {
+            "value": "__appSharedCosmosPrimaryKey__"
+        },
+        "cosmosDbCollectionName": {
+            "value": "__cosmosDbCollectionName__"
         }
     }
 }
