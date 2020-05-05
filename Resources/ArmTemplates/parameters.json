@@ -45,7 +45,7 @@
             "value": __CosmosDbDatabaseDoesntExist__
         },
         "jobcategoriesAppDatabaseThroughput": {
-            "value": __contactusAppDatabaseThroughput__
+            "value": __jobcategoriesAppDatabaseThroughput__
         }
     }
 }
