@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DFC.App.JobCategories.PageService.DataLoadService
+namespace DFC.App.JobCategories.PageService
 {
     public interface IDataLoadService<TClientOptions>
         where TClientOptions : ServiceTaxonomyApiClientOptions

@@ -1,17 +1,14 @@
 ﻿using DFC.App.JobCategories.Data.Models;
 using DFC.Logger.AppInsights.Constants;
 using DFC.Logger.AppInsights.Contracts;
-using Microsoft.Extensions.Options;
 using Polly.CircuitBreaker;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Net.Mime;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace DFC.App.JobCategories.PageService.DataLoadService
+namespace DFC.App.JobCategories.PageService
 {
     public class DataLoadService<TClientOptions> : IDataLoadService<TClientOptions>
         where TClientOptions : ServiceTaxonomyApiClientOptions
