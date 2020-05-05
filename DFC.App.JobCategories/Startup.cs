@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using DFC.App.JobCategories.Data.Contracts;
 using DFC.App.JobCategories.Data.Models;
+using DFC.App.JobCategories.Extensions;
 using DFC.App.JobCategories.Filters;
 using DFC.App.JobCategories.Framework;
+using DFC.App.JobCategories.HttpClientPolicies;
 using DFC.App.JobCategories.PageService;
+using DFC.App.JobCategories.PageService.DataLoadService;
 using DFC.App.JobCategories.Repository.CosmosDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -67,7 +70,7 @@ namespace DFC.App.JobCategories
             });
 
             var cosmosDbConnection = configuration.GetSection(CosmosDbConfigAppSettings).Get<CosmosDbConnection>();
-            var documentClient = new DocumentClient(cosmosDbConnection!.EndpointUrl, cosmosDbConnection!.AccessKey);
+            var documentClient  = new DocumentClient(cosmosDbConnection!.EndpointUrl, cosmosDbConnection!.AccessKey);
             services.AddApplicationInsightsTelemetry();
             services.AddHttpContextAccessor();
             services.AddScoped<ICorrelationIdProvider, CorrelationIdProvider>();
@@ -76,6 +79,14 @@ namespace DFC.App.JobCategories
             services.AddSingleton<ICosmosRepository<ContentPageModel>, CosmosRepository<ContentPageModel>>();
             services.AddScoped<IContentPageService, ContentPageService>();
             services.AddAutoMapper(typeof(Startup).Assembly);
+
+            const string AppSettingsPolicies = "Policies";
+            var policyOptions = configuration.GetSection(AppSettingsPolicies).Get<PolicyOptions>();
+            var policyRegistry = services.AddPolicyRegistry();
+
+            services
+               .AddPolicies(policyRegistry, nameof(ServiceTaxonomyApiClientOptions), policyOptions)
+               .AddHttpClient<IDataLoadService<ServiceTaxonomyApiClientOptions>, DataLoadService<ServiceTaxonomyApiClientOptions>, ServiceTaxonomyApiClientOptions>(configuration, nameof(ServiceTaxonomyApiClientOptions), nameof(PolicyOptions.HttpRetry), nameof(PolicyOptions.HttpCircuitBreaker));
 
             services.AddMvc(config =>
                 {

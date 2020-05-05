@@ -1,0 +1,16 @@
+﻿using DFC.App.JobCategories.Data.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DFC.App.JobCategories.PageService.DataLoadService
+{
+    public interface IDataLoadService<TClientOptions>
+        where TClientOptions : ServiceTaxonomyApiClientOptions
+    {
+        Task<string> GetAllAsync(string contentType);
+
+        Task<string> GetByIdAsync(string contentType, Guid id);
+    }
+}
