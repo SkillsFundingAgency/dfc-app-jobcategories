@@ -28,6 +28,12 @@
         },
         "cosmosDbCollectionName": {
             "value": "a-test-collection"
+        },
+        "jobcategoriesAppDatabaseNeedsCreation": {
+            "value": true
+        },
+        "jobcategoriesAppDatabaseThroughput": {
+            "value": 2
         }
     }
 }

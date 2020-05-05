@@ -40,6 +40,12 @@
         },
         "cosmosDbCollectionName": {
             "value": "__cosmosDbCollectionName__"
+        },
+        "jobcategoriesAppDatabaseNeedsCreation": {
+            "value": __CosmosDbDatabaseDoesntExist__
+        },
+        "jobcategoriesAppDatabaseThroughput": {
+            "value": __contactusAppDatabaseThroughput__
         }
     }
 }
