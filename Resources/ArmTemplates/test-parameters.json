@@ -20,6 +20,9 @@
         "enableAlerts": {
             "value": false
         },
+        "CosmosDbResourceGroup": {
+            "value": "dfc-dev-app-sharedresources-rg"
+        },
         "cosmosDBName": {
             "value": "dfc-dev-app-sharedresources-cdb"
         },

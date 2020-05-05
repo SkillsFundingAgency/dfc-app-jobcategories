@@ -32,6 +32,9 @@
         "enableAlerts": {
             "value": __EnableAzureMonitorAlerting__
         },
+        "CosmosDbResourceGroup": {
+            "value": "__appSharedResourceGroup__"
+        },
         "cosmosDBName": {
             "value": "__appSharedCosmosDBName__"
         },
