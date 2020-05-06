@@ -15,7 +15,7 @@ namespace DFC.App.JobCategories.Data.Models
         public bool? IncludeInSitemap => true;
         public Guid? DocumentId { get; set; }
         public string? Etag { get; set; }
-        public string? PartitionKey => "JobCategory";
+        public string? PartitionKey => "jobcategory";
         public string? CanonicalName { get; set; }
     }
 }

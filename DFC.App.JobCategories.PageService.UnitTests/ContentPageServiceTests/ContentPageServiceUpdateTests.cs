@@ -15,11 +15,11 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         public void ContentPageServiceUpdateReturnsSuccessWhenContentPageReplaced()
         {
             // arrange
-            var repository = A.Fake<ICosmosRepository<ContentPageModel>>();
-            var contentPageModel = A.Fake<ContentPageModel>();
-            var expectedResult = A.Fake<ContentPageModel>();
+            var repository = A.Fake<ICosmosRepository<JobCategory>>();
+            var contentPageModel = A.Fake<JobCategory>();
+            var expectedResult = A.Fake<JobCategory>();
 
-            A.CallTo(() => repository.GetAsync(A<Expression<Func<ContentPageModel, bool>>>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
             var contentPageService = new ContentPageService(repository);
 
@@ -35,12 +35,12 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         public async System.Threading.Tasks.Task ContentPageServiceUpdateReturnsArgumentNullExceptionWhenNullIsUsed()
         {
             // arrange
-            ContentPageModel? contentPageModel = null;
-            var repository = A.Fake<ICosmosRepository<ContentPageModel>>();
+            JobCategory? jobCategory = null;
+            var repository = A.Fake<ICosmosRepository<JobCategory>>();
             var contentPageService = new ContentPageService(repository);
 
             // act
-            var exceptionResult = await Assert.ThrowsAsync<ArgumentNullException>(async () => await contentPageService.UpsertAsync(contentPageModel).ConfigureAwait(false)).ConfigureAwait(false);
+            var exceptionResult = await Assert.ThrowsAsync<ArgumentNullException>(async () => await contentPageService.UpsertAsync(jobCategory).ConfigureAwait(false)).ConfigureAwait(false);
 
             // assert
             Assert.Equal("Value cannot be null. (Parameter 'contentPageModel')", exceptionResult.Message);
@@ -50,9 +50,9 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         public void ContentPageServiceUpdateReturnsNullWhenContentPageNotReplaced()
         {
             // arrange
-            var repository = A.Fake<ICosmosRepository<ContentPageModel>>();
-            var contentPageModel = A.Fake<ContentPageModel>();
-            var expectedResult = A.Dummy<ContentPageModel>();
+            var repository = A.Fake<ICosmosRepository<JobCategory>>();
+            var contentPageModel = A.Fake<JobCategory>();
+            var expectedResult = A.Dummy<JobCategory>();
 
             A.CallTo(() => repository.UpsertAsync(contentPageModel)).Returns(HttpStatusCode.BadRequest);
 
@@ -63,7 +63,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
 
             // assert
             A.CallTo(() => repository.UpsertAsync(contentPageModel)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => repository.GetAsync(A<Expression<Func<ContentPageModel, bool>>>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustNotHaveHappened();
             A.Equals(result, expectedResult);
         }
 
@@ -71,8 +71,8 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         public void ContentPageServiceUpdateReturnsNullWhenMissingRepository()
         {
             // arrange
-            var repository = A.Dummy<ICosmosRepository<ContentPageModel>>();
-            var contentPageModel = A.Fake<ContentPageModel>();
+            var repository = A.Dummy<ICosmosRepository<JobCategory>>();
+            var contentPageModel = A.Fake<JobCategory>();
             ContentPageModel? expectedResult = null;
 
             A.CallTo(() => repository.UpsertAsync(contentPageModel)).Returns(HttpStatusCode.FailedDependency);
@@ -84,7 +84,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
 
             // assert
             A.CallTo(() => repository.UpsertAsync(contentPageModel)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => repository.GetAsync(A<Expression<Func<ContentPageModel, bool>>>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustNotHaveHappened();
             A.Equals(result, expectedResult);
         }
     }

@@ -4,6 +4,6 @@ namespace DFC.App.JobCategories.MessageFunctionApp.Services
 {
     public interface IMappingService
     {
-        ContentPageModel MapToContentPageModel(string message, long sequenceNumber);
+        JobCategory MapToContentPageModel(string message, long sequenceNumber);
     }
 }

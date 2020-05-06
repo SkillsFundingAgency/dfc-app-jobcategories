@@ -156,7 +156,7 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
 
             if (model != null)
             {
-                var accessCondition = new AccessCondition { Condition = model.Etag, Type = AccessConditionType.IfMatch };
+                var accessCondition = !string.IsNullOrEmpty(model.Etag) ? new AccessCondition { Condition = model.Etag, Type = AccessConditionType.IfMatch } : new AccessCondition();
                 var partitionKey = new PartitionKey(model.PartitionKey);
 
                 var result = await documentClient.DeleteDocumentAsync(documentUri, new RequestOptions { AccessCondition = accessCondition, PartitionKey = partitionKey }).ConfigureAwait(false);
@@ -167,15 +167,25 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
             return HttpStatusCode.NotFound;
         }
 
-        public async Task<HttpStatusCode> DeleteAllAsync(string partitionKey)
+        public async Task<HttpStatusCode> DeleteAllAsync<T>(string key) where T : IDataModel
         {
-            var db = documentClient.CreateDatabaseQuery(new FeedOptions { PartitionKey = new PartitionKey(partitionKey) }).ToList().First();
-            var coll = documentClient.CreateDocumentCollectionQuery(db.CollectionsLink, new FeedOptions { PartitionKey = new PartitionKey(partitionKey) }).ToList().First();
-            var docs = documentClient.CreateDocumentQuery(coll.DocumentsLink, new FeedOptions { PartitionKey = new PartitionKey(partitionKey) });
+            var partitionKey = new PartitionKey(key);
 
-            foreach (var doc in docs)
+            var query = documentClient.CreateDocumentQuery<T>(DocumentCollectionUri, new FeedOptions { PartitionKey = partitionKey })
+                                      .AsDocumentQuery();
+
+            var models = new List<T>();
+
+            while (query.HasMoreResults)
             {
-                await documentClient.DeleteDocumentAsync(doc.SelfLink, new RequestOptions { PartitionKey = new PartitionKey(partitionKey) }).ConfigureAwait(false);
+                var result = await query.ExecuteNextAsync<T>().ConfigureAwait(false);
+
+                models.AddRange(result);
+            }
+
+            foreach (var result in models)
+            {
+                await DeleteAsync(result.DocumentId.Value).ConfigureAwait(false);
             }
 
             return HttpStatusCode.OK;

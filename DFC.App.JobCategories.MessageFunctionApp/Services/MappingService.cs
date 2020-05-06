@@ -14,11 +14,10 @@ namespace DFC.App.JobCategories.MessageFunctionApp.Services
             this.mapper = mapper;
         }
 
-        public ContentPageModel MapToContentPageModel(string message, long sequenceNumber)
+        public JobCategory MapToContentPageModel(string message, long sequenceNumber)
         {
             var fullMessage = JsonConvert.DeserializeObject<ContentPageMessage>(message);
-            var contentPageModel = mapper.Map<ContentPageModel>(fullMessage);
-            contentPageModel.SequenceNumber = sequenceNumber;
+            var contentPageModel = mapper.Map<JobCategory>(fullMessage);
 
             return contentPageModel;
         }

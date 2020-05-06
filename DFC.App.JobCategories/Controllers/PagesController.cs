@@ -54,10 +54,10 @@ namespace DFC.App.JobCategories.Controllers
         }
 
         [HttpGet]
-        [Route("pages/{article}")]
-        public async Task<IActionResult> Document(string article)
+        [Route("pages/{jobCategory}")]
+        public async Task<IActionResult> Document(string jobCategory)
         {
-            var contentPageModel = await GetContentPageAsync(article).ConfigureAwait(false);
+            var contentPageModel = await GetContentPageAsync(jobCategory).ConfigureAwait(false);
 
             if (contentPageModel != null)
             {
@@ -65,12 +65,12 @@ namespace DFC.App.JobCategories.Controllers
 
                 viewModel.Breadcrumb = BuildBreadcrumb(contentPageModel);
 
-                logger.LogInformation($"{nameof(Document)} has succeeded for: {article}");
+                logger.LogInformation($"{nameof(Document)} has succeeded for: {jobCategory}");
 
                 return this.NegotiateContentResult(viewModel);
             }
 
-            logger.LogWarning($"{nameof(Document)} has returned no content for: {article}");
+            logger.LogWarning($"{nameof(Document)} has returned no content for: {jobCategory}");
 
             return NoContent();
         }
@@ -285,7 +285,7 @@ namespace DFC.App.JobCategories.Controllers
             const string defaultArticleName = "home";
             var articleName = string.IsNullOrWhiteSpace(article) ? defaultArticleName : article;
 
-            var contentPageModel = await contentPageService.GetByNameAsync(articleName).ConfigureAwait(false);
+            var contentPageModel = await contentPageService.GetByCanonicalNameAsync(articleName).ConfigureAwait(false);
 
             return contentPageModel;
         }

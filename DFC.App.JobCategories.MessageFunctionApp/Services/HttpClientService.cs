@@ -23,11 +23,11 @@ namespace DFC.App.JobCategories.MessageFunctionApp.Services
             this.logger = logger;
         }
 
-        public async Task<HttpStatusCode> PostAsync(ContentPageModel contentPageModel)
+        public async Task<HttpStatusCode> PostAsync(JobCategory contentPageModel)
         {
             var url = new Uri($"{contentPageClientOptions?.BaseAddress}pages");
 
-            using (var content = new ObjectContent(typeof(ContentPageModel), contentPageModel, new JsonMediaTypeFormatter(), MediaTypeNames.Application.Json))
+            using (var content = new ObjectContent(typeof(JobCategory), contentPageModel, new JsonMediaTypeFormatter(), MediaTypeNames.Application.Json))
             {
                 var response = await httpClient.PostAsync(url, content).ConfigureAwait(false);
                 if (!response.IsSuccessStatusCode)
@@ -41,11 +41,11 @@ namespace DFC.App.JobCategories.MessageFunctionApp.Services
             }
         }
 
-        public async Task<HttpStatusCode> PutAsync(ContentPageModel contentPageModel)
+        public async Task<HttpStatusCode> PutAsync(JobCategory contentPageModel)
         {
             var url = new Uri($"{contentPageClientOptions?.BaseAddress}pages");
 
-            using (var content = new ObjectContent(typeof(ContentPageModel), contentPageModel, new JsonMediaTypeFormatter(), MediaTypeNames.Application.Json))
+            using (var content = new ObjectContent(typeof(JobCategory), contentPageModel, new JsonMediaTypeFormatter(), MediaTypeNames.Application.Json))
             {
                 var response = await httpClient.PutAsync(url, content).ConfigureAwait(false);
 

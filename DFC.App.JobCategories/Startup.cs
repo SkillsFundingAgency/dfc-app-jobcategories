@@ -93,7 +93,7 @@ namespace DFC.App.JobCategories
             var policyOptions = configuration.GetSection(AppSettingsPolicies).Get<PolicyOptions>();
             var policyRegistry = services.AddPolicyRegistry();
 
-            services.AddHostedService<DataLoadHostedService>();
+            //services.AddHostedService<DataLoadHostedService>();
 
             services
                .AddPolicies(policyRegistry, nameof(ServiceTaxonomyApiClientOptions), policyOptions)

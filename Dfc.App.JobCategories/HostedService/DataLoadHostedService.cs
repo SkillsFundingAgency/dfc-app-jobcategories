@@ -67,8 +67,8 @@ namespace DFC.App.JobCategories.HostedService
 
         private async Task RemoveExistingData()
         {
-            await jobCategoryRepository.DeleteAllAsync(nameof(JobCategory)).ConfigureAwait(false);
-            await jobProfileRepository.DeleteAllAsync(nameof(JobProfile)).ConfigureAwait(false);
+            await jobCategoryRepository.DeleteAllAsync<JobCategory>(nameof(JobCategory).ToLower()).ConfigureAwait(false);
+            await jobProfileRepository.DeleteAllAsync<JobProfile>(nameof(JobProfile).ToLower()).ConfigureAwait(false);
         }
 
         private async Task<IEnumerable<JobProfileApiResponse>> GetJobProfilesAsync()

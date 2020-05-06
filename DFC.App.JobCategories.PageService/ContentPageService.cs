@@ -31,7 +31,7 @@ namespace DFC.App.JobCategories.PageService
             return await repository.GetAsync(d => d.DocumentId == documentId).ConfigureAwait(false);
         }
 
-        public async Task<JobCategory?> GetByNameAsync(string? canonicalName)
+        public async Task<JobCategory?> GetByCanonicalNameAsync(string? canonicalName)
         {
             if (string.IsNullOrWhiteSpace(canonicalName))
             {

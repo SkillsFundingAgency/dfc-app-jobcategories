@@ -14,7 +14,7 @@ namespace DFC.App.JobCategories.Data.Models
         public bool? IncludeInSitemap => false;
         public Guid? DocumentId { get; set; }
         public string? Etag { get; set; }
-        public string? PartitionKey => "JobProfile";
+        public string? PartitionKey => "jobprofile";
         public string? CanonicalName => Title.ToLower().Replace(" ", "-", StringComparison.CurrentCultureIgnoreCase);
     }
 }

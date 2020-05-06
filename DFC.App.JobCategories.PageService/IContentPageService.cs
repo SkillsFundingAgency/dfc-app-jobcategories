@@ -14,7 +14,7 @@ namespace DFC.App.JobCategories.PageService
 
         Task<JobCategory?> GetByIdAsync(Guid documentId);
 
-        Task<JobCategory?> GetByNameAsync(string? canonicalName);
+        Task<JobCategory?> GetByCanonicalNameAsync(string? canonicalName);
 
         Task<HttpStatusCode> UpsertAsync(JobCategory? contentPageModel);
 

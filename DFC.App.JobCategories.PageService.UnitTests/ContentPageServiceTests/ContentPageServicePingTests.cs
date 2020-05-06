@@ -12,7 +12,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         public void ContentPageServicePingReturnsSuccess()
         {
             // arrange
-            var repository = A.Fake<ICosmosRepository<ContentPageModel>>();
+            var repository = A.Fake<ICosmosRepository<JobCategory>>();
             var expectedResult = true;
 
             A.CallTo(() => repository.PingAsync()).Returns(expectedResult);
@@ -31,7 +31,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         public void ContentPageServicePingReturnsFalseWhenMissingRepository()
         {
             // arrange
-            var repository = A.Dummy<ICosmosRepository<ContentPageModel>>();
+            var repository = A.Dummy<ICosmosRepository<JobCategory>>();
             var expectedResult = false;
 
             A.CallTo(() => repository.PingAsync()).Returns(expectedResult);
