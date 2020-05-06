@@ -28,7 +28,7 @@ namespace DFC.App.JobCategories.Data.Models
         public string? BreadcrumbTitle { get; set; }
 
         [Display(Name = "Include In SiteMap")]
-        public bool IncludeInSitemap { get; set; }
+        public bool? IncludeInSitemap { get; set; }
 
         [UrlPath]
         [LowerCase]

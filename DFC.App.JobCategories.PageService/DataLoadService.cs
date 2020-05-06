@@ -1,8 +1,11 @@
 ﻿using DFC.App.JobCategories.Data.Models;
+using DFC.App.JobCategories.Data.Models.API;
 using DFC.Logger.AppInsights.Constants;
 using DFC.Logger.AppInsights.Contracts;
+using Newtonsoft.Json;
 using Polly.CircuitBreaker;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Net.Mime;
@@ -14,16 +17,16 @@ namespace DFC.App.JobCategories.PageService
         where TClientOptions : ServiceTaxonomyApiClientOptions
     {
         private readonly HttpClient httpClient;
-        private readonly ILogService logService;
+        //private readonly ILogService logService;
         private readonly TClientOptions serviceTaxonomyClientOptions;
-        private readonly ICorrelationIdProvider correlationIdProvider;
+        //private readonly ICorrelationIdProvider correlationIdProvider;
 
-        public DataLoadService(HttpClient httpClient, ILogService logService, TClientOptions serviceTaxonomyClientOptions, ICorrelationIdProvider correlationIdProvider)
+        public DataLoadService(HttpClient httpClient, /*ILogService logService,*/ TClientOptions serviceTaxonomyClientOptions/*, ICorrelationIdProvider correlationIdProvider*/)
         {
             this.httpClient = httpClient;
-            this.logService = logService;
+            //this.logService = logService;
             this.serviceTaxonomyClientOptions = serviceTaxonomyClientOptions;
-            this.correlationIdProvider = correlationIdProvider;
+            //this.correlationIdProvider = correlationIdProvider;
         }
 
         public async Task<string> GetAllAsync(string contentType)
@@ -41,7 +44,7 @@ namespace DFC.App.JobCategories.PageService
             var endpoint = string.Format(CultureInfo.InvariantCulture, serviceTaxonomyClientOptions.Endpoint, contentType, id.HasValue ? id.ToString() : string.Empty);
             var url = $"{serviceTaxonomyClientOptions.BaseAddress}{endpoint}";
 
-            logService.LogInformation($"{nameof(GetAsync)}: Loading data segment from {url}");
+            //logService.LogInformation($"{nameof(GetAsync)}: Loading data segment from {url}");
 
             using var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Accept.Clear();
@@ -52,15 +55,16 @@ namespace DFC.App.JobCategories.PageService
             {
                 var response = await httpClient.SendAsync(request).ConfigureAwait(false);
                 var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
+                //var responseString = await response.Content.ReadAsAsync<string>().ConfigureAwait(false);
+              
                 if (!response.IsSuccessStatusCode)
                 {
-                    logService.LogError($"Failed to get data for {contentType} :: {id} from {url}, received error : '{responseString}', Returning empty content.");
+                    //logService.LogError($"Failed to get data for {contentType} :: {id} from {url}, received error : '{responseString}', Returning empty content.");
                     responseString = string.Empty;
                 }
                 else if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    logService.LogInformation($"Status - {response.StatusCode} with response '{responseString}' received for {contentType} :: {id} from {url}, Returning empty content.");
+                    //logService.LogInformation($"Status - {response.StatusCode} with response '{responseString}' received for {contentType} :: {id} from {url}, Returning empty content.");
                     responseString = string.Empty;
                 }
 
@@ -68,7 +72,7 @@ namespace DFC.App.JobCategories.PageService
             }
             catch (BrokenCircuitException e)
             {
-                logService.LogInformation($"Error received refreshing segment data '{e.InnerException?.Message}'. Received for {contentType} :: {id} from {url}, Returning empty content.");
+                //logService.LogInformation($"Error received refreshing segment data '{e.InnerException?.Message}'. Received for {contentType} :: {id} from {url}, Returning empty content.");
                 return string.Empty;
             }
         }
@@ -77,7 +81,7 @@ namespace DFC.App.JobCategories.PageService
         {
             if (!httpClient.DefaultRequestHeaders.Contains(HeaderName.CorrelationId))
             {
-                httpClient.DefaultRequestHeaders.Add(HeaderName.CorrelationId, correlationIdProvider.CorrelationId);
+                //httpClient.DefaultRequestHeaders.Add(HeaderName.CorrelationId, correlationIdProvider.CorrelationId);
             }
         }
     }

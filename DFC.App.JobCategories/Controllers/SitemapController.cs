@@ -48,7 +48,7 @@ namespace DFC.App.JobCategories.Controllers
                     if (contentPageModelsList.Any())
                     {
                         var sitemapContentPageModels = contentPageModelsList
-                             .Where(w => w.IncludeInSitemap)
+                             .Where(w => w.IncludeInSitemap.HasValue && w.IncludeInSitemap.Value)
                              .OrderBy(o => o.CanonicalName);
 
                         foreach (var contentPageModel in sitemapContentPageModels)

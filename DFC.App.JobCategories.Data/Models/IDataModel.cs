@@ -17,5 +17,11 @@ namespace DFC.App.JobCategories.Data.Models
 
         [Required]
         string PartitionKey { get; }
+
+        [Required]
+        string? CanonicalName { get; }
+
+        [Required]
+        bool? IncludeInSitemap { get; }
     }
 }
