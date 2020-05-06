@@ -82,7 +82,8 @@ namespace DFC.App.JobCategories
             services.AddScoped<ICorrelationIdProvider, CorrelationIdProvider>();
             services.AddSingleton(cosmosDbConnection);
             services.AddSingleton<IDocumentClient>(documentClient);
-            services.AddSingleton<ICosmosRepository<ContentPageModel>, CosmosRepository<ContentPageModel>>();
+            services.AddSingleton<ICosmosRepository<JobProfile>, CosmosRepository<JobProfile>>();
+            services.AddSingleton<ICosmosRepository<JobCategory>, CosmosRepository<JobCategory>>();
             services.AddScoped<IContentPageService, ContentPageService>();
             //services.AddDFCLogging(configuration["ApplicationInsights:InstrumentationKey"]);
             services.AddTransient<CorrelationIdDelegatingHandler>();

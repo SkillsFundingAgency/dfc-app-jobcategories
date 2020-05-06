@@ -31,8 +31,7 @@ namespace DFC.App.JobCategories.AutoMapperProfiles
                 .ForMember(d => d.Keywords, s => s.MapFrom(a => a.MetaTags != null ? a.MetaTags.Keywords : null))
                 ;
 
-            CreateMap<ContentPageModel, IndexDocumentViewModel>()
-                ;
+            CreateMap<JobCategory, IndexDocumentViewModel>();
         }
     }
 }

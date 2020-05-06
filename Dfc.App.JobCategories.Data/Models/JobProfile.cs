@@ -12,7 +12,7 @@ namespace DFC.App.JobCategories.Data.Models
         public Uri? Uri { get; set; }
         public IEnumerable<Link> Links { get; set; }
         public bool? IncludeInSitemap => false;
-        public Guid DocumentId { get; set; }
+        public Guid? DocumentId { get; set; }
         public string? Etag { get; set; }
         public string? PartitionKey => "JobProfile";
         public string? CanonicalName => Title.ToLower().Replace(" ", "-", StringComparison.CurrentCultureIgnoreCase);

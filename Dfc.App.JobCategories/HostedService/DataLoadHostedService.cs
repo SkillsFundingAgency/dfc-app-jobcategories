@@ -1,4 +1,5 @@
-﻿using DFC.App.JobCategories.Data.Extensions;
+﻿using DFC.App.JobCategories.Data.Contracts;
+using DFC.App.JobCategories.Data.Extensions;
 using DFC.App.JobCategories.Data.Models;
 using DFC.App.JobCategories.Data.Models.API;
 using DFC.App.JobCategories.PageService;
@@ -15,10 +16,14 @@ namespace DFC.App.JobCategories.HostedService
     public class DataLoadHostedService : IHostedService
     {
         private readonly IDataLoadService<ServiceTaxonomyApiClientOptions> _dataLoadService;
+        private readonly ICosmosRepository<JobProfile> jobProfileRepository;
+        private readonly ICosmosRepository<JobCategory> jobCategoryRepository;
 
-        public DataLoadHostedService(IDataLoadService<ServiceTaxonomyApiClientOptions> dataLoadService)
+        public DataLoadHostedService(IDataLoadService<ServiceTaxonomyApiClientOptions> dataLoadService, ICosmosRepository<JobProfile> jobProfileRepository, ICosmosRepository<JobCategory> jobCategoryRepository)
         {
             _dataLoadService = dataLoadService;
+            this.jobProfileRepository = jobProfileRepository;
+            this.jobCategoryRepository = jobCategoryRepository;
         }
 
         private async Task<IEnumerable<JobCategoryApiResponse>> GetJobCategoriesAsync()
@@ -44,12 +49,26 @@ namespace DFC.App.JobCategories.HostedService
 
                 var jobCategories = apiJobCategories.Select(x => x.Map());
                 var jobProfiles = apiJobProfiles.Select(x => x.Map());
+
+                await RemoveExistingData().ConfigureAwait(false);
+
+                var addJobCategoryTasks = jobCategories.Select(x => jobCategoryRepository.UpsertAsync(x));
+                var addJobProfileTasks = jobProfiles.Select(x => jobProfileRepository.UpsertAsync(x));
+
+                await Task.WhenAny(addJobCategoryTasks).ConfigureAwait(false);
+                await Task.WhenAny(addJobProfileTasks).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 var a = ex;
                 throw;
             }
+        }
+
+        private async Task RemoveExistingData()
+        {
+            await jobCategoryRepository.DeleteAllAsync(nameof(JobCategory)).ConfigureAwait(false);
+            await jobProfileRepository.DeleteAllAsync(nameof(JobProfile)).ConfigureAwait(false);
         }
 
         private async Task<IEnumerable<JobProfileApiResponse>> GetJobProfilesAsync()

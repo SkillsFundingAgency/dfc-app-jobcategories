@@ -2,6 +2,7 @@
 using DFC.App.JobCategories.Data.Models.API;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DFC.App.JobCategories.Data.Extensions
@@ -27,7 +28,8 @@ namespace DFC.App.JobCategories.Data.Extensions
                 Title = resp.Title,
                 Uri = resp.Uri,
                 Links = resp.Links,
-                WebsiteUri = resp.WebsiteUri,
+                //Build a fake URI to get the last segment
+                CanonicalName = new Uri("http://unspecifiedhost" + resp.WebsiteUri).Segments.Last().TrimEnd('/'),
             };
         }
     }

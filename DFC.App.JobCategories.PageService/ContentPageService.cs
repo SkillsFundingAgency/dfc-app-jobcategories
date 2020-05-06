@@ -9,9 +9,9 @@ namespace DFC.App.JobCategories.PageService
 {
     public class ContentPageService : IContentPageService
     {
-        private readonly ICosmosRepository<ContentPageModel> repository;
+        private readonly ICosmosRepository<JobCategory> repository;
 
-        public ContentPageService(ICosmosRepository<ContentPageModel> repository)
+        public ContentPageService(ICosmosRepository<JobCategory> repository)
         {
             this.repository = repository;
         }
@@ -21,17 +21,17 @@ namespace DFC.App.JobCategories.PageService
             return await repository.PingAsync().ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<ContentPageModel>?> GetAllAsync()
+        public async Task<IEnumerable<JobCategory>?> GetAllAsync()
         {
             return await repository.GetAllAsync().ConfigureAwait(false);
         }
 
-        public async Task<ContentPageModel?> GetByIdAsync(Guid documentId)
+        public async Task<JobCategory?> GetByIdAsync(Guid documentId)
         {
             return await repository.GetAsync(d => d.DocumentId == documentId).ConfigureAwait(false);
         }
 
-        public async Task<ContentPageModel?> GetByNameAsync(string? canonicalName)
+        public async Task<JobCategory?> GetByNameAsync(string? canonicalName)
         {
             if (string.IsNullOrWhiteSpace(canonicalName))
             {
@@ -40,18 +40,8 @@ namespace DFC.App.JobCategories.PageService
 
             return await repository.GetAsync(d => d.CanonicalName == canonicalName.ToLowerInvariant()).ConfigureAwait(false);
         }
-
-        public async Task<ContentPageModel?> GetByAlternativeNameAsync(string? alternativeName)
-        {
-            if (string.IsNullOrWhiteSpace(alternativeName))
-            {
-                throw new ArgumentNullException(nameof(alternativeName));
-            }
-
-            return await repository.GetAsync(d => d.AlternativeNames!.Contains(alternativeName.ToLowerInvariant())).ConfigureAwait(false);
-        }
-
-        public async Task<HttpStatusCode> UpsertAsync(ContentPageModel? contentPageModel)
+      
+        public async Task<HttpStatusCode> UpsertAsync(JobCategory? contentPageModel)
         {
             if (contentPageModel == null)
             {

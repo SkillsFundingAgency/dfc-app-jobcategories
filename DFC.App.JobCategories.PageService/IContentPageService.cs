@@ -10,15 +10,13 @@ namespace DFC.App.JobCategories.PageService
     {
         Task<bool> PingAsync();
 
-        Task<IEnumerable<ContentPageModel>?> GetAllAsync();
+        Task<IEnumerable<JobCategory>?> GetAllAsync();
 
-        Task<ContentPageModel?> GetByIdAsync(Guid documentId);
+        Task<JobCategory?> GetByIdAsync(Guid documentId);
 
-        Task<ContentPageModel?> GetByNameAsync(string? canonicalName);
+        Task<JobCategory?> GetByNameAsync(string? canonicalName);
 
-        Task<ContentPageModel?> GetByAlternativeNameAsync(string? alternativeName);
-
-        Task<HttpStatusCode> UpsertAsync(ContentPageModel? contentPageModel);
+        Task<HttpStatusCode> UpsertAsync(JobCategory? contentPageModel);
 
         Task<bool> DeleteAsync(Guid documentId);
     }

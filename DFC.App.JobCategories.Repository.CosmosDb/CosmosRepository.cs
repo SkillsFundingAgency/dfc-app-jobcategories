@@ -167,6 +167,20 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
             return HttpStatusCode.NotFound;
         }
 
+        public async Task<HttpStatusCode> DeleteAllAsync(string partitionKey)
+        {
+            var db = documentClient.CreateDatabaseQuery(new FeedOptions { PartitionKey = new PartitionKey(partitionKey) }).ToList().First();
+            var coll = documentClient.CreateDocumentCollectionQuery(db.CollectionsLink, new FeedOptions { PartitionKey = new PartitionKey(partitionKey) }).ToList().First();
+            var docs = documentClient.CreateDocumentQuery(coll.DocumentsLink, new FeedOptions { PartitionKey = new PartitionKey(partitionKey) });
+
+            foreach (var doc in docs)
+            {
+                await documentClient.DeleteDocumentAsync(doc.SelfLink, new RequestOptions { PartitionKey = new PartitionKey(partitionKey) }).ConfigureAwait(false);
+            }
+
+            return HttpStatusCode.OK;
+        }
+
         private async Task CreateDatabaseIfNotExistsAsync()
         {
             try

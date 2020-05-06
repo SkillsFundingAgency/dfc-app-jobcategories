@@ -10,7 +10,7 @@ namespace DFC.App.JobCategories.Data.Models
     {
         [Guid]
         [JsonProperty(PropertyName = "id")]
-        public Guid DocumentId { get; set; }
+        public Guid? DocumentId { get; set; }
 
         [JsonProperty(PropertyName = "_etag")]
         public string? Etag { get; set; }
