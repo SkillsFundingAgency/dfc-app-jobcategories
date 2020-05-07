@@ -2,6 +2,7 @@
 using DFC.App.JobCategories.Extensions;
 using DFC.App.JobCategories.PageService;
 using DFC.App.JobCategories.ViewModels;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -141,32 +142,9 @@ namespace DFC.App.JobCategories.Controllers
         [Route("pages/body")]
         public async Task<IActionResult> Body(string? article)
         {
+            //TODO : fetch data to populate VM rather than hard coding!
             var viewModel = new BodyViewModel();
-            var contentPageModel = await GetContentPageAsync(article).ConfigureAwait(false);
-
-            if (contentPageModel != null)
-            {
-                mapper.Map(contentPageModel, viewModel);
-                logger.LogInformation($"{nameof(Body)} has returned content for: {article}");
-
-                return this.NegotiateContentResult(viewModel, contentPageModel);
-            }
-
-            if (!string.IsNullOrWhiteSpace(article))
-            {
-                var alternateContentPageModel = await GetAlternativeContentPageAsync(article).ConfigureAwait(false);
-
-                if (alternateContentPageModel != null)
-                {
-                    var alternateUrl = $"{Request.GetBaseAddress()}{RegistrationPath}/{alternateContentPageModel.CanonicalName}";
-                    logger.LogWarning($"{nameof(Body)} has been redirected for: {article} to {alternateUrl}");
-
-                    return RedirectPermanentPreserveMethod(alternateUrl);
-                }
-            }
-
-            logger.LogWarning($"{nameof(Body)} has not returned any content for: {article}");
-            return NotFound();
+            return this.NegotiateContentResult(viewModel);
         }
 
         [HttpGet]
@@ -174,7 +152,9 @@ namespace DFC.App.JobCategories.Controllers
         [Route("pages/sidebarright")]
         public IActionResult SidebarRight(string? article)
         {
-            return NoContent();
+            //TODO : fetch data to populate VM rather than hard coding!
+            var viewModel = new SidebarRightViewModel();
+            return this.NegotiateContentResult(viewModel);
         }
 
         [HttpGet]

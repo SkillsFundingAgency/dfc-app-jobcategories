@@ -1,9 +1,15 @@
 ﻿@model BodyViewModel
 
 
-@if (Model.Content != null)
+@if (Model.Profiles?.Any() ?? false)
 {
-    <div class="govuk-width-container">
-        @Html.Raw(Model.Content)
-    </div>
+    <h1 class="govuk-heading-xl">@Model.Category</h1>
+    <ul>
+        @foreach (var profile in Model.Profiles)
+        {
+            <li>
+                <h2 class="govuk-heading-m">@profile.Title</h2>
+            </li>
+        }
+    </ul>
 }
