@@ -18,13 +18,13 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             Guid documentId = Guid.NewGuid();
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeContentPageService.DeleteAsync(A<Guid>.Ignored)).Returns(true);
+            A.CallTo(() => FakeJobCategoryContentPageService.DeleteAsync(A<Guid>.Ignored)).Returns(true);
 
             // Act
             var result = await controller.Delete(documentId).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.DeleteAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.DeleteAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
 
             var okResult = Assert.IsType<OkResult>(result);
 
@@ -41,13 +41,13 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             Guid documentId = Guid.NewGuid();
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeContentPageService.DeleteAsync(A<Guid>.Ignored)).Returns(false);
+            A.CallTo(() => FakeJobCategoryContentPageService.DeleteAsync(A<Guid>.Ignored)).Returns(false);
 
             // Act
             var result = await controller.Delete(documentId).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.DeleteAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.DeleteAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
 
             var statusResult = Assert.IsType<NotFoundResult>(result);
 

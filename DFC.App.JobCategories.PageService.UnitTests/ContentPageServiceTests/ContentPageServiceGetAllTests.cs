@@ -19,7 +19,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
 
             A.CallTo(() => repository.GetAllAsync()).Returns(expectedResults);
 
-            var contentPageService = new ContentPageService(repository);
+            var contentPageService = new ContentPageService<JobCategory>(repository);
 
             // act
             var results = await contentPageService.GetAllAsync().ConfigureAwait(false);
@@ -38,7 +38,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
 
             A.CallTo(() => repository.GetAllAsync()).Returns(expectedResults);
 
-            var contentPageService = new ContentPageService(repository);
+            var contentPageService = new ContentPageService<JobCategory>(repository);
 
             // act
             var results = await contentPageService.GetAllAsync().ConfigureAwait(false);

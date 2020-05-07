@@ -19,13 +19,15 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
     public class PagesControllerRouteTests
     {
         private readonly ILogger<PagesController> logger;
-        private readonly IContentPageService fakeContentPageService;
+        private readonly IContentPageService<JobCategory> fakeJobCategoryPageContentService;
+        private readonly IContentPageService<JobProfile> fakeJobProfilePageContentService;
         private readonly IMapper fakeMapper;
 
         public PagesControllerRouteTests()
         {
             logger = A.Fake<ILogger<PagesController>>();
-            fakeContentPageService = A.Fake<IContentPageService>();
+            fakeJobCategoryPageContentService = A.Fake<IContentPageService<JobCategory>>();
+            fakeJobProfilePageContentService = A.Fake<IContentPageService<JobProfile>>();
             fakeMapper = A.Fake<IMapper>();
         }
 
@@ -61,14 +63,14 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             var controller = BuildController(route);
             var expectedResult = new JobCategory() { Title = "Care Worker" };
 
-            A.CallTo(() => fakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => fakeJobCategoryPageContentService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
 
             // Act
             var result = await RunControllerAction(controller, article, actionMethod).ConfigureAwait(false);
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
-            A.CallTo(() => fakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeJobCategoryPageContentService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
 
             controller.Dispose();
         }
@@ -112,7 +114,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             httpContext.Request.Path = route;
             httpContext.Request.Headers[HeaderNames.Accept] = MediaTypeNames.Application.Json;
 
-            return new PagesController(logger, fakeContentPageService, fakeMapper)
+            return new PagesController(logger, fakeJobCategoryPageContentService, fakeJobProfilePageContentService ,fakeMapper)
             {
                 ControllerContext = new ControllerContext
                 {

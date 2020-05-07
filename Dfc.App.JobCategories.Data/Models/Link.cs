@@ -8,6 +8,6 @@ namespace DFC.App.JobCategories.Data.Models.API
     [ExcludeFromCodeCoverage]
     public class Link
     {
-        public KeyValuePair<string, DynamicLink> Value { get; set; }
+        public KeyValuePair<string, DynamicLink> LinkValue { get; set; }
     }
 }

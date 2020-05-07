@@ -23,13 +23,13 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeContentPageService.GetByIdAsync(A<Guid>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByIdAsync(A<Guid>.Ignored)).Returns(expectedResult);
 
             // Act
             var result = await controller.Update(modelToUpsert).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.GetByIdAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByIdAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
             var statusCodeResult = Assert.IsType<StatusCodeResult>(result);
             Assert.Equal((int)expectedResponse, statusCodeResult.StatusCode);
 

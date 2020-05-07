@@ -22,14 +22,14 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             var expectedResults = A.CollectionOfFake<JobCategory>(resultsCount);
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeContentPageService.GetAllAsync()).Returns(expectedResults);
+            A.CallTo(() => FakeJobCategoryContentPageService.GetAllAsync()).Returns(expectedResults);
             A.CallTo(() => FakeMapper.Map<IndexDocumentViewModel>(A<JobCategory>.Ignored)).Returns(A.Fake<IndexDocumentViewModel>());
 
             // Act
             var result = await controller.Index().ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.GetAllAsync()).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.GetAllAsync()).MustHaveHappenedOnceExactly();
             A.CallTo(() => FakeMapper.Map<IndexDocumentViewModel>(A<JobCategory>.Ignored)).MustHaveHappened(resultsCount, Times.Exactly);
 
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -49,14 +49,14 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             var expectedResults = A.CollectionOfFake<JobCategory>(resultsCount);
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeContentPageService.GetAllAsync()).Returns(expectedResults);
+            A.CallTo(() => FakeJobCategoryContentPageService.GetAllAsync()).Returns(expectedResults);
             A.CallTo(() => FakeMapper.Map<IndexDocumentViewModel>(A<JobCategory>.Ignored)).Returns(A.Fake<IndexDocumentViewModel>());
 
             // Act
             var result = await controller.Index().ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.GetAllAsync()).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.GetAllAsync()).MustHaveHappenedOnceExactly();
             A.CallTo(() => FakeMapper.Map<IndexDocumentViewModel>(A<JobCategory>.Ignored)).MustHaveHappened(resultsCount, Times.Exactly);
 
             var jsonResult = Assert.IsType<OkObjectResult>(result);
@@ -76,14 +76,14 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             IEnumerable<JobCategory>? expectedResults = null;
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeContentPageService.GetAllAsync()).Returns(expectedResults);
+            A.CallTo(() => FakeJobCategoryContentPageService.GetAllAsync()).Returns(expectedResults);
             A.CallTo(() => FakeMapper.Map<IndexDocumentViewModel>(A<JobCategory>.Ignored)).Returns(A.Fake<IndexDocumentViewModel>());
 
             // Act
             var result = await controller.Index().ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.GetAllAsync()).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.GetAllAsync()).MustHaveHappenedOnceExactly();
             A.CallTo(() => FakeMapper.Map<IndexDocumentViewModel>(A<JobCategory>.Ignored)).MustHaveHappened(resultsCount, Times.Exactly);
 
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -103,14 +103,14 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             IEnumerable<JobCategory>? expectedResults = null;
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeContentPageService.GetAllAsync()).Returns(expectedResults);
+            A.CallTo(() => FakeJobCategoryContentPageService.GetAllAsync()).Returns(expectedResults);
             A.CallTo(() => FakeMapper.Map<IndexDocumentViewModel>(A<JobCategory>.Ignored)).Returns(A.Fake<IndexDocumentViewModel>());
 
             // Act
             var result = await controller.Index().ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.GetAllAsync()).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.GetAllAsync()).MustHaveHappenedOnceExactly();
             A.CallTo(() => FakeMapper.Map<IndexDocumentViewModel>(A<JobCategory>.Ignored)).MustHaveHappened(resultsCount, Times.Exactly);
 
             var jsonResult = Assert.IsType<OkObjectResult>(result);
@@ -130,14 +130,14 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             IEnumerable<JobCategory>? expectedResults = null;
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeContentPageService.GetAllAsync()).Returns(expectedResults);
+            A.CallTo(() => FakeJobCategoryContentPageService.GetAllAsync()).Returns(expectedResults);
             A.CallTo(() => FakeMapper.Map<IndexDocumentViewModel>(A<JobCategory>.Ignored)).Returns(A.Fake<IndexDocumentViewModel>());
 
             // Act
             var result = await controller.Index().ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.GetAllAsync()).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.GetAllAsync()).MustHaveHappenedOnceExactly();
             A.CallTo(() => FakeMapper.Map<IndexDocumentViewModel>(A<JobCategory>.Ignored)).MustHaveHappened(resultsCount, Times.Exactly);
 
             var statusResult = Assert.IsType<StatusCodeResult>(result);

@@ -20,7 +20,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
 
             A.CallTo(() => repository.DeleteAsync(documentId)).Returns(HttpStatusCode.NoContent);
 
-            var contentPageService = new ContentPageService(repository);
+            var contentPageService = new ContentPageService<JobCategory>(repository);
 
             // act
             var result = contentPageService.DeleteAsync(documentId).Result;
@@ -40,7 +40,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
 
             A.CallTo(() => repository.DeleteAsync(documentId)).Returns(HttpStatusCode.BadRequest);
 
-            var contentPageService = new ContentPageService(repository);
+            var contentPageService = new ContentPageService<JobCategory>(repository);
 
             // act
             var result = contentPageService.DeleteAsync(documentId).Result;
@@ -60,7 +60,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
 
             A.CallTo(() => repository.DeleteAsync(documentId)).Returns(HttpStatusCode.FailedDependency);
 
-            var contentPageService = new ContentPageService(repository);
+            var contentPageService = new ContentPageService<JobCategory>(repository);
 
             // act
             var result = contentPageService.DeleteAsync(documentId).Result;

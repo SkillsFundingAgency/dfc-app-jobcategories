@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using DFC.App.JobCategories.Data.Models;
+using Microsoft.AspNetCore.Html;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -36,5 +37,7 @@ namespace DFC.App.JobCategories.ViewModels
         public IList<string>? AlternativeNames { get; set; }
 
         public BodyViewModel? BodyViewModel { get; set; }
+
+        public IEnumerable<JobProfile>? JobProfiles { get; set; }
     }
 }

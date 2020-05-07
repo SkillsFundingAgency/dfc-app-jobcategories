@@ -14,17 +14,13 @@ namespace DFC.App.JobCategories.Data.Contracts
 
         Task<T?> GetAsync(Expression<Func<T, bool>> where);
 
-        Task<T?> GetAsync(string partitionKeyValue, Expression<Func<T, bool>> where);
-
         Task<IEnumerable<T>?> GetAllAsync();
-
-        Task<IEnumerable<T>?> GetAllAsync(string partitionKeyValue);
 
         Task<HttpStatusCode> UpsertAsync(T model);
 
         Task<HttpStatusCode> DeleteAsync(Guid documentId);
 
-        Task<HttpStatusCode> DeleteAllAsync<TModel>(string key)
+        Task<HttpStatusCode> DeleteAllAsync<TModel>()
             where TModel : IDataModel;
     }
 }

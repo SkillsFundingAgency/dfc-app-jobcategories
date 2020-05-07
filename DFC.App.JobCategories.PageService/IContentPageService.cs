@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 
 namespace DFC.App.JobCategories.PageService
 {
-    public interface IContentPageService
+    public interface IContentPageService<T>
+        where T : class, IDataModel
     {
         Task<bool> PingAsync();
 
-        Task<IEnumerable<JobCategory>?> GetAllAsync();
+        Task<IEnumerable<T>?> GetAllAsync();
 
-        Task<JobCategory?> GetByIdAsync(Guid documentId);
+        Task<T?> GetByIdAsync(Guid documentId);
 
-        Task<JobCategory?> GetByCanonicalNameAsync(string? canonicalName);
+        Task<T?> GetByCanonicalNameAsync(string? canonicalName);
 
-        Task<HttpStatusCode> UpsertAsync(JobCategory? contentPageModel);
+        Task<T?> GetByUriAsync(Uri? uri);
+
+        Task<HttpStatusCode> UpsertAsync(T? contentPageModel);
 
         Task<bool> DeleteAsync(Guid documentId);
     }

@@ -22,6 +22,7 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
         private readonly CosmosDbConnection cosmosDbConnection;
         private readonly IDocumentClient documentClient;
         private readonly IHostingEnvironment env;
+        private readonly PartitionKey partitionKey = new PartitionKey(typeof(T).Name.ToLower());
 
         public CosmosRepository(CosmosDbConnection cosmosDbConnection, IDocumentClient documentClient, IHostingEnvironment env)
         {
@@ -44,7 +45,7 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
 
         public async Task<bool> PingAsync()
         {
-            var query = documentClient.CreateDocumentQuery<T>(DocumentCollectionUri, new FeedOptions { MaxItemCount = 1, EnableCrossPartitionQuery = true })
+            var query = documentClient.CreateDocumentQuery<T>(DocumentCollectionUri, new FeedOptions { MaxItemCount = 1, PartitionKey = partitionKey })
                                        .AsDocumentQuery();
 
             if (query == null)
@@ -60,29 +61,6 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
 
         public async Task<T?> GetAsync(Expression<Func<T, bool>> where)
         {
-            var query = documentClient.CreateDocumentQuery<T>(DocumentCollectionUri, new FeedOptions { MaxItemCount = 1, EnableCrossPartitionQuery = true })
-                                      .Where(where)
-                                      .AsDocumentQuery();
-
-            if (query == null)
-            {
-                return default;
-            }
-
-            var models = await query.ExecuteNextAsync<T>().ConfigureAwait(false);
-
-            if (models != null && models.Count > 0)
-            {
-                return models.FirstOrDefault();
-            }
-
-            return default;
-        }
-
-        public async Task<T?> GetAsync(string partitionKeyValue, Expression<Func<T, bool>> where)
-        {
-            var partitionKey = new PartitionKey(partitionKeyValue.ToLowerInvariant());
-
             var query = documentClient.CreateDocumentQuery<T>(DocumentCollectionUri, new FeedOptions { MaxItemCount = 1, PartitionKey = partitionKey })
                                       .Where(where)
                                       .AsDocumentQuery();
@@ -104,25 +82,6 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
 
         public async Task<IEnumerable<T>?> GetAllAsync()
         {
-            var query = documentClient.CreateDocumentQuery<T>(DocumentCollectionUri, new FeedOptions { EnableCrossPartitionQuery = true })
-                                      .AsDocumentQuery();
-
-            var models = new List<T>();
-
-            while (query.HasMoreResults)
-            {
-                var result = await query.ExecuteNextAsync<T>().ConfigureAwait(false);
-
-                models.AddRange(result);
-            }
-
-            return models.Any() ? models : default;
-        }
-
-        public async Task<IEnumerable<T>?> GetAllAsync(string partitionKeyValue)
-        {
-            var partitionKey = new PartitionKey(partitionKeyValue.ToLowerInvariant());
-
             var query = documentClient.CreateDocumentQuery<T>(DocumentCollectionUri, new FeedOptions { PartitionKey = partitionKey })
                                       .AsDocumentQuery();
 
@@ -143,7 +102,6 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
             if (model != null)
             {
                 var accessCondition = new AccessCondition { Condition = model.Etag, Type = AccessConditionType.IfMatch };
-                var partitionKey = new PartitionKey(model.PartitionKey);
 
                 var result = await documentClient.UpsertDocumentAsync(DocumentCollectionUri, model, new RequestOptions { AccessCondition = accessCondition, PartitionKey = partitionKey }).ConfigureAwait(false);
 
@@ -162,7 +120,7 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
             if (model != null)
             {
                 var accessCondition = !string.IsNullOrEmpty(model.Etag) ? new AccessCondition { Condition = model.Etag, Type = AccessConditionType.IfMatch } : new AccessCondition();
-                var partitionKey = new PartitionKey(model.PartitionKey);
+                
 
                 var result = await documentClient.DeleteDocumentAsync(documentUri, new RequestOptions { AccessCondition = accessCondition, PartitionKey = partitionKey }).ConfigureAwait(false);
 
@@ -172,10 +130,9 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
             return HttpStatusCode.NotFound;
         }
 
-        public async Task<HttpStatusCode> DeleteAllAsync<TModel>(string key)
+        public async Task<HttpStatusCode> DeleteAllAsync<TModel>()
             where TModel : IDataModel
         {
-            var partitionKey = new PartitionKey(key);
 
             var query = documentClient.CreateDocumentQuery<T>(DocumentCollectionUri, new FeedOptions { PartitionKey = partitionKey })
                                       .AsDocumentQuery();

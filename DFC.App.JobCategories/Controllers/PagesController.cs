@@ -18,13 +18,15 @@ namespace DFC.App.JobCategories.Controllers
         public const string LocalPath = "pages";
 
         private readonly ILogger<PagesController> logger;
-        private readonly IContentPageService contentPageService;
+        private readonly IContentPageService<JobCategory> jobCategoryPageContentService;
+        private readonly IContentPageService<JobProfile> jobProfilePageContentService;
         private readonly AutoMapper.IMapper mapper;
 
-        public PagesController(ILogger<PagesController> logger, IContentPageService contentPageService, AutoMapper.IMapper mapper)
+        public PagesController(ILogger<PagesController> logger, IContentPageService<JobCategory> jobCategoryPageContentService, IContentPageService<JobProfile> jobProfilePageContentService, AutoMapper.IMapper mapper)
         {
             this.logger = logger;
-            this.contentPageService = contentPageService;
+            this.jobCategoryPageContentService = jobCategoryPageContentService;
+            this.jobProfilePageContentService = jobProfilePageContentService;
             this.mapper = mapper;
         }
 
@@ -37,7 +39,7 @@ namespace DFC.App.JobCategories.Controllers
             {
                 LocalPath = LocalPath,
             };
-            var contentPageModels = await contentPageService.GetAllAsync().ConfigureAwait(false);
+            var contentPageModels = await jobCategoryPageContentService.GetAllAsync().ConfigureAwait(false);
 
             if (contentPageModels != null)
             {
@@ -58,6 +60,23 @@ namespace DFC.App.JobCategories.Controllers
         public async Task<IActionResult> Document(string jobCategory)
         {
             var contentPageModel = await GetContentPageAsync(jobCategory).ConfigureAwait(false);
+
+            if (contentPageModel == null)
+            {
+                return NoContent();
+            }
+
+            var jpsToRetrieveHrefs = contentPageModel.Links?.Where(x => x.LinkValue.Key == nameof(JobProfile).ToLower()).Select(z => z.LinkValue.Value.Href);
+            var jobProfiles = jpsToRetrieveHrefs?.Select(x => jobProfilePageContentService.GetByUriAsync(x));
+
+            if (jobProfiles != null)
+            {
+                var results = await Task.WhenAll(jobProfiles).ConfigureAwait(false);
+                contentPageModel.JobProfiles = results != null ? results.ToList() : null;
+            }
+
+            //var jpTasks = jpsToRetrieve.Select(async x => await jobProfilePageContentService.GetByUriAsync(x).ConfigureAwait(false));
+            //await Task.WhenAny(jpTasks).ConfigureAwait(false);
 
             if (contentPageModel != null)
             {
@@ -181,13 +200,13 @@ namespace DFC.App.JobCategories.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingDocument = await contentPageService.GetByIdAsync(upsertContentPageModel.DocumentId.Value).ConfigureAwait(false);
+            var existingDocument = await jobCategoryPageContentService.GetByIdAsync(upsertContentPageModel.DocumentId.Value).ConfigureAwait(false);
             if (existingDocument != null)
             {
                 return new StatusCodeResult((int)HttpStatusCode.AlreadyReported);
             }
 
-            var response = await contentPageService.UpsertAsync(upsertContentPageModel).ConfigureAwait(false);
+            var response = await jobCategoryPageContentService.UpsertAsync(upsertContentPageModel).ConfigureAwait(false);
 
             logger.LogInformation($"{nameof(Create)} has upserted content for: {upsertContentPageModel.CanonicalName} with response code {response}");
 
@@ -208,7 +227,7 @@ namespace DFC.App.JobCategories.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingDocument = await contentPageService.GetByIdAsync(upsertContentPageModel.DocumentId.Value).ConfigureAwait(false);
+            var existingDocument = await jobCategoryPageContentService.GetByIdAsync(upsertContentPageModel.DocumentId.Value).ConfigureAwait(false);
             if (existingDocument == null)
             {
                 return new StatusCodeResult((int)HttpStatusCode.NotFound);
@@ -216,7 +235,7 @@ namespace DFC.App.JobCategories.Controllers
 
             upsertContentPageModel.Etag = existingDocument.Etag;
 
-            var response = await contentPageService.UpsertAsync(upsertContentPageModel).ConfigureAwait(false);
+            var response = await jobCategoryPageContentService.UpsertAsync(upsertContentPageModel).ConfigureAwait(false);
 
             logger.LogInformation($"{nameof(Update)} has upserted content for: {upsertContentPageModel.CanonicalName} with response code {response}");
 
@@ -227,7 +246,7 @@ namespace DFC.App.JobCategories.Controllers
         [Route("pages/{documentId}")]
         public async Task<IActionResult> Delete(Guid documentId)
         {
-            var isDeleted = await contentPageService.DeleteAsync(documentId).ConfigureAwait(false);
+            var isDeleted = await jobCategoryPageContentService.DeleteAsync(documentId).ConfigureAwait(false);
             if (isDeleted)
             {
                 logger.LogInformation($"{nameof(Delete)} has deleted content for document Id: {documentId}");
@@ -280,7 +299,7 @@ namespace DFC.App.JobCategories.Controllers
             const string defaultArticleName = "home";
             var articleName = string.IsNullOrWhiteSpace(article) ? defaultArticleName : article;
 
-            var contentPageModel = await contentPageService.GetByCanonicalNameAsync(articleName).ConfigureAwait(false);
+            var contentPageModel = await jobCategoryPageContentService.GetByCanonicalNameAsync(articleName).ConfigureAwait(false);
 
             return contentPageModel;
         }
