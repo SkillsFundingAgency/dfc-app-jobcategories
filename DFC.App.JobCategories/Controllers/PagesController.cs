@@ -55,10 +55,10 @@ namespace DFC.App.JobCategories.Controllers
         }
 
         [HttpGet]
-        [Route("pages/{article}")]
-        public async Task<IActionResult> Document(string article)
+        [Route("pages/{jobCategory}")]
+        public async Task<IActionResult> Document(string jobCategory)
         {
-            var contentPageModel = await GetContentPageAsync(article).ConfigureAwait(false);
+            var contentPageModel = await GetContentPageAsync(jobCategory).ConfigureAwait(false);
 
             if (contentPageModel != null)
             {
@@ -66,25 +66,12 @@ namespace DFC.App.JobCategories.Controllers
 
                 viewModel.Breadcrumb = BuildBreadcrumb(contentPageModel);
 
-                logger.LogInformation($"{nameof(Document)} has succeeded for: {article}");
+                logger.LogInformation($"{nameof(Document)} has succeeded for: {jobCategory}");
 
                 return this.NegotiateContentResult(viewModel);
             }
 
-            if (!string.IsNullOrWhiteSpace(article))
-            {
-                var alternateContentPageModel = await GetAlternativeContentPageAsync(article).ConfigureAwait(false);
-
-                if (alternateContentPageModel != null)
-                {
-                    var alternateUrl = $"{Request.GetBaseAddress()}{LocalPath}/{alternateContentPageModel.CanonicalName}";
-                    logger.LogWarning($"{nameof(Document)} has been redirected for: {article} to {alternateUrl}");
-
-                    return RedirectPermanentPreserveMethod(alternateUrl);
-                }
-            }
-
-            logger.LogWarning($"{nameof(Document)} has returned no content for: {article}");
+            logger.LogWarning($"{nameof(Document)} has returned no content for: {jobCategory}");
 
             return NoContent();
         }
@@ -144,8 +131,15 @@ namespace DFC.App.JobCategories.Controllers
         {
             //TODO : fetch data to populate VM rather than hard coding!
             var viewModel = new BodyViewModel();
-            return this.NegotiateContentResult(viewModel);
-        }
+            var contentPageModel = await GetContentPageAsync(article).ConfigureAwait(false);
+
+            if (contentPageModel != null)
+            {
+                mapper.Map(contentPageModel, viewModel);
+                logger.LogInformation($"{nameof(Body)} has returned content for: {article}");
+
+                return this.NegotiateContentResult(viewModel, contentPageModel);
+            }
 
         [HttpGet]
         [Route("pages/{article}/sidebarright")]
@@ -175,7 +169,7 @@ namespace DFC.App.JobCategories.Controllers
 
         [HttpPost]
         [Route("pages")]
-        public async Task<IActionResult> Create([FromBody]ContentPageModel? upsertContentPageModel)
+        public async Task<IActionResult> Create([FromBody]JobCategory? upsertContentPageModel)
         {
             if (upsertContentPageModel == null)
             {
@@ -187,7 +181,7 @@ namespace DFC.App.JobCategories.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingDocument = await contentPageService.GetByIdAsync(upsertContentPageModel.DocumentId).ConfigureAwait(false);
+            var existingDocument = await contentPageService.GetByIdAsync(upsertContentPageModel.DocumentId.Value).ConfigureAwait(false);
             if (existingDocument != null)
             {
                 return new StatusCodeResult((int)HttpStatusCode.AlreadyReported);
@@ -202,7 +196,7 @@ namespace DFC.App.JobCategories.Controllers
 
         [HttpPut]
         [Route("pages")]
-        public async Task<IActionResult> Update([FromBody]ContentPageModel? upsertContentPageModel)
+        public async Task<IActionResult> Update([FromBody]JobCategory? upsertContentPageModel)
         {
             if (upsertContentPageModel == null)
             {
@@ -214,15 +208,10 @@ namespace DFC.App.JobCategories.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingDocument = await contentPageService.GetByIdAsync(upsertContentPageModel.DocumentId).ConfigureAwait(false);
+            var existingDocument = await contentPageService.GetByIdAsync(upsertContentPageModel.DocumentId.Value).ConfigureAwait(false);
             if (existingDocument == null)
             {
                 return new StatusCodeResult((int)HttpStatusCode.NotFound);
-            }
-
-            if (upsertContentPageModel.SequenceNumber <= existingDocument.SequenceNumber)
-            {
-                return new StatusCodeResult((int)HttpStatusCode.AlreadyReported);
             }
 
             upsertContentPageModel.Etag = existingDocument.Etag;
@@ -253,7 +242,7 @@ namespace DFC.App.JobCategories.Controllers
 
         #region Define helper methods
 
-        private static BreadcrumbViewModel BuildBreadcrumb(ContentPageModel? contentPageModel)
+        private static BreadcrumbViewModel BuildBreadcrumb(JobCategory? contentPageModel)
         {
             var viewModel = new BreadcrumbViewModel
             {
@@ -274,7 +263,7 @@ namespace DFC.App.JobCategories.Controllers
                     var articlePathViewModel = new BreadcrumbPathViewModel
                     {
                         Route = $"/{contentPageModel.CanonicalName}",
-                        Title = contentPageModel.BreadcrumbTitle,
+                        //Title = contentPageModel.BreadcrumbTitle,
                     };
 
                     viewModel.Paths.Add(articlePathViewModel);
@@ -286,19 +275,12 @@ namespace DFC.App.JobCategories.Controllers
             return viewModel;
         }
 
-        private async Task<ContentPageModel?> GetContentPageAsync(string? article)
+        private async Task<JobCategory?> GetContentPageAsync(string? article)
         {
             const string defaultArticleName = "home";
             var articleName = string.IsNullOrWhiteSpace(article) ? defaultArticleName : article;
 
-            var contentPageModel = await contentPageService.GetByNameAsync(articleName).ConfigureAwait(false);
-
-            return contentPageModel;
-        }
-
-        private async Task<ContentPageModel?> GetAlternativeContentPageAsync(string article)
-        {
-            var contentPageModel = await contentPageService.GetByAlternativeNameAsync(article).ConfigureAwait(false);
+            var contentPageModel = await contentPageService.GetByCanonicalNameAsync(articleName).ConfigureAwait(false);
 
             return contentPageModel;
         }

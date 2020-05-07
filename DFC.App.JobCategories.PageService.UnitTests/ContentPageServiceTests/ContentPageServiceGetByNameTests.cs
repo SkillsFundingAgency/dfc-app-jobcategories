@@ -12,12 +12,12 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
     public class ContentPageServiceGetByNameTests
     {
         private const string CanonicalName = "name1";
-        private readonly ICosmosRepository<ContentPageModel> repository;
+        private readonly ICosmosRepository<JobCategory> repository;
         private readonly IContentPageService contentPageService;
 
         public ContentPageServiceGetByNameTests()
         {
-            repository = A.Fake<ICosmosRepository<ContentPageModel>>();
+            repository = A.Fake<ICosmosRepository<JobCategory>>();
             contentPageService = new ContentPageService(repository);
         }
 
@@ -25,14 +25,14 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         public async Task ContentPageServiceGetByNameReturnsSuccess()
         {
             // arrange
-            var expectedResult = A.Fake<ContentPageModel>();
-            A.CallTo(() => repository.GetAsync(A<Expression<Func<ContentPageModel, bool>>>.Ignored)).Returns(expectedResult);
+            var expectedResult = A.Fake<JobCategory>();
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
             // act
-            var result = await contentPageService.GetByNameAsync(CanonicalName).ConfigureAwait(false);
+            var result = await contentPageService.GetByCanonicalNameAsync(CanonicalName).ConfigureAwait(false);
 
             // assert
-            A.CallTo(() => repository.GetAsync(A<Expression<Func<ContentPageModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
             Assert.Equal(result, expectedResult);
         }
 
@@ -43,7 +43,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
             string? canonicalName = null;
 
             // act
-            var exceptionResult = await Assert.ThrowsAsync<ArgumentNullException>(async () => await contentPageService.GetByNameAsync(canonicalName).ConfigureAwait(false)).ConfigureAwait(false);
+            var exceptionResult = await Assert.ThrowsAsync<ArgumentNullException>(async () => await contentPageService.GetByCanonicalNameAsync(canonicalName).ConfigureAwait(false)).ConfigureAwait(false);
 
             // assert
             Assert.Equal("Value cannot be null. (Parameter 'canonicalName')", exceptionResult.Message);
@@ -53,15 +53,15 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         public async Task ContentPageServiceGetByNameReturnsNullWhenMissingRepository()
         {
             // arrange
-            ContentPageModel? expectedResult = null;
+            JobCategory? expectedResult = null;
 
-            A.CallTo(() => repository.GetAsync(A<Expression<Func<ContentPageModel, bool>>>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
             // act
-            var result = await contentPageService.GetByNameAsync(CanonicalName).ConfigureAwait(false);
+            var result = await contentPageService.GetByCanonicalNameAsync(CanonicalName).ConfigureAwait(false);
 
             // assert
-            A.CallTo(() => repository.GetAsync(A<Expression<Func<ContentPageModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
             Assert.Null(result);
         }
     }

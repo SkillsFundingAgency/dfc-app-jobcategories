@@ -17,18 +17,19 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
         {
             // Arrange
             const HttpStatusCode expectedResponse = HttpStatusCode.Created;
-            ContentPageModel? expectedResult = null;
-            var contentPageModel = A.Fake<ContentPageModel>();
+            JobCategory? expectedResult = null;
+            var contentPageModel = A.Fake<JobCategory>();
+            contentPageModel.DocumentId = Guid.NewGuid();
             var controller = BuildPagesController(mediaTypeName);
 
             A.CallTo(() => FakeContentPageService.GetByIdAsync(A<Guid>.Ignored)).Returns(expectedResult);
-            A.CallTo(() => FakeContentPageService.UpsertAsync(A<ContentPageModel>.Ignored)).Returns(expectedResponse);
+            A.CallTo(() => FakeContentPageService.UpsertAsync(A<JobCategory>.Ignored)).Returns(expectedResponse);
 
             // Act
             var result = await controller.Create(contentPageModel).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.UpsertAsync(A<ContentPageModel>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeContentPageService.UpsertAsync(A<JobCategory>.Ignored)).MustHaveHappenedOnceExactly();
             var okResult = Assert.IsType<StatusCodeResult>(result);
 
             Assert.Equal((int)expectedResponse, okResult.StatusCode);
@@ -42,8 +43,9 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
         {
             // Arrange
             const HttpStatusCode expectedResponse = HttpStatusCode.AlreadyReported;
-            var existingModel = A.Fake<ContentPageModel>();
-            var contentPageModel = A.Fake<ContentPageModel>();
+            var existingModel = A.Fake<JobCategory>();
+            var contentPageModel = A.Fake<JobCategory>();
+            contentPageModel.DocumentId = Guid.NewGuid();
             var controller = BuildPagesController(mediaTypeName);
 
             A.CallTo(() => FakeContentPageService.GetByIdAsync(A<Guid>.Ignored)).Returns(existingModel);
@@ -53,7 +55,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
             // Assert
             A.CallTo(() => FakeContentPageService.GetByIdAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => FakeContentPageService.UpsertAsync(A<ContentPageModel>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => FakeContentPageService.UpsertAsync(A<JobCategory>.Ignored)).MustNotHaveHappened();
             var statusCodeResult = Assert.IsType<StatusCodeResult>(result);
             Assert.Equal((int)expectedResponse, statusCodeResult.StatusCode);
 
@@ -65,7 +67,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
         public async Task PagesControllerPostReturnsBadResultWhenModelIsNull(string mediaTypeName)
         {
             // Arrange
-            ContentPageModel? contentPagesModel = null;
+            JobCategory? contentPagesModel = null;
             var controller = BuildPagesController(mediaTypeName);
 
             // Act
@@ -83,7 +85,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
         public async Task PagesControllerPostReturnsBadResultWhenModelIsInvalid(string mediaTypeName)
         {
             // Arrange
-            var contentPagesModel = new ContentPageModel();
+            var contentPagesModel = new JobCategory();
             var controller = BuildPagesController(mediaTypeName);
 
             controller.ModelState.AddModelError(string.Empty, "Model is not valid");

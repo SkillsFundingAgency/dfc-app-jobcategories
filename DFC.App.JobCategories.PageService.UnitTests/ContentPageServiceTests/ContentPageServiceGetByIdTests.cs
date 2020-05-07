@@ -15,10 +15,10 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         {
             // arrange
             Guid documentId = Guid.NewGuid();
-            var repository = A.Fake<ICosmosRepository<ContentPageModel>>();
-            var expectedResult = A.Fake<ContentPageModel>();
+            var repository = A.Fake<ICosmosRepository<JobCategory>>();
+            var expectedResult = A.Fake<JobCategory>();
 
-            A.CallTo(() => repository.GetAsync(A<Expression<Func<ContentPageModel, bool>>>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
             var contentPageService = new ContentPageService(repository);
 
@@ -26,7 +26,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
             var result = contentPageService.GetByIdAsync(documentId).Result;
 
             // assert
-            A.CallTo(() => repository.GetAsync(A<Expression<Func<ContentPageModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
             A.Equals(result, expectedResult);
         }
 
@@ -35,10 +35,10 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         {
             // arrange
             Guid documentId = Guid.NewGuid();
-            var repository = A.Fake<ICosmosRepository<ContentPageModel>>();
-            ContentPageModel? expectedResult = null;
+            var repository = A.Fake<ICosmosRepository<JobCategory>>();
+            JobCategory? expectedResult = null;
 
-            A.CallTo(() => repository.GetAsync(A<Expression<Func<ContentPageModel, bool>>>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
             var contentPageService = new ContentPageService(repository);
 
@@ -46,7 +46,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
             var result = contentPageService.GetByIdAsync(documentId).Result;
 
             // assert
-            A.CallTo(() => repository.GetAsync(A<Expression<Func<ContentPageModel, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
             A.Equals(result, expectedResult);
         }
     }

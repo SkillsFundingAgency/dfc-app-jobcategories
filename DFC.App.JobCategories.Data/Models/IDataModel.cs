@@ -10,12 +10,18 @@ namespace DFC.App.JobCategories.Data.Models
         [Guid]
         [Required]
         [JsonProperty(PropertyName = "id")]
-        Guid DocumentId { get; set; }
+        Guid? DocumentId { get; set; }
 
         [JsonProperty(PropertyName = "_etag")]
         string? Etag { get; set; }
 
         [Required]
-        string PartitionKey { get; }
+        string? PartitionKey { get; }
+
+        [Required]
+        string? CanonicalName { get; }
+
+        [Required]
+        bool? IncludeInSitemap { get; }
     }
 }

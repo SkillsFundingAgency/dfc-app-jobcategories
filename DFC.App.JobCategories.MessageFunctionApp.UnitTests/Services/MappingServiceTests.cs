@@ -40,20 +40,6 @@ namespace DFC.App.JobCategories.MessageFunctionApp.UnitTests.Services
             mappingService = new MappingService(mapper);
         }
 
-        [Fact]
-        public void MapToContentPageModelWhenContentPageMessageSentThenItIsMappedCorrectly()
-        {
-            var fullJPMessage = BuildContentPageMessage();
-            var message = JsonConvert.SerializeObject(fullJPMessage);
-            var expectedResponse = BuildExpectedResponse();
-
-            // Act
-            var actualMappedModel = mappingService.MapToContentPageModel(message, SequenceNumber);
-
-            // Assert
-            expectedResponse.Should().BeEquivalentTo(actualMappedModel);
-        }
-
         private static ContentPageMessage BuildContentPageMessage()
         {
             return new ContentPageMessage

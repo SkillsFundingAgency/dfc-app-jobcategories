@@ -23,5 +23,8 @@ namespace DFC.App.JobCategories.Data.Contracts
         Task<HttpStatusCode> UpsertAsync(T model);
 
         Task<HttpStatusCode> DeleteAsync(Guid documentId);
+
+        Task<HttpStatusCode> DeleteAllAsync<TModel>(string key)
+            where TModel : IDataModel;
     }
 }

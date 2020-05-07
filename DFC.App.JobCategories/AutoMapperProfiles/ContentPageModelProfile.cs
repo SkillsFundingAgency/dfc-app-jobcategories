@@ -15,24 +15,30 @@ namespace DFC.App.JobCategories.AutoMapperProfiles
                 .ForMember(d => d.Content, s => s.MapFrom(a => new HtmlString(a.Content)))
                 ;
 
-            CreateMap<ContentPageModel, DocumentViewModel>()
+            CreateMap<JobCategory, BodyViewModel>()
+                .ForMember(d => d.Content, s => s.MapFrom(a => new HtmlString(a.Description)))
+                ;
+
+            CreateMap<JobCategory, DocumentViewModel>()
                 .ForMember(d => d.Breadcrumb, s => s.Ignore())
-                .ForMember(d => d.Content, s => s.MapFrom(a => new HtmlString(a.Content)))
-                .ForMember(d => d.Title, s => s.MapFrom(a => a.MetaTags != null ? a.MetaTags.Title + " | Explore careers | National Careers Service" : null))
-                .ForMember(d => d.Description, s => s.MapFrom(a => a.MetaTags != null ? a.MetaTags.Description : null))
-                .ForMember(d => d.Keywords, s => s.MapFrom(a => a.MetaTags != null ? a.MetaTags.Keywords : null))
-                .ForMember(d => d.BodyViewModel, s => s.MapFrom(a => a))
+                .ForMember(d => d.BreadcrumbTitle, s => s.Ignore())
+                .ForMember(d => d.Content, s => s.Ignore())
+                .ForMember(d => d.LastReviewed, s => s.Ignore())
+                .ForMember(d => d.AlternativeNames, s => s.Ignore())
+                .ForMember(d => d.Title, s => s.MapFrom(a => a.Title))
+                .ForMember(d => d.Description, s => s.MapFrom(a => a.Description))
+                .ForMember(d => d.Keywords, s => s.Ignore())
+                .ForMember(d => d.BodyViewModel, s => s.Ignore())
                 ;
 
-            CreateMap<ContentPageModel, HtmlHeadViewModel>()
-                .ForMember(d => d.CanonicalUrl, s => s.Ignore())
-                .ForMember(d => d.Title, s => s.MapFrom(a => a.MetaTags != null ? a.MetaTags.Title + " | Explore careers | National Careers Service" : null))
-                .ForMember(d => d.Description, s => s.MapFrom(a => a.MetaTags != null ? a.MetaTags.Description : null))
-                .ForMember(d => d.Keywords, s => s.MapFrom(a => a.MetaTags != null ? a.MetaTags.Keywords : null))
+            CreateMap<JobCategory, HtmlHeadViewModel>()
+                .ForMember(d => d.CanonicalUrl, s => s.MapFrom(a => a.CanonicalName))
+                .ForMember(d => d.Title, s => s.MapFrom(a => a.Title))
+                .ForMember(d => d.Description, s => s.MapFrom(a => a.Description))
+                .ForMember(d => d.Keywords, s => s.Ignore())
                 ;
 
-            CreateMap<ContentPageModel, IndexDocumentViewModel>()
-                ;
+            CreateMap<JobCategory, IndexDocumentViewModel>();
         }
     }
 }

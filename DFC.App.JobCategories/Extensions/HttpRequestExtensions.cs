@@ -8,6 +8,7 @@ namespace DFC.App.JobCategories.Extensions
     public static class HttpRequestExtensions
     {
         private static List<string> validSchemes = new List<string> { "http://", "https://" };
+
         public static Uri? GetBaseAddress(this HttpRequest request, IUrlHelper? urlHelper = null)
         {
             if (request != null)
