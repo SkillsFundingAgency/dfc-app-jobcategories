@@ -17,7 +17,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
 
             A.CallTo(() => repository.PingAsync()).Returns(expectedResult);
 
-            var contentPageService = new ContentPageService(repository);
+            var contentPageService = new ContentPageService<JobCategory>(repository);
 
             // act
             var result = contentPageService.PingAsync().Result;
@@ -36,7 +36,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
 
             A.CallTo(() => repository.PingAsync()).Returns(expectedResult);
 
-            var contentPageService = new ContentPageService(repository);
+            var contentPageService = new ContentPageService<JobCategory>(repository);
 
             // act
             var result = contentPageService.PingAsync().Result;

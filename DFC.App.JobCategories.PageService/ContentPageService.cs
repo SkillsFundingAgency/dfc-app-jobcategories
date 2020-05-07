@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace DFC.App.JobCategories.PageService
 {
-    public class ContentPageService : IContentPageService
+    public class ContentPageService<T> : IContentPageService<T>
+        where T : class, IDataModel
     {
-        private readonly ICosmosRepository<JobCategory> repository;
+        private readonly ICosmosRepository<T> repository;
 
-        public ContentPageService(ICosmosRepository<JobCategory> repository)
+        public ContentPageService(ICosmosRepository<T> repository)
         {
             this.repository = repository;
         }
@@ -21,17 +22,17 @@ namespace DFC.App.JobCategories.PageService
             return await repository.PingAsync().ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<JobCategory>?> GetAllAsync()
+        public async Task<IEnumerable<T>?> GetAllAsync()
         {
             return await repository.GetAllAsync().ConfigureAwait(false);
         }
 
-        public async Task<JobCategory?> GetByIdAsync(Guid documentId)
+        public async Task<T?> GetByIdAsync(Guid documentId)
         {
             return await repository.GetAsync(d => d.DocumentId == documentId).ConfigureAwait(false);
         }
 
-        public async Task<JobCategory?> GetByCanonicalNameAsync(string? canonicalName)
+        public async Task<T?> GetByCanonicalNameAsync(string? canonicalName)
         {
             if (string.IsNullOrWhiteSpace(canonicalName))
             {
@@ -40,8 +41,13 @@ namespace DFC.App.JobCategories.PageService
 
             return await repository.GetAsync(d => d.CanonicalName == canonicalName.ToLowerInvariant()).ConfigureAwait(false);
         }
-      
-        public async Task<HttpStatusCode> UpsertAsync(JobCategory? contentPageModel)
+
+        public async Task<T?> GetByUriAsync(Uri? uri)
+        {
+            return await repository.GetAsync(d => d.Uri == uri).ConfigureAwait(false);
+        }
+
+        public async Task<HttpStatusCode> UpsertAsync(T? contentPageModel)
         {
             if (contentPageModel == null)
             {

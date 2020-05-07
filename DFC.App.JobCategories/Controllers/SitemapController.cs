@@ -1,4 +1,5 @@
-﻿using DFC.App.JobCategories.Extensions;
+﻿using DFC.App.JobCategories.Data.Models;
+using DFC.App.JobCategories.Extensions;
 using DFC.App.JobCategories.Models;
 using DFC.App.JobCategories.PageService;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,9 @@ namespace DFC.App.JobCategories.Controllers
     public class SitemapController : Controller
     {
         private readonly ILogger<SitemapController> logger;
-        private readonly IContentPageService contentPageService;
+        private readonly IContentPageService<JobCategory> contentPageService;
 
-        public SitemapController(ILogger<SitemapController> logger, IContentPageService contentPageService)
+        public SitemapController(ILogger<SitemapController> logger, IContentPageService<JobCategory> contentPageService)
         {
             this.logger = logger;
             this.contentPageService = contentPageService;

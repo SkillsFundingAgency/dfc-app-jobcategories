@@ -27,5 +27,7 @@ namespace DFC.App.JobCategories.Data.Models
         public string? PartitionKey => "jobcategory";
 
         public string? CanonicalName { get; set; }
+
+        public IEnumerable<JobProfile?>? JobProfiles { get; set; }
     }
 }

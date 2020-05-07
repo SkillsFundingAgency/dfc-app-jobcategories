@@ -20,7 +20,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
 
             A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
-            var contentPageService = new ContentPageService(repository);
+            var contentPageService = new ContentPageService<JobCategory>(repository);
 
             // act
             var result = contentPageService.GetByIdAsync(documentId).Result;
@@ -40,7 +40,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
 
             A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
-            var contentPageService = new ContentPageService(repository);
+            var contentPageService = new ContentPageService<JobCategory>(repository);
 
             // act
             var result = contentPageService.GetByIdAsync(documentId).Result;

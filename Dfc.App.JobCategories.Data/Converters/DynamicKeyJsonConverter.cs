@@ -37,7 +37,7 @@ namespace DFC.App.JobCategories.Data.Converters
                     var propAsObj = (JObject)prop.Value;
                     foreach (var subProp in propAsObj.Properties())
                     {
-                        listToReturn.Add(new Link() { Value = new KeyValuePair<string, DynamicLink>(prop.Name, new DynamicLink { Href = new Uri(subProp.Value.ToString()) }) });
+                        listToReturn.Add(new Link() { LinkValue = new KeyValuePair<string, DynamicLink>(prop.Name, new DynamicLink { Href = new Uri(subProp.Value.ToString()) }) });
                     }
                 }
             }

@@ -40,13 +40,6 @@
             </dd>
 
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Keywords)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Keywords)
-            </dd>
-
-            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Title)
             </dt>
             <dd class="col-sm-10">
@@ -87,6 +80,20 @@
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.LastReviewed)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.JobProfiles)
+            </dt>
+            <dd class="col-sm-10">
+                @if (Model.JobProfiles != null)
+                {
+                    <ul>
+                        @foreach (var item in Model.JobProfiles)
+                        {
+                            <li>@item.Title</li>
+                        }
+                    </ul>
+                }
             </dd>
 
             @if (Model.AlternativeNames?.Count() > 0)
