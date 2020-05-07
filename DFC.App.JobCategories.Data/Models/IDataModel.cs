@@ -23,5 +23,8 @@ namespace DFC.App.JobCategories.Data.Models
 
         [Required]
         bool? IncludeInSitemap { get; }
+
+        [Required]
+        Uri? Uri { get; set; }
     }
 }

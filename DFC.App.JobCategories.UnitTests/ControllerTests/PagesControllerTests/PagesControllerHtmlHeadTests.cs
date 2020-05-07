@@ -23,14 +23,14 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
             expectedResult.CanonicalName = article;
 
-            A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
             A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).Returns(A.Fake<HtmlHeadViewModel>());
 
             // Act
             var result = await controller.HtmlHead(article).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
             A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).MustHaveHappenedOnceExactly();
 
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -52,14 +52,14 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
             expectedResult.CanonicalName = article;
 
-            A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
             A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).Returns(A.Fake<HtmlHeadViewModel>());
 
             // Act
             var result = await controller.HtmlHead(article).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
             A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).MustHaveHappenedOnceExactly();
 
             var jsonResult = Assert.IsType<OkObjectResult>(result);
@@ -79,14 +79,14 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             JobCategory? expectedResult = null;
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
             A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).Returns(A.Fake<HtmlHeadViewModel>());
 
             // Act
             var result = await controller.HtmlHead(article).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
 
             var viewResult = Assert.IsType<ViewResult>(result);
             _ = Assert.IsAssignableFrom<HtmlHeadViewModel>(viewResult.ViewData.Model);
@@ -103,14 +103,14 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             JobCategory? expectedResult = null;
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
             A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).Returns(A.Fake<HtmlHeadViewModel>());
 
             // Act
             var result = await controller.HtmlHead(article).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
 
             var jsonResult = Assert.IsType<OkObjectResult>(result);
             _ = Assert.IsAssignableFrom<HtmlHeadViewModel>(jsonResult.Value);
@@ -127,13 +127,13 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             JobCategory? expectedResult = null;
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
 
             // Act
             var result = await controller.HtmlHead(article).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
 
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<HtmlHeadViewModel>(viewResult.ViewData.Model);
@@ -152,13 +152,13 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             JobCategory? expectedResult = null;
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
 
             // Act
             var result = await controller.HtmlHead(article).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
 
             var jsonResult = Assert.IsType<OkObjectResult>(result);
             var model = Assert.IsAssignableFrom<HtmlHeadViewModel>(jsonResult.Value);
@@ -177,14 +177,14 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             var expectedResult = A.Fake<JobCategory>();
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
             A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).Returns(A.Fake<HtmlHeadViewModel>());
 
             // Act
             var result = await controller.HtmlHead(article).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
             A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).MustHaveHappenedOnceExactly();
 
             var statusResult = Assert.IsType<StatusCodeResult>(result);
