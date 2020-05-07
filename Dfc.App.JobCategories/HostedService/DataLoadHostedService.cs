@@ -30,27 +30,19 @@ namespace DFC.App.JobCategories.HostedService
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            try
-            {
-                var apiJobCategories = await GetJobCategoriesAsync().ConfigureAwait(false);
-                var apiJobProfiles = await GetJobProfilesAsync().ConfigureAwait(false);
+            var apiJobCategories = await GetJobCategoriesAsync().ConfigureAwait(false);
+            var apiJobProfiles = await GetJobProfilesAsync().ConfigureAwait(false);
 
-                var jobCategories = apiJobCategories.Select(x => x.Map());
-                var jobProfiles = apiJobProfiles.Select(x => x.Map());
+            var jobCategories = apiJobCategories.Select(x => x.Map());
+            var jobProfiles = apiJobProfiles.Select(x => x.Map());
 
-                await RemoveExistingData().ConfigureAwait(false);
+            await RemoveExistingData().ConfigureAwait(false);
 
-                var addJobCategoryTasks = jobCategories.Select(x => jobCategoryRepository.UpsertAsync(x));
-                var addJobProfileTasks = jobProfiles.Select(x => jobProfileRepository.UpsertAsync(x));
+            var addJobCategoryTasks = jobCategories.Select(x => jobCategoryRepository.UpsertAsync(x));
+            var addJobProfileTasks = jobProfiles.Select(x => jobProfileRepository.UpsertAsync(x));
 
-                await Task.WhenAny(addJobCategoryTasks).ConfigureAwait(false);
-                await Task.WhenAny(addJobProfileTasks).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                var a = ex;
-                throw;
-            }
+            await Task.WhenAny(addJobCategoryTasks).ConfigureAwait(false);
+            await Task.WhenAny(addJobProfileTasks).ConfigureAwait(false);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
@@ -82,13 +74,8 @@ namespace DFC.App.JobCategories.HostedService
         private async Task<IEnumerable<JobProfileApiResponse>> GetJobProfilesAsync()
         {
             var data = await dataLoadService.GetAllAsync(JobProfileApiName).ConfigureAwait(false);
-            var allJobProfiles = JsonConvert.DeserializeObject<IEnumerable<JobProfileApiResponse>>(data);
-
-            var jobProfileTasks = allJobProfiles.Select(x => GetJobProfileFromApi(x.Uri ?? throw new ArgumentException($"URI is null for JobProfile {x}")));
-            var results = await Task.WhenAll(jobProfileTasks).ConfigureAwait(false);
-            var jobProfiles = results.Select(x => JsonConvert.DeserializeObject<JobProfileApiResponse>(x));
-
-            return jobProfiles;
+            var allApiJobProfiles = JsonConvert.DeserializeObject<IEnumerable<JobProfileApiResponse>>(data);
+            return allApiJobProfiles;
         }
     }
 }
