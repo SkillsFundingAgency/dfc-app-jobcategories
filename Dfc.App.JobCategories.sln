@@ -16,21 +16,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solutio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{D0587E07-62EF-4109-8152-A671290112E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.App.JobCategories.Data", "DFC.App.JobCategories.Data\DFC.App.JobCategories.Data.csproj", "{F1550973-C11D-4327-8DBE-F39F05A0B16A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.Data", "DFC.App.JobCategories.Data\DFC.App.JobCategories.Data.csproj", "{F1550973-C11D-4327-8DBE-F39F05A0B16A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repositories", "Repositories", "{E643011F-E65D-45DC-B65B-E39FE63C66B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.App.JobCategories.Repository.CosmosDb", "DFC.App.JobCategories.Repository.CosmosDb\DFC.App.JobCategories.Repository.CosmosDb.csproj", "{E644A32D-96CE-4DD3-B24D-AAACF3FF0614}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.Repository.CosmosDb", "DFC.App.JobCategories.Repository.CosmosDb\DFC.App.JobCategories.Repository.CosmosDb.csproj", "{E644A32D-96CE-4DD3-B24D-AAACF3FF0614}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{AACB29C2-82EB-49DE-9A3B-EFCDE0CCC3E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.App.JobCategories.PageService", "DFC.App.JobCategories.PageService\DFC.App.JobCategories.PageService.csproj", "{B2F590C8-8C2B-451F-B164-74B1E30E8BB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.PageService", "DFC.App.JobCategories.PageService\DFC.App.JobCategories.PageService.csproj", "{B2F590C8-8C2B-451F-B164-74B1E30E8BB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.App.JobCategories", "DFC.App.JobCategories\DFC.App.JobCategories.csproj", "{2E0335CA-82A7-404D-8806-42C4BB8A2F99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories", "DFC.App.JobCategories\DFC.App.JobCategories.csproj", "{2E0335CA-82A7-404D-8806-42C4BB8A2F99}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{BDE56743-9F74-46CE-A817-D4EA6A852DAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.App.JobCategories.MessageFunctionApp", "DFC.App.JobCategories.MessageFunctionApp\DFC.App.JobCategories.MessageFunctionApp.csproj", "{0D5FA7BC-4D3D-4B5C-81A4-A415CA882C0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.MessageFunctionApp", "DFC.App.JobCategories.MessageFunctionApp\DFC.App.JobCategories.MessageFunctionApp.csproj", "{0D5FA7BC-4D3D-4B5C-81A4-A415CA882C0A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C5C77B1C-2974-4F60-8816-D36E7E8C0415}"
 EndProject
@@ -38,25 +38,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "Integra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{18C4AEC8-D45E-433E-AFC3-D53AB4EA4B17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.App.JobCategories.IntegrationTests", "DFC.App.JobCategories.IntegrationTests\DFC.App.JobCategories.IntegrationTests.csproj", "{2CC977EE-BCCD-4899-920B-E379456526B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.IntegrationTests", "DFC.App.JobCategories.IntegrationTests\DFC.App.JobCategories.IntegrationTests.csproj", "{2CC977EE-BCCD-4899-920B-E379456526B2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{37D79C19-0999-4643-A9E6-9A30B0E05026}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{62311015-EC1A-4F50-902B-1E42C2C4B85A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.App.JobCategories.Data.UnitTests", "DFC.App.JobCategories.Data.UnitTests\DFC.App.JobCategories.Data.UnitTests.csproj", "{858B02E8-47E8-4ED3-A726-9C77F4758674}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.Data.UnitTests", "DFC.App.JobCategories.Data.UnitTests\DFC.App.JobCategories.Data.UnitTests.csproj", "{858B02E8-47E8-4ED3-A726-9C77F4758674}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{693B8EEC-5BA5-4FA4-BB46-E8366C5B7146}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.App.JobCategories.MessageFunctionApp.UnitTests", "DFC.App.JobCategories.MessageFunctionApp.UnitTests\DFC.App.JobCategories.MessageFunctionApp.UnitTests.csproj", "{AC343D3F-348C-416A-B61C-1E71CC4F4628}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.MessageFunctionApp.UnitTests", "DFC.App.JobCategories.MessageFunctionApp.UnitTests\DFC.App.JobCategories.MessageFunctionApp.UnitTests.csproj", "{AC343D3F-348C-416A-B61C-1E71CC4F4628}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A99B9FCD-EEA6-43AE-9FF0-1BB19D4959C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.App.JobCategories.PageService.UnitTests", "DFC.App.JobCategories.PageService.UnitTests\DFC.App.JobCategories.PageService.UnitTests.csproj", "{CF0209AC-4647-468C-B4D3-6846042FE748}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.PageService.UnitTests", "DFC.App.JobCategories.PageService.UnitTests\DFC.App.JobCategories.PageService.UnitTests.csproj", "{CF0209AC-4647-468C-B4D3-6846042FE748}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{51F82478-9298-4ECA-A8D0-944F8FAD89A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.App.JobCategories.UnitTests", "DFC.App.JobCategories.UnitTests\DFC.App.JobCategories.UnitTests.csproj", "{99DA9722-061D-4BA3-B307-0F3A66C5DC0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.UnitTests", "DFC.App.JobCategories.UnitTests\DFC.App.JobCategories.UnitTests.csproj", "{99DA9722-061D-4BA3-B307-0F3A66C5DC0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

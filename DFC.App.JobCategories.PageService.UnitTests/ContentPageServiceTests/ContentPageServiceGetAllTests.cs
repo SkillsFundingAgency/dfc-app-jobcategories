@@ -14,8 +14,8 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         public async Task ContentPageServiceGetAllListReturnsSuccess()
         {
             // arrange
-            var repository = A.Fake<ICosmosRepository<ContentPageModel>>();
-            var expectedResults = A.CollectionOfFake<ContentPageModel>(2);
+            var repository = A.Fake<ICosmosRepository<JobCategory>>();
+            var expectedResults = A.CollectionOfFake<JobCategory>(2);
 
             A.CallTo(() => repository.GetAllAsync()).Returns(expectedResults);
 
@@ -33,8 +33,8 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         public async Task ContentPageServiceGetAllListReturnsNullWhenMissingRepository()
         {
             // arrange
-            var repository = A.Dummy<ICosmosRepository<ContentPageModel>>();
-            IEnumerable<ContentPageModel>? expectedResults = null;
+            var repository = A.Dummy<ICosmosRepository<JobCategory>>();
+            IEnumerable<JobCategory>? expectedResults = null;
 
             A.CallTo(() => repository.GetAllAsync()).Returns(expectedResults);
 

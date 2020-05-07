@@ -59,16 +59,16 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
         {
             // Arrange
             var controller = BuildController(route);
-            var expectedResult = new ContentPageModel() { Content = "<h1>A document</h1>" };
+            var expectedResult = new JobCategory() { Title = "Care Worker" };
 
-            A.CallTo(() => fakeContentPageService.GetByNameAsync(A<string>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => fakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
 
             // Act
             var result = await RunControllerAction(controller, article, actionMethod).ConfigureAwait(false);
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
-            A.CallTo(() => fakeContentPageService.GetByNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
 
             controller.Dispose();
         }

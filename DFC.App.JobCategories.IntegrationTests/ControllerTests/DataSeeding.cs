@@ -8,50 +8,31 @@ namespace DFC.App.JobCategories.IntegrationTests.ControllerTests
 {
     public static class DataSeeding
     {
-        public const string DefaultArticleName = "home";
-        public const string AlternativeArticleName = "alternative-name";
+        public const string DefaultArticleName = "retail-and-sales";
+        public const string AlternativeArticleName = "retail-and-sales";
 
         public static void SeedDefaultArticles(CustomWebApplicationFactory<DFC.App.JobCategories.Startup> factory)
         {
             const string url = "/pages";
-            var contentPageModels = new List<ContentPageModel>()
+            var contentPageModels = new List<JobCategory>()
             {
-                new ContentPageModel()
+                new JobCategory()
                 {
                     DocumentId = Guid.Parse("5DDE75FF-8B32-4746-9712-2672E5C540DB"),
-                    CanonicalName = DefaultArticleName,
-                    BreadcrumbTitle = "Sample",
-                    IncludeInSitemap = true,
-                    Content = "<h1>A document</h1>",
-                    LastReviewed = DateTime.UtcNow,
+                    CanonicalName = "care-worker",
+                    Description = "care worker description",
                 },
-                new ContentPageModel()
+                new JobCategory()
                 {
-                    DocumentId = Guid.Parse("9244BFF6-BA0C-40DB-AD52-A293C37441B1"),
-                    CanonicalName = "in-sitemap",
-                    BreadcrumbTitle = "In Sitemap",
-                    IncludeInSitemap = true,
-                    Content = "<h1>A document</h1>",
-                    LastReviewed = DateTime.UtcNow,
+                    DocumentId = Guid.Parse("5DDE75FF-8B31-4746-9712-2672E5C540DB"),
+                    CanonicalName = "refuse-worker",
+                    Description = "collects refuse",
                 },
-                new ContentPageModel()
+                new JobCategory()
                 {
-                    DocumentId = Guid.Parse("C0103C26-E7C9-4008-BF66-1B2DB192177E"),
-                    CanonicalName = "not-in-sitemap",
-                    BreadcrumbTitle = "Not in Sitemap",
-                    IncludeInSitemap = false,
-                    Content = "<h1>A document</h1>",
-                    LastReviewed = DateTime.UtcNow,
-                },
-                new ContentPageModel()
-                {
-                    DocumentId = Guid.Parse("DA9C1643-8937-4D09-843C-102E15CA3D1B"),
-                    CanonicalName = "contains-alternative-name",
-                    BreadcrumbTitle = "Contains Alternative Name",
-                    IncludeInSitemap = false,
-                    AlternativeNames = new[] { AlternativeArticleName },
-                    Content = "<h1>A document</h1>",
-                    LastReviewed = DateTime.UtcNow,
+                    DocumentId = Guid.Parse("5DDE75FF-8B32-4746-9212-2672E5C540DB"),
+                    CanonicalName = "aid-worker",
+                    Description = "aid worker description",
                 },
             };
 

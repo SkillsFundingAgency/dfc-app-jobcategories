@@ -28,7 +28,6 @@ namespace DFC.App.JobCategories.IntegrationTests.ControllerTests.PagesController
             new object[] { $"/pages/{DataSeeding.DefaultArticleName}" },
             new object[] { $"/pages/htmlhead" },
             new object[] { $"/pages/breadcrumb" },
-            new object[] { $"/pages/body" },
             new object[] { $"/pages/{DataSeeding.DefaultArticleName}/htmlhead" },
             new object[] { $"/pages/{DataSeeding.DefaultArticleName}/breadcrumb" },
             new object[] { $"/pages/{DataSeeding.DefaultArticleName}/body" },
@@ -62,18 +61,18 @@ namespace DFC.App.JobCategories.IntegrationTests.ControllerTests.PagesController
         [MemberData(nameof(PagesContentRouteData))]
         public async Task GetPagesHtmlContentEndpointsReturnSuccessAndCorrectContentType(string url)
         {
-            // Arrange
-            var uri = new Uri(url, UriKind.Relative);
-            var client = factory.CreateClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
+                // Arrange
+                var uri = new Uri(url, UriKind.Relative);
+                var client = factory.CreateClient();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
 
-            // Act
-            var response = await client.GetAsync(uri).ConfigureAwait(false);
+                // Act
+                var response = await client.GetAsync(uri).ConfigureAwait(false);
 
-            // Assert
-            response.EnsureSuccessStatusCode();
-            Assert.Equal($"{MediaTypeNames.Text.Html}; charset={Encoding.UTF8.WebName}", response.Content.Headers.ContentType.ToString());
+                // Assert
+                response.EnsureSuccessStatusCode();
+                Assert.Equal($"{MediaTypeNames.Text.Html}; charset={Encoding.UTF8.WebName}", response.Content.Headers.ContentType.ToString());
         }
 
         [Theory]

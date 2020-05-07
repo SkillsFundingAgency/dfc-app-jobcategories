@@ -7,9 +7,9 @@ namespace DFC.App.JobCategories.MessageFunctionApp.Services
 {
     public interface IHttpClientService
     {
-        Task<HttpStatusCode> PostAsync(ContentPageModel contentPageModel);
+        Task<HttpStatusCode> PostAsync(JobCategory contentPageModel);
 
-        Task<HttpStatusCode> PutAsync(ContentPageModel contentPageModel);
+        Task<HttpStatusCode> PutAsync(JobCategory contentPageModel);
 
         Task<HttpStatusCode> DeleteAsync(Guid id);
     }

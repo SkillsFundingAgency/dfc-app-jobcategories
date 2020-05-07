@@ -15,7 +15,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         {
             // arrange
             Guid documentId = Guid.NewGuid();
-            var repository = A.Fake<ICosmosRepository<ContentPageModel>>();
+            var repository = A.Fake<ICosmosRepository<JobCategory>>();
             var expectedResult = true;
 
             A.CallTo(() => repository.DeleteAsync(documentId)).Returns(HttpStatusCode.NoContent);
@@ -35,7 +35,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         {
             // arrange
             Guid documentId = Guid.NewGuid();
-            var repository = A.Fake<ICosmosRepository<ContentPageModel>>();
+            var repository = A.Fake<ICosmosRepository<JobCategory>>();
             var expectedResult = false;
 
             A.CallTo(() => repository.DeleteAsync(documentId)).Returns(HttpStatusCode.BadRequest);
@@ -55,7 +55,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         {
             // arrange
             Guid documentId = Guid.NewGuid();
-            var repository = A.Dummy<ICosmosRepository<ContentPageModel>>();
+            var repository = A.Dummy<ICosmosRepository<JobCategory>>();
             var expectedResult = false;
 
             A.CallTo(() => repository.DeleteAsync(documentId)).Returns(HttpStatusCode.FailedDependency);

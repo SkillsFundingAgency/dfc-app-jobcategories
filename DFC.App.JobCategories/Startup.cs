@@ -1,10 +1,16 @@
 ﻿using AutoMapper;
+using CorrelationId;
+using DFC.App.JobCategories.ClientHandlers;
 using DFC.App.JobCategories.Data.Contracts;
 using DFC.App.JobCategories.Data.Models;
+using DFC.App.JobCategories.Extensions;
 using DFC.App.JobCategories.Filters;
 using DFC.App.JobCategories.Framework;
+using DFC.App.JobCategories.HostedService;
+using DFC.App.JobCategories.HttpClientPolicies;
 using DFC.App.JobCategories.PageService;
 using DFC.App.JobCategories.Repository.CosmosDb;
+using DFC.Logger.AppInsights.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +28,7 @@ namespace DFC.App.JobCategories
     [ExcludeFromCodeCoverage]
     public class Startup
     {
-        public const string CosmosDbConfigAppSettings = "Configuration:CosmosDbConnections:ContentPages";
+        public const string CosmosDbConfigAppSettings = "Configuration:CosmosDbConnections:JobCategories";
 
         private readonly IConfiguration configuration;
 
@@ -68,14 +74,34 @@ namespace DFC.App.JobCategories
 
             var cosmosDbConnection = configuration.GetSection(CosmosDbConfigAppSettings).Get<CosmosDbConnection>();
             var documentClient = new DocumentClient(cosmosDbConnection!.EndpointUrl, cosmosDbConnection!.AccessKey);
+
+            services.AddDFCLogging("Some thing");
+            services.AddSingleton(configuration.GetSection(nameof(ServiceTaxonomyApiClientOptions)).Get<ServiceTaxonomyApiClientOptions>());
             services.AddApplicationInsightsTelemetry();
             services.AddHttpContextAccessor();
+            services.AddCorrelationId();
             services.AddScoped<ICorrelationIdProvider, CorrelationIdProvider>();
             services.AddSingleton(cosmosDbConnection);
             services.AddSingleton<IDocumentClient>(documentClient);
-            services.AddSingleton<ICosmosRepository<ContentPageModel>, CosmosRepository<ContentPageModel>>();
+            services.AddSingleton<ICosmosRepository<JobProfile>, CosmosRepository<JobProfile>>();
+            services.AddSingleton<ICosmosRepository<JobCategory>, CosmosRepository<JobCategory>>();
             services.AddScoped<IContentPageService, ContentPageService>();
+            services.AddTransient<CorrelationIdDelegatingHandler>();
             services.AddAutoMapper(typeof(Startup).Assembly);
+
+            const string AppSettingsPolicies = "Policies";
+            var policyOptions = configuration.GetSection(AppSettingsPolicies).Get<PolicyOptions>();
+            var policyRegistry = services.AddPolicyRegistry();
+
+            //Controlled by AppSetting for Integration Tests and Development
+            if (bool.Parse(configuration["JobCategories:LoadDataOnStartup"]))
+            {
+                services.AddHostedService<DataLoadHostedService>();
+            }
+
+            services
+               .AddPolicies(policyRegistry, nameof(ServiceTaxonomyApiClientOptions), policyOptions)
+               .AddHttpClient<IDataLoadService<ServiceTaxonomyApiClientOptions>, DataLoadService<ServiceTaxonomyApiClientOptions>, ServiceTaxonomyApiClientOptions>(configuration, nameof(ServiceTaxonomyApiClientOptions), nameof(PolicyOptions.HttpRetry), nameof(PolicyOptions.HttpCircuitBreaker));
 
             services.AddMvc(config =>
                 {
