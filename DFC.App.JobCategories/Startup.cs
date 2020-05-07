@@ -93,7 +93,11 @@ namespace DFC.App.JobCategories
             var policyOptions = configuration.GetSection(AppSettingsPolicies).Get<PolicyOptions>();
             var policyRegistry = services.AddPolicyRegistry();
 
-            //services.AddHostedService<DataLoadHostedService>();
+            //Controlled by AppSetting for Integration Tests and Development
+            if (bool.Parse(configuration["JobCategories:LoadDataOnStartup"]))
+            {
+                services.AddHostedService<DataLoadHostedService>();
+            }
 
             services
                .AddPolicies(policyRegistry, nameof(ServiceTaxonomyApiClientOptions), policyOptions)
