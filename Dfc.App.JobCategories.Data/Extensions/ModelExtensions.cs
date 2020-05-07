@@ -11,26 +11,37 @@ namespace DFC.App.JobCategories.Data.Extensions
     {
         public static JobProfile Map(this JobProfileApiResponse resp)
         {
-            return new JobProfile
+            if (resp != null)
             {
-                Description = resp.Description,
-                Title = resp.Title,
-                Uri = resp.Uri,
-                Links = resp.Links,
-            };
+                return new JobProfile
+                {
+                    Description = resp.Description,
+                    Title = resp.Title,
+                    Uri = resp.Uri,
+                    Links = resp.Links,
+                };
+            }
+
+            throw new InvalidOperationException($"{nameof(resp)} is null");
         }
 
         public static JobCategory Map(this JobCategoryApiResponse resp)
         {
-            return new JobCategory
+            if (resp != null)
             {
-                Description = resp.Description,
-                Title = resp.Title,
-                Uri = resp.Uri,
-                Links = resp.Links,
-                //Build a fake URI to get the last segment
-                CanonicalName = new Uri("http://unspecifiedhost" + resp.WebsiteUri).Segments.Last().TrimEnd('/'),
-            };
+                return new JobCategory
+                {
+                    Description = resp.Description,
+                    Title = resp.Title,
+                    Uri = resp.Uri,
+                    Links = resp.Links,
+
+                    //Build a fake URI to get the last segment
+                    CanonicalName = new Uri("http://unspecifiedhost" + resp.WebsiteUri).Segments.Last().TrimEnd('/'),
+                };
+            }
+
+            throw new InvalidOperationException($"{nameof(resp)} is null");
         }
     }
 }

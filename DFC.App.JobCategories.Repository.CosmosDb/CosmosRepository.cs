@@ -140,12 +140,17 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
 
         public async Task<HttpStatusCode> UpsertAsync(T model)
         {
-            var accessCondition = new AccessCondition { Condition = model.Etag, Type = AccessConditionType.IfMatch };
-            var partitionKey = new PartitionKey(model.PartitionKey);
+            if (model != null)
+            {
+                var accessCondition = new AccessCondition { Condition = model.Etag, Type = AccessConditionType.IfMatch };
+                var partitionKey = new PartitionKey(model.PartitionKey);
 
-            var result = await documentClient.UpsertDocumentAsync(DocumentCollectionUri, model, new RequestOptions { AccessCondition = accessCondition, PartitionKey = partitionKey }).ConfigureAwait(false);
+                var result = await documentClient.UpsertDocumentAsync(DocumentCollectionUri, model, new RequestOptions { AccessCondition = accessCondition, PartitionKey = partitionKey }).ConfigureAwait(false);
 
-            return result.StatusCode;
+                return result.StatusCode;
+            }
+
+            return HttpStatusCode.BadRequest;
         }
 
         public async Task<HttpStatusCode> DeleteAsync(Guid documentId)
@@ -167,7 +172,8 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
             return HttpStatusCode.NotFound;
         }
 
-        public async Task<HttpStatusCode> DeleteAllAsync<T>(string key) where T : IDataModel
+        public async Task<HttpStatusCode> DeleteAllAsync<TModel>(string key)
+            where TModel : IDataModel
         {
             var partitionKey = new PartitionKey(key);
 
@@ -185,7 +191,7 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
 
             foreach (var result in models)
             {
-                await DeleteAsync(result.DocumentId.Value).ConfigureAwait(false);
+                await DeleteAsync(result.DocumentId!.Value).ConfigureAwait(false);
             }
 
             return HttpStatusCode.OK;

@@ -16,7 +16,7 @@ namespace DFC.App.JobCategories.Data.Models
         string? Etag { get; set; }
 
         [Required]
-        string PartitionKey { get; }
+        string? PartitionKey { get; }
 
         [Required]
         string? CanonicalName { get; }

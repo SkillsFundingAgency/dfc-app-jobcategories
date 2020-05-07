@@ -128,7 +128,6 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             // Arrange
             const string article = "an-article-name";
             JobCategory? expectedResult = null;
-            JobCategory? expectedAlternativeResult = null;
             var controller = BuildPagesController(mediaTypeName);
 
             A.CallTo(() => FakeContentPageService.GetByCanonicalNameAsync(A<string?>.Ignored)).Returns(expectedResult);

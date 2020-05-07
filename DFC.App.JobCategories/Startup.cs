@@ -73,8 +73,9 @@ namespace DFC.App.JobCategories
             });
 
             var cosmosDbConnection = configuration.GetSection(CosmosDbConfigAppSettings).Get<CosmosDbConnection>();
-            var documentClient  = new DocumentClient(cosmosDbConnection!.EndpointUrl, cosmosDbConnection!.AccessKey);
+            var documentClient = new DocumentClient(cosmosDbConnection!.EndpointUrl, cosmosDbConnection!.AccessKey);
 
+            services.AddDFCLogging("Some thing");
             services.AddSingleton(configuration.GetSection(nameof(ServiceTaxonomyApiClientOptions)).Get<ServiceTaxonomyApiClientOptions>());
             services.AddApplicationInsightsTelemetry();
             services.AddHttpContextAccessor();
@@ -85,7 +86,6 @@ namespace DFC.App.JobCategories
             services.AddSingleton<ICosmosRepository<JobProfile>, CosmosRepository<JobProfile>>();
             services.AddSingleton<ICosmosRepository<JobCategory>, CosmosRepository<JobCategory>>();
             services.AddScoped<IContentPageService, ContentPageService>();
-            //services.AddDFCLogging(configuration["ApplicationInsights:InstrumentationKey"]);
             services.AddTransient<CorrelationIdDelegatingHandler>();
             services.AddAutoMapper(typeof(Startup).Assembly);
 

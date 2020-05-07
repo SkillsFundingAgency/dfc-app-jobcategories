@@ -20,19 +20,19 @@ namespace DFC.App.JobCategories.IntegrationTests.ControllerTests
                 {
                     DocumentId = Guid.Parse("5DDE75FF-8B32-4746-9712-2672E5C540DB"),
                     CanonicalName = "care-worker",
-                    Description = "care worker description"
+                    Description = "care worker description",
                 },
-                 new JobCategory()
+                new JobCategory()
                 {
                     DocumentId = Guid.Parse("5DDE75FF-8B31-4746-9712-2672E5C540DB"),
                     CanonicalName = "refuse-worker",
-                    Description = "collects refuse"
+                    Description = "collects refuse",
                 },
-                 new JobCategory()
+                new JobCategory()
                 {
                     DocumentId = Guid.Parse("5DDE75FF-8B32-4746-9212-2672E5C540DB"),
                     CanonicalName = "aid-worker",
-                    Description = "aid worker description"
+                    Description = "aid worker description",
                 },
             };
 

@@ -15,29 +15,17 @@ namespace DFC.App.JobCategories.HostedService
 {
     public class DataLoadHostedService : IHostedService
     {
-        private readonly IDataLoadService<ServiceTaxonomyApiClientOptions> _dataLoadService;
+        private const string JobProfileApiName = "JobProfile";
+        private const string JobCategoryApiName = "JobCategory";
+        private readonly IDataLoadService<ServiceTaxonomyApiClientOptions> dataLoadService;
         private readonly ICosmosRepository<JobProfile> jobProfileRepository;
         private readonly ICosmosRepository<JobCategory> jobCategoryRepository;
 
         public DataLoadHostedService(IDataLoadService<ServiceTaxonomyApiClientOptions> dataLoadService, ICosmosRepository<JobProfile> jobProfileRepository, ICosmosRepository<JobCategory> jobCategoryRepository)
         {
-            _dataLoadService = dataLoadService;
+            this.dataLoadService = dataLoadService;
             this.jobProfileRepository = jobProfileRepository;
             this.jobCategoryRepository = jobCategoryRepository;
-        }
-
-        private async Task<IEnumerable<JobCategoryApiResponse>> GetJobCategoriesAsync()
-        {
-            var data = await _dataLoadService.GetAllAsync("JobCategory").ConfigureAwait(false);
-            var jobCategories = JsonConvert.DeserializeObject<List<JobCategoryApiResponse>>(data);
-
-            return jobCategories;
-        }
-
-        private Task<string> GetJobProfileFromApi(Uri uri)
-        {
-            var id = uri.Segments.Last().TrimEnd('/');
-            return _dataLoadService.GetByIdAsync("JobProfile", Guid.Parse(id));
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -65,6 +53,26 @@ namespace DFC.App.JobCategories.HostedService
             }
         }
 
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            //Do nothing
+            return Task.CompletedTask;
+        }
+
+        private async Task<IEnumerable<JobCategoryApiResponse>> GetJobCategoriesAsync()
+        {
+            var data = await dataLoadService.GetAllAsync(JobCategoryApiName).ConfigureAwait(false);
+            var jobCategories = JsonConvert.DeserializeObject<List<JobCategoryApiResponse>>(data);
+
+            return jobCategories;
+        }
+
+        private Task<string> GetJobProfileFromApi(Uri uri)
+        {
+            var id = uri.Segments.Last().TrimEnd('/');
+            return dataLoadService.GetByIdAsync(JobProfileApiName, Guid.Parse(id));
+        }
+
         private async Task RemoveExistingData()
         {
             await jobCategoryRepository.DeleteAllAsync<JobCategory>(nameof(JobCategory).ToLower()).ConfigureAwait(false);
@@ -73,19 +81,14 @@ namespace DFC.App.JobCategories.HostedService
 
         private async Task<IEnumerable<JobProfileApiResponse>> GetJobProfilesAsync()
         {
-            var data = await _dataLoadService.GetAllAsync("JobProfile").ConfigureAwait(false);
+            var data = await dataLoadService.GetAllAsync(JobProfileApiName).ConfigureAwait(false);
             var allJobProfiles = JsonConvert.DeserializeObject<IEnumerable<JobProfileApiResponse>>(data);
 
-            var jobProfileTasks = allJobProfiles.Select(x => GetJobProfileFromApi(x.Uri));
+            var jobProfileTasks = allJobProfiles.Select(x => GetJobProfileFromApi(x.Uri ?? throw new ArgumentException($"URI is null for JobProfile {x}")));
             var results = await Task.WhenAll(jobProfileTasks).ConfigureAwait(false);
             var jobProfiles = results.Select(x => JsonConvert.DeserializeObject<JobProfileApiResponse>(x));
 
             return jobProfiles;
-        }
-
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
         }
     }
 }

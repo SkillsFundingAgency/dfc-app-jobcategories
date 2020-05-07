@@ -22,23 +22,28 @@ namespace DFC.App.JobCategories.Extensions
             string keyPrefix,
             PolicyOptions policyOptions)
         {
-            policyRegistry?.Add(
-                $"{keyPrefix}_{nameof(PolicyOptions.HttpRetry)}",
-                HttpPolicyExtensions
-                    .HandleTransientHttpError()
-                    .WaitAndRetryAsync(
-                        policyOptions.HttpRetry.Count,
-                        retryAttempt => TimeSpan.FromSeconds(Math.Pow(policyOptions.HttpRetry.BackoffPower, retryAttempt))));
+            if (policyOptions != null)
+            {
+                policyRegistry?.Add(
+                    $"{keyPrefix}_{nameof(PolicyOptions.HttpRetry)}",
+                    HttpPolicyExtensions
+                        .HandleTransientHttpError()
+                        .WaitAndRetryAsync(
+                            policyOptions.HttpRetry.Count,
+                            retryAttempt => TimeSpan.FromSeconds(Math.Pow(policyOptions.HttpRetry.BackoffPower, retryAttempt))));
 
-            policyRegistry?.Add(
-                $"{keyPrefix}_{nameof(PolicyOptions.HttpCircuitBreaker)}",
-                HttpPolicyExtensions
-                    .HandleTransientHttpError()
-                    .CircuitBreakerAsync(
-                        handledEventsAllowedBeforeBreaking: policyOptions.HttpCircuitBreaker.ExceptionsAllowedBeforeBreaking,
-                        durationOfBreak: policyOptions.HttpCircuitBreaker.DurationOfBreak));
+                policyRegistry?.Add(
+                    $"{keyPrefix}_{nameof(PolicyOptions.HttpCircuitBreaker)}",
+                    HttpPolicyExtensions
+                        .HandleTransientHttpError()
+                        .CircuitBreakerAsync(
+                            handledEventsAllowedBeforeBreaking: policyOptions.HttpCircuitBreaker.ExceptionsAllowedBeforeBreaking,
+                            durationOfBreak: policyOptions.HttpCircuitBreaker.DurationOfBreak));
 
-            return services;
+                return services;
+            }
+
+            throw new InvalidOperationException($"{nameof(policyOptions)} is null");
         }
 
         public static IServiceCollection AddHttpClient<TClient, TImplementation, TClientOptions>(

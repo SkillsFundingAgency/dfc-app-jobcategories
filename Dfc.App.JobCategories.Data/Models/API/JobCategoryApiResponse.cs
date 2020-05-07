@@ -2,10 +2,12 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace DFC.App.JobCategories.Data.Models.API
 {
+    [ExcludeFromCodeCoverage]
     public class JobCategoryApiResponse
     {
         public JobCategoryApiResponse()
@@ -14,16 +16,16 @@ namespace DFC.App.JobCategories.Data.Models.API
         }
 
         [JsonProperty("skos__prefLabel")]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         [JsonProperty("ncs__WebsiteURI")]
-        public Uri WebsiteUri { get; set; }
+        public Uri? WebsiteUri { get; set; }
 
         [JsonProperty("ncs__Description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [JsonProperty("uri")]
-        public Uri Uri { get; set; }
+        public Uri? Uri { get; set; }
 
         [JsonProperty("_links")]
         [JsonConverter(typeof(DynamicKeyJsonConverter))]

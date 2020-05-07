@@ -61,8 +61,6 @@ namespace DFC.App.JobCategories.IntegrationTests.ControllerTests.PagesController
         [MemberData(nameof(PagesContentRouteData))]
         public async Task GetPagesHtmlContentEndpointsReturnSuccessAndCorrectContentType(string url)
         {
-            try
-            {
                 // Arrange
                 var uri = new Uri(url, UriKind.Relative);
                 var client = factory.CreateClient();
@@ -75,11 +73,6 @@ namespace DFC.App.JobCategories.IntegrationTests.ControllerTests.PagesController
                 // Assert
                 response.EnsureSuccessStatusCode();
                 Assert.Equal($"{MediaTypeNames.Text.Html}; charset={Encoding.UTF8.WebName}", response.Content.Headers.ContentType.ToString());
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
         }
 
         [Theory]

@@ -12,16 +12,9 @@ namespace DFC.App.JobCategories.Data.Converters
 {
     public class DynamicKeyJsonConverter : JsonConverter
     {
-        private readonly Dictionary<string, string> _propertyMappings = new Dictionary<string, string>
-    {
-        {"name", "error"},
-        {"code", "errorCode"},
-        {"description", "message"}
-    };
-
         public override bool CanWrite => false;
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }
@@ -31,10 +24,10 @@ namespace DFC.App.JobCategories.Data.Converters
             return objectType.GetTypeInfo().IsClass;
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             var listToReturn = new List<Link>();
-            
+
             JArray array = JArray.Load(reader);
 
             foreach (JObject content in array.Children<JObject>())

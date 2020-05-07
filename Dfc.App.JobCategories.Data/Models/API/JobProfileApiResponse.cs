@@ -2,9 +2,11 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.JobCategories.Data.Models.API
 {
+    [ExcludeFromCodeCoverage]
     public class JobProfileApiResponse
     {
         [JsonProperty("skos__prefLabel")]
@@ -18,6 +20,6 @@ namespace DFC.App.JobCategories.Data.Models.API
 
         [JsonProperty("_links")]
         [JsonConverter(typeof(DynamicKeyJsonConverter))]
-        public IEnumerable<Link> Links { get; set; }
+        public IEnumerable<Link>? Links { get; set; }
     }
 }

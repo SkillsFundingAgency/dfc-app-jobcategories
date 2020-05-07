@@ -214,11 +214,6 @@ namespace DFC.App.JobCategories.Controllers
                 return new StatusCodeResult((int)HttpStatusCode.NotFound);
             }
 
-            //if (upsertContentPageModel.SequenceNumber <= existingDocument.SequenceNumber)
-            //{
-            //    return new StatusCodeResult((int)HttpStatusCode.AlreadyReported);
-            //}
-
             upsertContentPageModel.Etag = existingDocument.Etag;
 
             var response = await contentPageService.UpsertAsync(upsertContentPageModel).ConfigureAwait(false);

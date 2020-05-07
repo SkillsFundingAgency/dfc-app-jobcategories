@@ -11,14 +11,14 @@ namespace DFC.App.JobCategories.ClientHandlers
     public class CorrelationIdDelegatingHandler : DelegatingHandler
     {
         private readonly ICorrelationContextAccessor correlationContextAccessor;
-        //private readonly ILogService logService;
+        private readonly ILogService logService;
 
         public CorrelationIdDelegatingHandler(
-            ICorrelationContextAccessor correlationContextAccessor
-            /*ILogService logService*/)
+            ICorrelationContextAccessor correlationContextAccessor,
+            ILogService logService)
         {
             this.correlationContextAccessor = correlationContextAccessor;
-            //this.logService = logService;
+            this.logService = logService;
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -28,7 +28,7 @@ namespace DFC.App.JobCategories.ClientHandlers
                 !request.Headers.Contains(correlationContextAccessor.CorrelationContext.Header))
             {
                 request.Headers.Add(correlationContextAccessor.CorrelationContext.Header, correlationContextAccessor.CorrelationContext.CorrelationId);
-                //logService.LogInformation($"Added CorrelationID header with name {correlationContextAccessor.CorrelationContext.Header} and value {correlationContextAccessor.CorrelationContext.CorrelationId}");
+                logService.LogInformation($"Added CorrelationID header with name {correlationContextAccessor.CorrelationContext.Header} and value {correlationContextAccessor.CorrelationContext.CorrelationId}");
             }
 
             return base.SendAsync(request, cancellationToken);
