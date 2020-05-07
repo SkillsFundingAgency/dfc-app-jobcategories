@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DFC.App.JobCategories.Data.UnitTests.Extensions
+namespace DFC.App.JobCategories.Data.UnitTests.ExtensionTests
 {
     [Trait("Data Extensions", "Data Extension Tests")]
     public class ModelExtensionTests

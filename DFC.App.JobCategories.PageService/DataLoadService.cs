@@ -1,11 +1,6 @@
 ﻿using DFC.App.JobCategories.Data.Models;
-using DFC.App.JobCategories.Data.Models.API;
-using DFC.Logger.AppInsights.Constants;
-using DFC.Logger.AppInsights.Contracts;
-using Newtonsoft.Json;
 using Polly.CircuitBreaker;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Net.Mime;
