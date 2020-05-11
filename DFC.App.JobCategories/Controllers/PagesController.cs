@@ -76,9 +76,6 @@ namespace DFC.App.JobCategories.Controllers
                 contentPageModel.JobProfiles = results != null ? results.ToList() : null;
             }
 
-            //var jpTasks = jpsToRetrieve.Select(async x => await jobProfilePageContentService.GetByUriAsync(x).ConfigureAwait(false));
-            //await Task.WhenAny(jpTasks).ConfigureAwait(false);
-
             if (contentPageModel != null)
             {
                 var viewModel = mapper.Map<DocumentViewModel>(contentPageModel);
@@ -264,7 +261,7 @@ namespace DFC.App.JobCategories.Controllers
 
         #region Define helper methods
 
-        private static BreadcrumbViewModel BuildBreadcrumb(JobCategory? contentPageModel)
+        private static BreadcrumbViewModel BuildBreadcrumb(JobCategory? jobCategoryModel)
         {
             var viewModel = new BreadcrumbViewModel
             {
@@ -272,23 +269,23 @@ namespace DFC.App.JobCategories.Controllers
                 {
                     new BreadcrumbPathViewModel()
                     {
-                        Route = "/",
-                        Title = "Home",
+                        Route = "/explore-careers",
+                        Title = "Home: Explore careers",
                     },
                 },
             };
 
-            if (contentPageModel != null)
+            if (jobCategoryModel != null)
             {
-                if (!string.IsNullOrWhiteSpace(contentPageModel.CanonicalName))
+                if (!string.IsNullOrWhiteSpace(jobCategoryModel.CanonicalName))
                 {
-                    var articlePathViewModel = new BreadcrumbPathViewModel
+                    var jobCategoryPathViewModel = new BreadcrumbPathViewModel
                     {
-                        Route = $"/{contentPageModel.CanonicalName}",
-                        //Title = contentPageModel.BreadcrumbTitle,
+                        Route = $"/{jobCategoryModel.CanonicalName}",
+                        Title = $"{jobCategoryModel.Title}",
                     };
 
-                    viewModel.Paths.Add(articlePathViewModel);
+                    viewModel.Paths.Add(jobCategoryPathViewModel);
                 }
 
                 viewModel.Paths.Last().AddHyperlink = false;
