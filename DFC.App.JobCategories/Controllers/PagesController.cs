@@ -160,6 +160,9 @@ namespace DFC.App.JobCategories.Controllers
                 return this.NegotiateContentResult(viewModel, contentPageModel);
             }
 
+            return NotFound();
+        }
+
         [HttpGet]
         [Route("pages/{article}/sidebarright")]
         [Route("pages/sidebarright")]
