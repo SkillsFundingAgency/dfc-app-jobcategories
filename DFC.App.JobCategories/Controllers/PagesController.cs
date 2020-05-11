@@ -145,28 +145,42 @@ namespace DFC.App.JobCategories.Controllers
         [Route("pages/body")]
         public async Task<IActionResult> Body(string? article)
         {
-            //TODO : fetch data to populate VM rather than hard coding!
-            var viewModel = new BodyViewModel();
             var contentPageModel = await GetContentPageAsync(article).ConfigureAwait(false);
 
-            if (contentPageModel != null)
+            if (contentPageModel == null)
             {
-                mapper.Map(contentPageModel, viewModel);
-                logger.LogInformation($"{nameof(Body)} has returned content for: {article}");
-
-                return this.NegotiateContentResult(viewModel, contentPageModel);
+                return NoContent();
             }
 
-            return NotFound();
+            var jpsToRetrieveHrefs = contentPageModel.Links?.Where(x => x.LinkValue.Key == nameof(JobProfile).ToLower()).Select(z => z.LinkValue.Value.Href);
+            var jobProfiles = await Task.WhenAll(jpsToRetrieveHrefs?.Select(x => jobProfilePageContentService.GetByUriAsync(x))).ConfigureAwait(false);
+
+            if (jobProfiles == null || !jobProfiles.Any())
+            {
+                return NoContent();
+            }
+
+            var viewModel = new BodyViewModel();
+            viewModel.Profiles = jobProfiles
+                .Where(x => x != null)
+                .Select(x => new JobProfileListItemViewModel(x.Title!, x.CanonicalName!, "Some test, string, to check CSS", x.Description));
+
+            return this.NegotiateContentResult(viewModel);
         }
 
         [HttpGet]
         [Route("pages/{article}/sidebarright")]
         [Route("pages/sidebarright")]
-        public IActionResult SidebarRight(string? article)
+        public async Task<IActionResult> SidebarRight(string? article)
         {
-            //TODO : fetch data to populate VM rather than hard coding!
             var viewModel = new SidebarRightViewModel();
+            var categories = await jobCategoryPageContentService.GetAllAsync().ConfigureAwait(false);
+
+            viewModel.Categories = categories
+                .Where(x => x.CanonicalName != article)
+                .OrderBy(x => x.Title)
+                .ToDictionary(x => x.Title!, x => x.CanonicalName!);
+
             return this.NegotiateContentResult(viewModel);
         }
 

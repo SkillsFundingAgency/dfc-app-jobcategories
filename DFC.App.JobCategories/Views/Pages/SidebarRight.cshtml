@@ -2,7 +2,7 @@
 
 @if (Model.Categories?.Any() ?? false)
 {
-    <aside class="govuk-related-items" style="margin-top: 0 !important;">
+    <aside class="app-related-items">
         <h2 class="govuk-heading-m">Other job categories</h2>
         <ul class="govuk-list govuk-!-font-size-16">
             @foreach (var cat in Model.Categories)

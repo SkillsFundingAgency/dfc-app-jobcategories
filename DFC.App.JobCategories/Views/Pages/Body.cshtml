@@ -13,13 +13,11 @@
                 </h2>
                 @if (profile.AltTitles != null)
                 {
-                    <h3 class="govuk-!-font-size-16 govuk-!-font-weight-regular">
+                    <h3 class="govuk-secondary-colour govuk-!-font-size-16 govuk-!-font-weight-regular">
                         @profile.AltTitles
                     </h3>
                 }
-                <p>
-                    @profile.Description
-                </p>
+                @Html.Raw(profile.Description)
             </li>
         }
     </ul>
