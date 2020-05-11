@@ -1,6 +1,8 @@
 ﻿using DFC.App.JobCategories.Data.Models;
+using Newtonsoft.Json;
 using Polly.CircuitBreaker;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Net.Mime;
@@ -17,17 +19,22 @@ namespace DFC.App.JobCategories.PageService
         public DataLoadService(HttpClient httpClient, TClientOptions serviceTaxonomyClientOptions)
         {
             this.httpClient = httpClient;
+            this.httpClient.Timeout = TimeSpan.FromMinutes(5);
             this.serviceTaxonomyClientOptions = serviceTaxonomyClientOptions;
         }
 
-        public async Task<string> GetAllAsync(string contentType)
+        public async Task<IEnumerable<T>> GetAllAsync<T>(string contentType)
+            where T : class
         {
-            return await GetAsync(contentType, null).ConfigureAwait(false);
+            var result = await GetAsync(contentType, null).ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<IEnumerable<T>>(result);
         }
 
-        public async Task<string> GetByIdAsync(string contentType, Guid id)
+        public async Task<T> GetByIdAsync<T>(string contentType, Guid id)
+            where T : class
         {
-            return await GetAsync(contentType, id).ConfigureAwait(false);
+            var result = await GetAsync(contentType, id).ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<T>(result);
         }
 
         private async Task<string> GetAsync(string contentType, Guid? id)
