@@ -19,7 +19,6 @@ namespace DFC.App.JobCategories.PageService
         public DataLoadService(HttpClient httpClient, TClientOptions serviceTaxonomyClientOptions)
         {
             this.httpClient = httpClient;
-            this.httpClient.Timeout = TimeSpan.FromMinutes(5);
             this.serviceTaxonomyClientOptions = serviceTaxonomyClientOptions;
         }
 
