@@ -35,10 +35,11 @@ namespace DFC.App.JobCategories.Data.Converters
                 foreach (JProperty prop in content.Properties())
                 {
                     var propAsObj = (JObject)prop.Value;
-                    foreach (var subProp in propAsObj.Properties())
-                    {
-                        listToReturn.Add(new Link() { LinkValue = new KeyValuePair<string, DynamicLink>(prop.Name, new DynamicLink { Href = new Uri(subProp.Value.ToString()) }) });
-                    }
+
+                    var relationship = propAsObj.Properties().FirstOrDefault(x => x.Name.ToLower() == "relationship");
+                    var href = propAsObj.Properties().FirstOrDefault(x => x.Name.ToLower() == "href");
+
+                    listToReturn.Add(new Link() { LinkValue = new KeyValuePair<string, DynamicLink>(prop.Name, new DynamicLink { Href = new Uri(href.Value.ToString()), Relationship = relationship.Value.ToString() }) });
                 }
             }
 
