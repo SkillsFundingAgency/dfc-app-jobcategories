@@ -16,7 +16,7 @@ namespace DFC.App.JobCategories.Data.UnitTests.ExtensionTests
         public void MapJobProfileApiResponseToJobProfileReturnsJobProfile()
         {
             // arrange
-            var apiJobProfile = new JobProfileApiResponse { Description = "A Description", Title = "Comedian", Uri = new Uri("http://someuri/jobprofile/identifier"), Links = new List<Link> { new Link { LinkValue = new KeyValuePair<string, Models.DynamicLink>("daytodaytask", new Models.DynamicLink { Href = new Uri("http://someuri/daytotasktask/identifier") }) } } };
+            var apiJobProfile = new JobProfileApiResponse { Description = "A Description", Title = "Comedian", Uri = new Uri($"http://someuri/jobprofile/identifier/{Guid.NewGuid()}"), Links = new List<Link> { new Link { LinkValue = new KeyValuePair<string, Models.DynamicLink>("daytodaytask", new Models.DynamicLink { Href = new Uri("http://someuri/daytotasktask/identifier") }) } } };
 
             // act
             var jobProfile = apiJobProfile.Map();
@@ -45,7 +45,7 @@ namespace DFC.App.JobCategories.Data.UnitTests.ExtensionTests
         public void MapJobCategoryApiResponseToJobCategoryReturnsJobProfile()
         {
             // arrange
-            var apiJobCategory = new JobCategoryApiResponse { Description = "An emergency services category", WebsiteUri = new Uri("http://somewhere/something/something-else/"), Title = "Emergency Services", Uri = new Uri("http://someuri/jobcategory/identifier"), Links = new List<Link> { new Link { LinkValue = new KeyValuePair<string, Models.DynamicLink>("jobprofile", new Models.DynamicLink { Href = new Uri("http://someuri/jobprofile/identifier") }) } } };
+            var apiJobCategory = new JobCategoryApiResponse { Description = "An emergency services category", WebsiteUri = new Uri("http://somewhere/something/something-else/"), Title = "Emergency Services", Uri = new Uri($"http://someuri/jobcategory/identifier/{Guid.NewGuid()}"), Links = new List<Link> { new Link { LinkValue = new KeyValuePair<string, Models.DynamicLink>("jobprofile", new Models.DynamicLink { Href = new Uri($"http://someuri/jobprofile/identifier/{Guid.NewGuid()}") }) } } };
 
             // act
             var jobCategory = apiJobCategory.Map();

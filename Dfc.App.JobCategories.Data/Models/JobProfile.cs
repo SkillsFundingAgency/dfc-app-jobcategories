@@ -16,6 +16,8 @@ namespace DFC.App.JobCategories.Data.Models
 
         public IEnumerable<Link>? Links { get; set; }
 
+        public IEnumerable<string>? AlternativeTitles { get; set; }
+
         public bool? IncludeInSitemap => false;
 
         public Guid? DocumentId { get; set; }
@@ -25,5 +27,7 @@ namespace DFC.App.JobCategories.Data.Models
         public string? PartitionKey => "jobprofile";
 
         public string? CanonicalName => Title != null ? Title.ToLower().Replace(" ", "-", StringComparison.CurrentCultureIgnoreCase) : string.Empty;
+
+        public Occupation? Occupation { get; set; }
     }
 }

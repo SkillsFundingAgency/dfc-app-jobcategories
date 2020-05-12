@@ -13,6 +13,7 @@ namespace DFC.App.JobCategories.Data.Extensions
             {
                 return new JobProfile
                 {
+                    DocumentId = resp.Uri != null ? Guid.Parse(resp.Uri.Segments.Last().TrimEnd('/')) : Guid.NewGuid(),
                     Description = resp.Description,
                     Title = resp.Title,
                     Uri = resp.Uri,
@@ -29,11 +30,11 @@ namespace DFC.App.JobCategories.Data.Extensions
             {
                 return new JobCategory
                 {
+                    DocumentId = resp.Uri != null ? Guid.Parse(resp.Uri.Segments.Last().TrimEnd('/')) : Guid.NewGuid(),
                     Description = resp.Description,
                     Title = resp.Title,
                     Uri = resp.Uri,
                     Links = resp.Links,
-
                     //Build a fake URI to get the last segment
                     CanonicalName = new Uri("http://unspecifiedhost" + resp.WebsiteUri).Segments.Last().TrimEnd('/'),
                 };
