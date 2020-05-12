@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace DFC.App.JobCategories.Extensions
+namespace DFC.App.JobCategories.PageService.Extensions
 {
     public static class UriExtensions
     {

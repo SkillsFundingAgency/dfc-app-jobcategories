@@ -35,7 +35,7 @@ namespace DFC.App.JobCategories.HostedService
         {
             var apiJobCategories = await LoadDataAsync<JobCategoryApiResponse>(JobCategoryApiName).ConfigureAwait(false);
             var apiJobProfiles = await LoadDataAsync<JobProfileApiResponse>(JobProfileApiName).ConfigureAwait(false);
-
+          
             var jobCategories = apiJobCategories.Select(x => x.Map());
             var jobProfiles = apiJobProfiles.Select(x => x.Map());
 

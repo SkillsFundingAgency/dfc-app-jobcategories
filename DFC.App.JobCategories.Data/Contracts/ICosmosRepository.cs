@@ -14,6 +14,8 @@ namespace DFC.App.JobCategories.Data.Contracts
 
         Task<T?> GetAsync(Expression<Func<T, bool>> where);
 
+        Task<IEnumerable<T?>> GetListAsync(Expression<Func<T, bool>> where);
+
         Task<IEnumerable<T>?> GetAllAsync();
 
         Task<HttpStatusCode> UpsertAsync(T model);

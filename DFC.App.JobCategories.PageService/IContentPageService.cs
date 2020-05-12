@@ -1,6 +1,7 @@
 ﻿using DFC.App.JobCategories.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -21,7 +22,8 @@ namespace DFC.App.JobCategories.PageService
 
         Task<HttpStatusCode> UpsertAsync(T? contentPageModel);
 
-        Task<bool> DeleteAsync(Guid documentId);
+        Task<HttpStatusCode> DeleteAsync(Guid documentId);
         Task<bool> DeleteAllAsync();
+        Task<IEnumerable<T?>> GetByQueryAsync(Expression<Func<T, bool>> where);
     }
 }

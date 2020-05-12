@@ -15,5 +15,6 @@ namespace DFC.App.JobCategories.PageService
             where T : class;
 
         Task<T> GetByIdAsync<T>(string contentType, Guid id)
+            where T : class;
     }
 }

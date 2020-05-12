@@ -19,8 +19,8 @@ public class DataLoadHostedServiceTests
     public async Task DataLoadHostedService_StartAsync_LoadsDataIntoCosmosDb()
     {
         // arrange
-        var jobCategoryRepository = A.Fake<ICosmosRepository<JobCategory>>();
-        var jobProfileRepository = A.Fake<ICosmosRepository<JobProfile>>();
+        var jobCategoryRepository = A.Fake<IContentPageService<JobCategory>>();
+        var jobProfileRepository = A.Fake<IContentPageService<JobProfile>>();
         var dataLoadService = A.Fake<IApiDataService<ServiceTaxonomyApiClientOptions>>();
 
         var occupationGuid = Guid.NewGuid();

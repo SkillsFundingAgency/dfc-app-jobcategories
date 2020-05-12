@@ -243,8 +243,9 @@ namespace DFC.App.JobCategories.Controllers
         [Route("pages/{documentId}")]
         public async Task<IActionResult> Delete(Guid documentId)
         {
-            var isDeleted = await jobCategoryPageContentService.DeleteAsync(documentId).ConfigureAwait(false);
-            if (isDeleted)
+            var deletedHttpStatusCode = await jobCategoryPageContentService.DeleteAsync(documentId).ConfigureAwait(false);
+
+            if (deletedHttpStatusCode == HttpStatusCode.NoContent)
             {
                 logger.LogInformation($"{nameof(Delete)} has deleted content for document Id: {documentId}");
                 return Ok();

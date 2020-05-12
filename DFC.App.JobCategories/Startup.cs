@@ -85,8 +85,8 @@ namespace DFC.App.JobCategories
             services.AddSingleton<IDocumentClient>(documentClient);
             services.AddSingleton<ICosmosRepository<JobProfile>, CosmosRepository<JobProfile>>();
             services.AddSingleton<ICosmosRepository<JobCategory>, CosmosRepository<JobCategory>>();
-            services.AddScoped<IContentPageService<JobCategory>, ContentPageService<JobCategory>>();
-            services.AddScoped<IContentPageService<JobProfile>, ContentPageService<JobProfile>>();
+            services.AddTransient<IContentPageService<JobCategory>, ContentPageService<JobCategory>>();
+            services.AddTransient<IContentPageService<JobProfile>, ContentPageService<JobProfile>>();
             services.AddTransient<CorrelationIdDelegatingHandler>();
             services.AddAutoMapper(typeof(Startup).Assembly);
 
