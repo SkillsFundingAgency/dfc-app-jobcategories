@@ -3,7 +3,6 @@ using DFC.App.JobCategories.Data.Models;
 using DFC.App.JobCategories.Extensions;
 using DFC.App.JobCategories.PageService;
 using DFC.App.JobCategories.PageService.EventProcessorServices;
-using DFC.App.JobCategories.PageService.EventProcessorServices.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.EventGrid.Models;
@@ -26,15 +25,13 @@ namespace DFC.App.JobCategories.Controllers
 
         private readonly ILogger<WebhooksController> logger;
         private readonly AutoMapper.IMapper mapper;
-        private readonly IEventMessageService eventMessageService;
-        private readonly IDataLoadService<ServiceTaxonomyApiClientOptions> dataLoadService;
+        private readonly IEventProcessingService eventProcessingService;
 
-        public WebhooksController(ILogger<WebhooksController> logger, AutoMapper.IMapper mapper, IEventMessageService eventMessageService, IDataLoadService<ServiceTaxonomyApiClientOptions> dataLoadService)
+        public WebhooksController(ILogger<WebhooksController> logger, AutoMapper.IMapper mapper, IEventProcessingService eventProcessingService)
         {
             this.logger = logger;
             this.mapper = mapper;
-            this.eventMessageService = eventMessageService;
-            this.dataLoadService = dataLoadService;
+            this.eventProcessingService = eventProcessingService;
         }
 
         [HttpPost]
@@ -105,37 +102,13 @@ namespace DFC.App.JobCategories.Controllers
 
         private async Task<HttpStatusCode> ProcessMessageAsync(MessageAction eventType, string subject, Guid id, Uri url)
         {
-            var contentType = subject.GetContentItemType();
-            var documentId = subject.GetContentItemId();
-
             switch (eventType)
             {
                 case MessageAction.Deleted:
-                    return await dataLoadService.DeleteAsync(contentType, documentId).ConfigureAwait(false);
+                    return await eventProcessingService.DeleteAsync(url).ConfigureAwait(false);
                 case MessageAction.Published:
                 case MessageAction.Draft:
-                    var apiDataModel = await apiDataProcessorService.GetAsync<ContactUsApiDataModel>(url).ConfigureAwait(false);
-                    var contentPageModel = mapper.Map<ContentPageModel>(apiDataModel);
-
-                    if (contentPageModel == null)
-                    {
-                        return HttpStatusCode.NoContent;
-                    }
-
-                    if (!TryValidateModel(contentPageModel))
-                    {
-                        return HttpStatusCode.BadRequest;
-                    }
-
-                    var result = await eventMessageService.UpdateAsync(contentPageModel).ConfigureAwait(false);
-
-                    if (result == HttpStatusCode.NotFound)
-                    {
-                        result = await eventMessageService.CreateAsync(contentPageModel).ConfigureAwait(false);
-                    }
-
-                    return result;
-
+                    return await eventProcessingService.AddOrUpdateAsync(url).ConfigureAwait(false);
                 default:
                     logger.LogError($"Got unknown event type - {eventType}");
                     return HttpStatusCode.BadRequest;

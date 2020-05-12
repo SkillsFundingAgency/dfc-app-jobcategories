@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DFC.App.JobCategories.PageService
 {
-    public interface IDataLoadService<TClientOptions>
+    public interface IApiDataService<TClientOptions>
         where TClientOptions : ServiceTaxonomyApiClientOptions
     {
         Task<IEnumerable<T>> GetAllAsync<T>(string contentType)

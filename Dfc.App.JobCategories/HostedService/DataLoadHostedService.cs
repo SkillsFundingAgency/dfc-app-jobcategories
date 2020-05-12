@@ -20,11 +20,11 @@ namespace DFC.App.JobCategories.HostedService
         private const string OccupationApiName = "Occupation";
         private const string OccuptionLabelApiName = "OccupationLabel";
 
-        private readonly IDataLoadService<ServiceTaxonomyApiClientOptions> dataLoadService;
+        private readonly IApiDataService<ServiceTaxonomyApiClientOptions> dataLoadService;
         private readonly IContentPageService<JobProfile> jobProfileRepository;
         private readonly IContentPageService<JobCategory> jobCategoryRepository;
 
-        public DataLoadHostedService(IDataLoadService<ServiceTaxonomyApiClientOptions> dataLoadService, IContentPageService<JobProfile> jobProfileRepository, IContentPageService<JobCategory> jobCategoryRepository)
+        public DataLoadHostedService(IApiDataService<ServiceTaxonomyApiClientOptions> dataLoadService, IContentPageService<JobProfile> jobProfileRepository, IContentPageService<JobCategory> jobCategoryRepository)
         {
             this.dataLoadService = dataLoadService;
             this.jobProfileRepository = jobProfileRepository;

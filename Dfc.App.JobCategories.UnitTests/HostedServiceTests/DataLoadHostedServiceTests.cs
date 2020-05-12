@@ -21,7 +21,7 @@ public class DataLoadHostedServiceTests
         // arrange
         var jobCategoryRepository = A.Fake<ICosmosRepository<JobCategory>>();
         var jobProfileRepository = A.Fake<ICosmosRepository<JobProfile>>();
-        var dataLoadService = A.Fake<IDataLoadService<ServiceTaxonomyApiClientOptions>>();
+        var dataLoadService = A.Fake<IApiDataService<ServiceTaxonomyApiClientOptions>>();
 
         var occupationGuid = Guid.NewGuid();
 

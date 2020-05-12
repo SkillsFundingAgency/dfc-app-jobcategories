@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace DFC.App.JobCategories.PageService.EventProcessorServices
 {
-    public class ApiDataProcessorService : IApiDataProcessorService
+    public class EventProcessingService : IApiDataProcessorService
     {
         private readonly ICmsApiProcessorService cmsApiProcessorService;
 
-        public ApiDataProcessorService(ICmsApiProcessorService cmsApiProcessorService)
+        public EventProcessingService(ICmsApiProcessorService cmsApiProcessorService)
         {
             this.cmsApiProcessorService = cmsApiProcessorService;
         }

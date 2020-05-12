@@ -1,4 +1,5 @@
 ﻿using DFC.App.ContactUs.Data.Models;
+using DFC.App.JobCategories.Data.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -8,85 +9,32 @@ using System.Threading.Tasks;
 
 namespace DFC.App.JobCategories.PageService.EventProcessorServices
 {
-    public class EventMessageService : IEventMessageService
+    public class EventMessageService : IEventProcessingService
     {
         private readonly ILogger<EventMessageService> logger;
-        private readonly IContentPageService contentPageService;
+        private readonly IContentPageService<JobCategory> jobCategoryPageService;
+        private readonly IContentPageService<JobProfile> jobProfilePageService;
+        private readonly IApiDataService<ServiceTaxonomyApiClientOptions> apiDataService;
 
-        public EventMessageService(ILogger<EventMessageService> logger, IContentPageService contentPageService)
+        public EventMessageService(ILogger<EventMessageService> logger, IContentPageService<JobCategory> jobCategoryPageService, IContentPageService<JobProfile> jobProfilePageService, IApiDataService<ServiceTaxonomyApiClientOptions> apiDataService)
         {
             this.logger = logger;
-            this.contentPageService = contentPageService;
+            this.jobCategoryPageService = jobCategoryPageService;
+            this.jobProfilePageService = jobProfilePageService;
+            this.apiDataService = apiDataService;
         }
 
-        public async Task<IList<ContentPageModel>?> GetAllCachedCanonicalNamesAsync()
+        public Task<HttpStatusCode> AddOrUpdateAsync(Uri url)
         {
-            var contentPageModels = await contentPageService.GetAllAsync().ConfigureAwait(false);
-
-            return contentPageModels.ToList();
+            throw new NotImplementedException();
         }
 
-        public async Task<HttpStatusCode> CreateAsync(ContentPageModel? upsertContentPageModel)
+        public Task<HttpStatusCode> DeleteAsync(Uri url)
         {
-            if (upsertContentPageModel == null)
-            {
-                return HttpStatusCode.BadRequest;
-            }
-
-            var existingDocument = await contentPageService.GetByIdAsync(upsertContentPageModel.DocumentId).ConfigureAwait(false);
-            if (existingDocument != null)
-            {
-                return HttpStatusCode.AlreadyReported;
-            }
-
-            var response = await contentPageService.UpsertAsync(upsertContentPageModel).ConfigureAwait(false);
-
-            logger.LogInformation($"{nameof(CreateAsync)} has upserted content for: {upsertContentPageModel.CanonicalName} with response code {response}");
-
-            return response;
-        }
-
-        public async Task<HttpStatusCode> UpdateAsync(ContentPageModel? upsertContentPageModel)
-        {
-            if (upsertContentPageModel == null)
-            {
-                return HttpStatusCode.BadRequest;
-            }
-
-            var existingDocument = await contentPageService.GetByIdAsync(upsertContentPageModel.DocumentId).ConfigureAwait(false);
-            if (existingDocument == null)
-            {
-                return HttpStatusCode.NotFound;
-            }
-
-            if (upsertContentPageModel.Version.Equals(existingDocument.Version))
-            {
-                return HttpStatusCode.AlreadyReported;
-            }
-
-            upsertContentPageModel.Etag = existingDocument.Etag;
-
-            var response = await contentPageService.UpsertAsync(upsertContentPageModel).ConfigureAwait(false);
-
-            logger.LogInformation($"{nameof(UpdateAsync)} has upserted content for: {upsertContentPageModel.CanonicalName} with response code {response}");
-
-            return response;
-        }
-
-        public async Task<HttpStatusCode> DeleteAsync(Guid documentId)
-        {
-            var isDeleted = await contentPageService.DeleteAsync(documentId).ConfigureAwait(false);
-
-            if (isDeleted)
-            {
-                logger.LogInformation($"{nameof(DeleteAsync)} has deleted content for document Id: {documentId}");
-                return HttpStatusCode.OK;
-            }
-            else
-            {
-                logger.LogWarning($"{nameof(DeleteAsync)} has returned no content for: {documentId}");
-                return HttpStatusCode.NotFound;
-            }
+            var a = jobProfilePageService.GetAllAsync();
+            //Get content type and ID
+            //If Category or Profile, straight delete
+            //If Occupation or Label, query JPs for containing IDs, remove and update
         }
     }
 }

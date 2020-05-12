@@ -31,7 +31,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.DataLoadServiceTests
             var httpClient = new HttpClient(fakeHttpMessageHandler) { BaseAddress = new Uri("http://somebaseaddress") };
             A.CallTo(() => fakeHttpRequestSender.Send(A<HttpRequestMessage>.Ignored)).Returns(httpResponse);
 
-            var dataLoadService = new DataLoadService<ServiceTaxonomyApiClientOptions>(httpClient, A.Fake<ServiceTaxonomyApiClientOptions>());
+            var dataLoadService = new ApiDataService<ServiceTaxonomyApiClientOptions>(httpClient, A.Fake<ServiceTaxonomyApiClientOptions>());
 
             // act
             var result = await dataLoadService.GetAllAsync<JobProfileApiResponse>("JobProfile").ConfigureAwait(false);
@@ -59,7 +59,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.DataLoadServiceTests
             var httpClient = new HttpClient(fakeHttpMessageHandler) { BaseAddress = new Uri("http://somebaseaddress") };
             A.CallTo(() => fakeHttpRequestSender.Send(A<HttpRequestMessage>.Ignored)).Returns(httpResponse);
 
-            var dataLoadService = new DataLoadService<ServiceTaxonomyApiClientOptions>(httpClient, A.Fake<ServiceTaxonomyApiClientOptions>());
+            var dataLoadService = new ApiDataService<ServiceTaxonomyApiClientOptions>(httpClient, A.Fake<ServiceTaxonomyApiClientOptions>());
 
             // act
             var result = await dataLoadService.GetByIdAsync<JobProfile>("JobProfile", Guid.NewGuid()).ConfigureAwait(false);
@@ -86,7 +86,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.DataLoadServiceTests
             var httpClient = new HttpClient(fakeHttpMessageHandler) { BaseAddress = new Uri("http://somebaseaddress") };
             A.CallTo(() => fakeHttpRequestSender.Send(A<HttpRequestMessage>.Ignored)).Returns(httpResponse);
 
-            var dataLoadService = new DataLoadService<ServiceTaxonomyApiClientOptions>(httpClient, A.Fake<ServiceTaxonomyApiClientOptions>());
+            var dataLoadService = new ApiDataService<ServiceTaxonomyApiClientOptions>(httpClient, A.Fake<ServiceTaxonomyApiClientOptions>());
 
             // act
             var result = await dataLoadService.GetByIdAsync<JobProfile>("JobProfile", Guid.NewGuid()).ConfigureAwait(false);

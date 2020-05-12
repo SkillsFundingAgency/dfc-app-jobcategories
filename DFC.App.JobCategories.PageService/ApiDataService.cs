@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace DFC.App.JobCategories.PageService
 {
-    public class DataLoadService<TClientOptions> : IDataLoadService<TClientOptions>
+    public class ApiDataService<TClientOptions> : IApiDataService<TClientOptions>
         where TClientOptions : ServiceTaxonomyApiClientOptions
     {
         private readonly HttpClient httpClient;
         private readonly TClientOptions serviceTaxonomyClientOptions;
 
-        public DataLoadService(HttpClient httpClient, TClientOptions serviceTaxonomyClientOptions)
+        public ApiDataService(HttpClient httpClient, TClientOptions serviceTaxonomyClientOptions)
         {
             this.httpClient = httpClient;
             this.serviceTaxonomyClientOptions = serviceTaxonomyClientOptions;

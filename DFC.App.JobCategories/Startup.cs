@@ -102,7 +102,7 @@ namespace DFC.App.JobCategories
 
             services
                .AddPolicies(policyRegistry, nameof(ServiceTaxonomyApiClientOptions), policyOptions)
-               .AddHttpClient<IDataLoadService<ServiceTaxonomyApiClientOptions>, DataLoadService<ServiceTaxonomyApiClientOptions>, ServiceTaxonomyApiClientOptions>(configuration, nameof(ServiceTaxonomyApiClientOptions), nameof(PolicyOptions.HttpRetry), nameof(PolicyOptions.HttpCircuitBreaker));
+               .AddHttpClient<IApiDataService<ServiceTaxonomyApiClientOptions>, ApiDataService<ServiceTaxonomyApiClientOptions>, ServiceTaxonomyApiClientOptions>(configuration, nameof(ServiceTaxonomyApiClientOptions), nameof(PolicyOptions.HttpRetry), nameof(PolicyOptions.HttpCircuitBreaker));
 
             services.AddMvc(config =>
                 {
