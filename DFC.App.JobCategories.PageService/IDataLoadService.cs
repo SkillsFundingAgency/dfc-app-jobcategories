@@ -10,8 +10,10 @@ namespace DFC.App.JobCategories.PageService
     public interface IDataLoadService<TClientOptions>
         where TClientOptions : ServiceTaxonomyApiClientOptions
     {
-        Task<string> GetAllAsync(string contentType);
+        Task<IEnumerable<T>> GetAllAsync<T>(string contentType)
+            where T : class;
 
-        Task<string> GetByIdAsync(string contentType, Guid id);
+        Task<T> GetByIdAsync<T>(string contentType, Guid id)
+            where T : class;
     }
 }
