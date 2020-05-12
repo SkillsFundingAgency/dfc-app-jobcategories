@@ -63,5 +63,12 @@ namespace DFC.App.JobCategories.PageService
 
             return result == HttpStatusCode.NoContent;
         }
+
+        public async Task<bool> DeleteAllAsync()
+        {
+            var result = await repository.DeleteAllAsync().ConfigureAwait(false);
+
+            return result == HttpStatusCode.NoContent;
+        }
     }
 }

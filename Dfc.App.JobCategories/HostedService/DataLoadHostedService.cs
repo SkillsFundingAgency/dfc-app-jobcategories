@@ -21,10 +21,10 @@ namespace DFC.App.JobCategories.HostedService
         private const string OccuptionLabelApiName = "OccupationLabel";
 
         private readonly IDataLoadService<ServiceTaxonomyApiClientOptions> dataLoadService;
-        private readonly ICosmosRepository<JobProfile> jobProfileRepository;
-        private readonly ICosmosRepository<JobCategory> jobCategoryRepository;
+        private readonly IContentPageService<JobProfile> jobProfileRepository;
+        private readonly IContentPageService<JobCategory> jobCategoryRepository;
 
-        public DataLoadHostedService(IDataLoadService<ServiceTaxonomyApiClientOptions> dataLoadService, ICosmosRepository<JobProfile> jobProfileRepository, ICosmosRepository<JobCategory> jobCategoryRepository)
+        public DataLoadHostedService(IDataLoadService<ServiceTaxonomyApiClientOptions> dataLoadService, IContentPageService<JobProfile> jobProfileRepository, IContentPageService<JobCategory> jobCategoryRepository)
         {
             this.dataLoadService = dataLoadService;
             this.jobProfileRepository = jobProfileRepository;
@@ -116,15 +116,10 @@ namespace DFC.App.JobCategories.HostedService
             return data;
         }
 
-        private async Task<IEnumerable<JobCategoryApiResponse>> GetJobCategoriesAsync()
-        {
-            return await LoadDataAsync<JobCategoryApiResponse>(JobCategoryApiName).ConfigureAwait(false);
-        }
-
         private async Task RemoveExistingData()
         {
-            await jobCategoryRepository.DeleteAllAsync<JobCategory>().ConfigureAwait(false);
-            await jobProfileRepository.DeleteAllAsync<JobProfile>().ConfigureAwait(false);
+            await jobCategoryRepository.DeleteAllAsync().ConfigureAwait(false);
+            await jobProfileRepository.DeleteAllAsync().ConfigureAwait(false);
         }
     }
 }

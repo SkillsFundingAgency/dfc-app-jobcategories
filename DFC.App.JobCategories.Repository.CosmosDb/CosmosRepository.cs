@@ -130,8 +130,7 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
             return HttpStatusCode.NotFound;
         }
 
-        public async Task<HttpStatusCode> DeleteAllAsync<TModel>()
-            where TModel : IDataModel
+        public async Task<HttpStatusCode> DeleteAllAsync()
         {
 
             var query = documentClient.CreateDocumentQuery<T>(DocumentCollectionUri, new FeedOptions { PartitionKey = partitionKey })

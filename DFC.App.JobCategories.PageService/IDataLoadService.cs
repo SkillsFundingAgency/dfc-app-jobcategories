@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +15,5 @@ namespace DFC.App.JobCategories.PageService
             where T : class;
 
         Task<T> GetByIdAsync<T>(string contentType, Guid id)
-            where T : class;
     }
 }

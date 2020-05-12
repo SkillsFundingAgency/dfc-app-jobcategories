@@ -22,5 +22,6 @@ namespace DFC.App.JobCategories.PageService
         Task<HttpStatusCode> UpsertAsync(T? contentPageModel);
 
         Task<bool> DeleteAsync(Guid documentId);
+        Task<bool> DeleteAllAsync();
     }
 }
