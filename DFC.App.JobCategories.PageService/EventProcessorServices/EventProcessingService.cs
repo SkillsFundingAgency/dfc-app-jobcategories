@@ -45,7 +45,7 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
                     var jobCategoryJobProfileUpdateTasks = jobCategory.Links.Where(x => x.LinkValue.Key.ToLower() == "jobprofile").Select(z => RefreshJobProfile(Guid.Parse(z.LinkValue.Value.Href.Segments.Last().TrimEnd('/'))));
                     return ProcessResults(await Task.WhenAll(jobCategoryJobProfileUpdateTasks).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
                 case "jobprofile":
-                    return LogResults(await RefreshJobProfile(id).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
+                    return ProcessResults(await RefreshJobProfile(id).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
                 case "occupation":
                     var jobProfilesWithOccupation = await GetJobProfilesByOccupationIdAsync(id).ConfigureAwait(false);
                     var jobProfileUpdateTasks = jobProfilesWithOccupation.Select(async x => await RefreshJobProfile(x.DocumentId.Value));
@@ -59,7 +59,7 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
             }
         }
 
-        private HttpStatusCode LogResults(HttpStatusCode statusCode, Uri url, string actionName)
+        private HttpStatusCode ProcessResults(HttpStatusCode statusCode, Uri url, string actionName)
         {
             return ProcessResults(new HttpStatusCode[] { statusCode }, url, actionName);
         }
