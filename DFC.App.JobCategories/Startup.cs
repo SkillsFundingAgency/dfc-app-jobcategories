@@ -10,6 +10,8 @@ using DFC.App.JobCategories.HostedService;
 using DFC.App.JobCategories.HttpClientPolicies;
 using DFC.App.JobCategories.PageService;
 using DFC.App.JobCategories.PageService.EventProcessorServices;
+using DFC.App.JobCategories.PageService.Extensions;
+using DFC.App.JobCategories.PageService.Helpers;
 using DFC.App.JobCategories.Repository.CosmosDb;
 using DFC.Logger.AppInsights.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -89,6 +91,8 @@ namespace DFC.App.JobCategories
             services.AddTransient<IContentPageService<JobCategory>, ContentPageService<JobCategory>>();
             services.AddTransient<IContentPageService<JobProfile>, ContentPageService<JobProfile>>();
             services.AddTransient<IEventProcessingService, EventProcessingService>();
+            services.AddTransient<IApiExtensions, ApiExtensions>();
+            services.AddTransient<IJobProfileHelper, JobProfileHelper>();
             services.AddTransient<CorrelationIdDelegatingHandler>();
             services.AddAutoMapper(typeof(Startup).Assembly);
 

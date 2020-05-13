@@ -2,6 +2,7 @@
 using DFC.App.JobCategories.Data.Models;
 using DFC.App.JobCategories.Data.Models.API;
 using DFC.App.JobCategories.PageService.Extensions;
+using DFC.App.JobCategories.PageService.Helpers;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -17,13 +18,15 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
         private readonly IContentPageService<JobCategory> jobCategoryPageService;
         private readonly IContentPageService<JobProfile> jobProfilePageService;
         private readonly IApiDataService<ServiceTaxonomyApiClientOptions> apiDataService;
+        private readonly IJobProfileHelper jobProfileHelper;
 
-        public EventProcessingService(ILogger<EventProcessingService> logger, IContentPageService<JobCategory> jobCategoryPageService, IContentPageService<JobProfile> jobProfilePageService, IApiDataService<ServiceTaxonomyApiClientOptions> jobProfileApiService)
+        public EventProcessingService(ILogger<EventProcessingService> logger, IContentPageService<JobCategory> jobCategoryPageService, IContentPageService<JobProfile> jobProfilePageService, IApiDataService<ServiceTaxonomyApiClientOptions> jobProfileApiService, IJobProfileHelper jobProfileHelper)
         {
             this.logger = logger;
             this.jobCategoryPageService = jobCategoryPageService;
             this.jobProfilePageService = jobProfilePageService;
             this.apiDataService = jobProfileApiService;
+            this.jobProfileHelper = jobProfileHelper;
         }
 
         public async Task<HttpStatusCode> AddOrUpdateAsync(Uri url)
@@ -45,7 +48,7 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
                     return LogResults(await RefreshJobProfile(id).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
                 case "occupation":
                     var jobProfilesWithOccupation = await GetJobProfilesByOccupationIdAsync(id).ConfigureAwait(false);
-                    var jobProfileUpdateTasks = jobProfilesWithOccupation.Select(x => RefreshJobProfile(x.DocumentId.Value));
+                    var jobProfileUpdateTasks = jobProfilesWithOccupation.Select(async x => await RefreshJobProfile(x.DocumentId.Value));
                     return ProcessResults(await Task.WhenAll(jobProfileUpdateTasks).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
                 case "occupationlabel":
                     var jobProfilesWithOccupationLabels = await GetJobProfilesByOccupationLabelIdAsync(id).ConfigureAwait(false);
@@ -81,7 +84,8 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
         {
             var newJobProfileApi = await apiDataService.GetByIdAsync<JobProfileApiResponse>(nameof(JobProfile).ToLower(), id).ConfigureAwait(false);
             var newJobProfile = newJobProfileApi.Map();
-            return await jobProfilePageService.UpsertAsync(newJobProfile).ConfigureAwait(false);
+            var constructedJobProfile = await jobProfileHelper.AddOccupationAndLabels(newJobProfile).ConfigureAwait(false);
+            return await jobProfilePageService.UpsertAsync(constructedJobProfile).ConfigureAwait(false);
         }
 
         private async Task<IEnumerable<JobProfile?>> GetJobProfilesByOccupationIdAsync(Guid occupationId)

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DFC.App.JobCategories.PageService.Extensions
 {
-    public class ApiExtensions
+    public class ApiExtensions : IApiExtensions
     {
         private readonly IApiDataService<ServiceTaxonomyApiClientOptions> apiDataService;
 
@@ -14,14 +14,14 @@ namespace DFC.App.JobCategories.PageService.Extensions
             this.apiDataService = apiDataService;
         }
 
-        private async Task<IEnumerable<T>> LoadDataAsync<T>(string contentType)
+        public async Task<IEnumerable<T>> LoadDataAsync<T>(string contentType)
            where T : class
         {
             var data = await apiDataService.GetAllAsync<T>(contentType).ConfigureAwait(false);
             return data;
         }
 
-        private async Task<T> LoadDataByIdAsync<T>(string contentType, Guid id)
+        public async Task<T> LoadDataByIdAsync<T>(string contentType, Guid id)
            where T : class
         {
             var data = await apiDataService.GetByIdAsync<T>(contentType, id).ConfigureAwait(false);

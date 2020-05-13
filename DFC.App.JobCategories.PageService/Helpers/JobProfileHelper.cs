@@ -54,6 +54,12 @@ namespace DFC.App.JobCategories.PageService.Helpers
             return jpsToReturn;
         }
 
+        public async Task<JobProfile> AddOccupationAndLabels(JobProfile jobProfile)
+        {
+            var result = await AddOccupationAndLabels(new List<JobProfile> { jobProfile }).ConfigureAwait(false);
+            return result.FirstOrDefault();
+        }
+
         private async Task<IEnumerable<OccupationLabelApiResponse>> GetOccupationLabels(IEnumerable<OccupationApiResponse> occupations)
         {
             var allLabels = occupations.Where(y => y != null).SelectMany(x => x.Links.Where(z => z.LinkValue.Key == "occupationlabel" && (z.LinkValue.Value.Relationship == "ncs__hasAltLabel")).Select(y => y.LinkValue.Value.Href.Segments.Last().TrimEnd('/')));
