@@ -1,0 +1,16 @@
+﻿@model DFC.App.JobCategories.ViewModels.SidebarRightViewModel
+
+@if (Model.Categories?.Any() ?? false)
+{
+    <aside class="app-related-items">
+        <h2 class="govuk-heading-m">Other job categories</h2>
+        <ul class="govuk-list govuk-!-font-size-16">
+            @foreach (var cat in Model.Categories)
+            {
+                <li>
+                    <a class="govuk-link" href="@cat.Value">@cat.Key</a>
+                </li>
+            }
+        </ul>
+    </aside>
+}

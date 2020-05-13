@@ -20,7 +20,7 @@ namespace DFC.App.JobCategories.Data.Models
         [UrlPath]
         public string? CanonicalName { get; set; }
 
-        public string PartitionKey => "static-page";
+        public string PartitionKey { get; set; }
 
         public long SequenceNumber { get; set; }
 
