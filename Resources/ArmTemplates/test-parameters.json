@@ -37,6 +37,12 @@
         },
         "jobcategoriesAppDatabaseThroughput": {
             "value": 2
+        },
+        "ServiceTaxonomyApiClientOptionsTimeout": {
+            "value": "foo"
+        },
+        "ServiceTaxonomyApiClientOptionsBaseAddress": {
+            "value": "bar"
         }
     }
 }
