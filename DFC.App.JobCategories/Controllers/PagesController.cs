@@ -163,7 +163,7 @@ namespace DFC.App.JobCategories.Controllers
             var viewModel = new BodyViewModel();
             viewModel.Profiles = jobProfiles
                 .Where(x => x != null)
-                .Select(x => new JobProfileListItemViewModel(x.Title!, x.CanonicalName!, "Some test, string, to check CSS", x.Description));
+                .Select(x => new JobProfileListItemViewModel(x.Title!, x.CanonicalName!, x.Occupation?.OccupationLabels?.Select(l => l.Title!) ?? null, x.Description!));
 
             return this.NegotiateContentResult(viewModel);
         }
