@@ -1,6 +1,8 @@
+using DFC.App.JobCategories.Data.Models;
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
@@ -10,14 +12,17 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
     {
         [Theory]
         [MemberData(nameof(JsonMediaTypes))]
-        public void PagesControllerSidebarRightJsonReturnsSuccess(string mediaTypeName)
+        public async Task PagesControllerSidebarRightJsonReturnsSuccess(string mediaTypeName)
         {
             // Arrange
             const string article = "an-article-name";
             var controller = BuildPagesController(mediaTypeName);
+            JobCategory? expectedResult = null;
+
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
 
             // Act
-            var result = controller.SidebarRight(article);
+            var result = await controller.SidebarRight(article).ConfigureAwait(false);
 
             // Assert
             var statusResult = Assert.IsType<NoContentResult>(result);
@@ -29,14 +34,17 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
         [Theory]
         [MemberData(nameof(JsonMediaTypes))]
-        public void PagesControllerSidebarRightWithNullArticleJsonReturnsSuccess(string mediaTypeName)
+        public async Task PagesControllerSidebarRightWithNullArticleJsonReturnsSuccess(string mediaTypeName)
         {
             // Arrange
             const string? article = null;
             var controller = BuildPagesController(mediaTypeName);
+            JobCategory? expectedResult = null;
+
+            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
 
             // Act
-            var result = controller.SidebarRight(article);
+            var result = await controller.SidebarRight(article);
 
             // Assert
             var statusResult = Assert.IsType<NoContentResult>(result);

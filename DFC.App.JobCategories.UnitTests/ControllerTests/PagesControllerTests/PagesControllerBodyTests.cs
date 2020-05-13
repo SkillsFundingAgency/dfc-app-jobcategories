@@ -31,7 +31,6 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
             // Assert
             A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<BodyViewModel>.Ignored)).MustHaveHappenedOnceExactly();
 
             var viewResult = Assert.IsType<ViewResult>(result);
             _ = Assert.IsAssignableFrom<BodyViewModel>(viewResult.ViewData.Model);
@@ -58,7 +57,6 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
             // Assert
             A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<BodyViewModel>.Ignored)).MustHaveHappenedOnceExactly();
 
             var jsonResult = Assert.IsType<OkObjectResult>(result);
             _ = Assert.IsAssignableFrom<JobCategory>(jsonResult.Value);
@@ -85,7 +83,6 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
             // Assert
             A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<BodyViewModel>.Ignored)).MustHaveHappenedOnceExactly();
 
             var viewResult = Assert.IsType<ViewResult>(result);
             _ = Assert.IsAssignableFrom<BodyViewModel>(viewResult.ViewData.Model);
@@ -112,7 +109,6 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
             // Assert
             A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<BodyViewModel>.Ignored)).MustHaveHappenedOnceExactly();
 
             var jsonResult = Assert.IsType<OkObjectResult>(result);
             _ = Assert.IsAssignableFrom<JobCategory>(jsonResult.Value);
@@ -164,7 +160,6 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
             // Assert
             A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<BodyViewModel>.Ignored)).MustHaveHappenedOnceExactly();
 
             var statusResult = Assert.IsType<StatusCodeResult>(result);
 

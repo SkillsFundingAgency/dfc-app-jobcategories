@@ -7,7 +7,7 @@ namespace DFC.App.JobCategories.ViewModels
     {
         public HtmlString? Content { get; set; }
 
-        public string Category { get; set; } = "Administration";
+        public string? Category { get; set; }
 
         public IEnumerable<JobProfileListItemViewModel> Profiles { get; set; } = new List<JobProfileListItemViewModel>();
     }

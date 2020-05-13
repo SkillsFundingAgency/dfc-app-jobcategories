@@ -149,23 +149,29 @@ namespace DFC.App.JobCategories.Controllers
 
             if (contentPageModel == null)
             {
-                return NoContent();
-            }
-
-            var jpsToRetrieveHrefs = contentPageModel.Links?.Where(x => x.LinkValue.Key == nameof(JobProfile).ToLower()).Select(z => z.LinkValue.Value.Href);
-            var jobProfiles = await Task.WhenAll(jpsToRetrieveHrefs?.Select(x => jobProfilePageContentService.GetByUriAsync(x))).ConfigureAwait(false);
-
-            if (jobProfiles == null || !jobProfiles.Any())
-            {
-                return NoContent();
+                return NotFound();
             }
 
             var viewModel = new BodyViewModel();
-            viewModel.Profiles = jobProfiles
-                .Where(x => x != null)
-                .Select(x => new JobProfileListItemViewModel(x.Title!, x.CanonicalName!, x.Occupation?.OccupationLabels?.Select(l => l.Title!) ?? null, x.Description!));
+            viewModel.Category = contentPageModel.Title;
 
-            return this.NegotiateContentResult(viewModel);
+            var jpsToRetrieveHrefs = contentPageModel.Links?.Where(x => x.LinkValue.Key == nameof(JobProfile).ToLower()).Select(z => z.LinkValue.Value.Href);
+
+            if (jpsToRetrieveHrefs != null)
+            {
+                var jobProfiles = await Task.WhenAll(jpsToRetrieveHrefs?.Select(x => jobProfilePageContentService.GetByUriAsync(x))).ConfigureAwait(false);
+
+                if (jobProfiles == null || !jobProfiles.Any())
+                {
+                    return NoContent();
+                }
+                
+                viewModel.Profiles = jobProfiles
+                    .Where(x => x != null)
+                    .Select(x => new JobProfileListItemViewModel(x.Title!, x.CanonicalName!, x.Occupation?.OccupationLabels?.Select(l => l.Title!) ?? null, x.Description!));
+            }
+
+            return this.NegotiateContentResult(viewModel, contentPageModel);
         }
 
         [HttpGet]
@@ -173,6 +179,13 @@ namespace DFC.App.JobCategories.Controllers
         [Route("pages/sidebarright")]
         public async Task<IActionResult> SidebarRight(string? article)
         {
+            var contentPageModel = await GetContentPageAsync(article).ConfigureAwait(false);
+
+            if (contentPageModel == null)
+            {
+                return NoContent();
+            }
+
             var viewModel = new SidebarRightViewModel();
             var categories = await jobCategoryPageContentService.GetAllAsync().ConfigureAwait(false);
 

@@ -81,6 +81,9 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
         {
             // Arrange
             var controller = BuildController(route);
+            JobCategory? expectedResult = null;
+
+            A.CallTo(() => fakeJobCategoryPageContentService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
 
             // Act
             var result = await RunControllerAction(controller, article, actionMethod).ConfigureAwait(false);
@@ -101,7 +104,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
                 nameof(PagesController.Breadcrumb) => await controller.Breadcrumb(article).ConfigureAwait(false),
                 nameof(PagesController.BodyTop) => controller.BodyTop(article),
                 nameof(PagesController.HeroBanner) => controller.HeroBanner(article),
-                nameof(PagesController.SidebarRight) => controller.SidebarRight(article),
+                nameof(PagesController.SidebarRight) => await controller.SidebarRight(article).ConfigureAwait(false),
                 nameof(PagesController.SidebarLeft) => controller.SidebarLeft(article),
                 nameof(PagesController.BodyFooter) => controller.BodyFooter(article),
                 _ => await controller.Body(article).ConfigureAwait(false),
