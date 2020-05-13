@@ -60,6 +60,12 @@
             "type": "string",
             "defaultValue": ""
         },
+        "ServiceTaxonomyApiClientOptionsTimeout": {
+            "type": "string"
+        },
+        "ServiceTaxonomyApiClientOptionsBaseAddress": {
+            "type": "string"
+        },
         "enableAlerts": {
             "type": "bool",
             "metadata": {
@@ -194,6 +200,14 @@
                             {
                                 "name": "Configuration__CosmosDbConnections__JobCategories__PartitionKey",
                                 "value": "[variables('cosmosDbCollectionPartitionKey')]"
+                            },
+                            {
+                                "name": "ServiceTaxonomyApiClientOptions__Timeout",
+                                "value": "[parameters('ServiceTaxonomyApiClientOptionsTimeout')]"
+                            },
+                            {
+                                "name": "ServiceTaxonomyApiClientOptions__BaseAddress",
+                                "value": "[parameters('ServiceTaxonomyApiClientOptionsBaseAddress')]"
                             }
                         ]
                     }
