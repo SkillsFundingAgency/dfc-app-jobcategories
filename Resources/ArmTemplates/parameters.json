@@ -49,6 +49,12 @@
         },
         "jobcategoriesAppDatabaseThroughput": {
             "value": __jobcategoriesAppDatabaseThroughput__
+        },
+        "ServiceTaxonomyApiClientOptionsTimeout": {
+            "value": "__ServiceTaxonomyApiClientOptionsTimeout__"
+        },
+        "ServiceTaxonomyApiClientOptionsBaseAddress": {
+            "value": "__ServiceTaxonomyApiClientOptionsBaseAddress__"
         }
     }
 }
