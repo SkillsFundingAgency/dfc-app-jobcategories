@@ -71,8 +71,8 @@ namespace DFC.App.JobCategories.Controllers
 
             if (jobProfiles != null)
             {
-                var results = await Task.WhenAll(jobProfiles).ConfigureAwait(false);
-                contentPageModel.JobProfiles = results != null ? results.ToList() : null;
+                //var results = await Task.WhenAll(jobProfiles).ConfigureAwait(false);
+                //contentPageModel.JobProfiles = results != null ? results.ToList() : null;
             }
 
             if (contentPageModel != null)

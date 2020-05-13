@@ -28,6 +28,6 @@ namespace DFC.App.JobCategories.Data.Models
 
         public string? CanonicalName { get; set; }
 
-        public IEnumerable<JobProfile?>? JobProfiles { get; set; }
+        public DateTime DateModified { get; set; }
     }
 }

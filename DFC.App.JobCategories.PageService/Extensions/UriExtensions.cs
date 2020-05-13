@@ -11,7 +11,7 @@ namespace DFC.App.JobCategories.PageService.Extensions
                 throw new InvalidOperationException($"{nameof(value)} is null");
             }
 
-            return value.Segments[1];
+            return value.Segments[1].ToString().TrimEnd('/');
         }
 
         public static Guid GetContentItemId(this Uri value)

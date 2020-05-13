@@ -2,11 +2,13 @@
 using DFC.App.JobCategories.Data.Models;
 using DFC.App.JobCategories.Extensions;
 using DFC.App.JobCategories.PageService;
+using System.Linq;
 using DFC.App.JobCategories.PageService.EventProcessorServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
@@ -46,6 +48,8 @@ namespace DFC.App.JobCategories.Controllers
             eventGridSubscriber.AddOrUpdateCustomEventMapping(EventTypePublished, typeof(string));
             eventGridSubscriber.AddOrUpdateCustomEventMapping(EventTypeDraft, typeof(string));
             eventGridSubscriber.AddOrUpdateCustomEventMapping(EventTypeDeleted, typeof(string));
+            var eventGridEventz = JsonConvert.DeserializeObject<EventGridEvent[]>(requestContent)
+                .FirstOrDefault();
             var eventGridEvents = eventGridSubscriber.DeserializeEventGridEvents(requestContent);
 
             foreach (var eventGridEvent in eventGridEvents)
@@ -72,9 +76,10 @@ namespace DFC.App.JobCategories.Controllers
                 }
                 else
                 {
-                    if (!Guid.TryParse(eventGridEvent.Id, out Guid id))
+                    var id = eventGridEvent.Id;
+                    if (string.IsNullOrEmpty(id))
                     {
-                        throw new InvalidDataException($"Invalid Guid for EventGridEvent.Id '{eventGridEvent.Id}'");
+                        throw new InvalidDataException($"Invalid Id for EventGridEvent.Id '{eventGridEvent.Id}'");
                     }
 
                     if (!Enum.IsDefined(typeof(MessageAction), eventGridEvent.EventType))
@@ -93,15 +98,18 @@ namespace DFC.App.JobCategories.Controllers
 
                     var result = await ProcessMessageAsync(eventType, eventGridEvent.Subject, id, url).ConfigureAwait(false);
 
-                    LogResult(id, result);
+                    var statusCodeResult = new StatusCodeResult((int)result);
+                    return statusCodeResult;
                 }
             }
 
             return Ok();
         }
 
-        private async Task<HttpStatusCode> ProcessMessageAsync(MessageAction eventType, string subject, Guid id, Uri url)
+        private async Task<HttpStatusCode> ProcessMessageAsync(MessageAction eventType, string subject, string id, Uri url)
         {
+            logger.LogInformation($"Processing message for: {id}: {eventType} {url}");
+
             switch (eventType)
             {
                 case MessageAction.Deleted:
@@ -112,28 +120,6 @@ namespace DFC.App.JobCategories.Controllers
                 default:
                     logger.LogError($"Got unknown event type - {eventType}");
                     return HttpStatusCode.BadRequest;
-            }
-        }
-
-        private void LogResult(Guid id, HttpStatusCode result)
-        {
-            switch (result)
-            {
-                case HttpStatusCode.OK:
-                    logger.LogInformation($"{ClassFullName}: Content Page Id: {id}: Updated Content Page");
-                    break;
-
-                case HttpStatusCode.Created:
-                    logger.LogInformation($"{ClassFullName}: Content Page Id: {id}: Created Content Page");
-                    break;
-
-                case HttpStatusCode.AlreadyReported:
-                    logger.LogInformation($"{ClassFullName}: Content Page Id: {id}: Content Page previously updated");
-                    break;
-
-                default:
-                    logger.LogWarning($"{ClassFullName}: Content Page Id: {id}: Content Page not Posted: Status: {result}");
-                    break;
             }
         }
     }

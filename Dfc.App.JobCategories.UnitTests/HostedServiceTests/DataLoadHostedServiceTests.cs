@@ -3,6 +3,8 @@ using DFC.App.JobCategories.Data.Models;
 using DFC.App.JobCategories.Data.Models.API;
 using DFC.App.JobCategories.HostedService;
 using DFC.App.JobCategories.PageService;
+using DFC.App.JobCategories.PageService.Extensions;
+using DFC.App.JobCategories.PageService.Helpers;
 using FakeItEasy;
 using Newtonsoft.Json;
 using System;
@@ -90,7 +92,7 @@ public class DataLoadHostedServiceTests
         A.CallTo(() => jobCategoryRepository.UpsertAsync(A<JobCategory>.Ignored)).Returns(HttpStatusCode.OK);
         A.CallTo(() => jobProfileRepository.UpsertAsync(A<JobProfile>.Ignored)).Returns(HttpStatusCode.OK);
 
-        var dataLoadHostedService = new DataLoadHostedService(dataLoadService, jobProfileRepository, jobCategoryRepository);
+        var dataLoadHostedService = new DataLoadHostedService(A.Fake<IApiExtensions>(), jobProfileRepository, jobCategoryRepository, new JobProfileHelper(A.Fake<IApiExtensions>()));
 
         // act
         await dataLoadHostedService.StartAsync(CancellationToken.None).ConfigureAwait(false);
