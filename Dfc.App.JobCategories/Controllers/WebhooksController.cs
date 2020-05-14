@@ -5,6 +5,7 @@ using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Linq;
@@ -44,9 +45,8 @@ namespace DFC.App.JobCategories.Controllers
             eventGridSubscriber.AddOrUpdateCustomEventMapping(EventTypePublished, typeof(string));
             eventGridSubscriber.AddOrUpdateCustomEventMapping(EventTypeDraft, typeof(string));
             eventGridSubscriber.AddOrUpdateCustomEventMapping(EventTypeDeleted, typeof(string));
-            var eventGridEventz = JsonConvert.DeserializeObject<EventGridEvent[]>(requestContent)
-                .FirstOrDefault();
-            var eventGridEvents = eventGridSubscriber.DeserializeEventGridEvents(requestContent);
+
+            var eventGridEvents = JsonConvert.DeserializeObject<EventGridEvent[]>(requestContent);
 
             foreach (var eventGridEvent in eventGridEvents)
             {
@@ -78,21 +78,18 @@ namespace DFC.App.JobCategories.Controllers
                         throw new InvalidDataException($"Invalid Id for EventGridEvent.Id '{eventGridEvent.Id}'");
                     }
 
-                    if (!Enum.IsDefined(typeof(MessageAction), eventGridEvent.EventType))
+                    if (!Enum.TryParse(typeof(MessageAction), eventGridEvent.EventType, true, out var parsedMessageAction))
                     {
                         throw new InvalidDataException($"Invalid event type '{eventGridEvent.EventType}' received for Event Id: {id}, should be one of '{string.Join(",", Enum.GetNames(typeof(MessageAction)))}'");
                     }
 
-                    if (!Uri.TryCreate((string)eventGridEvent.Data, UriKind.Absolute, out Uri? url))
-                    {
-                        throw new InvalidDataException($"Invalid Url '{(string)eventGridEvent.Data}' received for Event Id: {id}");
-                    }
+                    var url = GetUrlFromData(eventGridEvent);
 
                     var eventType = Enum.Parse<MessageAction>(eventGridEvent.EventType, true);
 
                     logger.LogInformation($"Got Event Id: {id}: {eventType} {url}");
 
-                    var result = await ProcessMessageAsync(eventType, eventGridEvent.Subject, id, url).ConfigureAwait(false);
+                    var result = await ProcessMessageAsync(eventType, id, url).ConfigureAwait(false);
 
                     var statusCodeResult = new StatusCodeResult((int)result);
                     return statusCodeResult;
@@ -102,7 +99,25 @@ namespace DFC.App.JobCategories.Controllers
             return Ok();
         }
 
-        private async Task<HttpStatusCode> ProcessMessageAsync(MessageAction eventType, string subject, string id, Uri url)
+        private Uri GetUrlFromData(EventGridEvent eventGridEvent)
+        {
+            if (eventGridEvent.Data == null)
+            {
+                throw new InvalidDataException($"Data property in message {eventGridEvent.Id} is null");
+            }
+
+            var dataJObject = JObject.Parse(eventGridEvent.Data.ToString()!);
+            var url = dataJObject.Properties().FirstOrDefault(x => x.Name == "api");
+
+            if (url == null)
+            {
+                throw new InvalidDataException($"Could not retrieve property api from Data in Event Grid Message {eventGridEvent.Id}");
+            }
+
+            return new Uri(url.Value.ToString());
+        }
+
+        private async Task<HttpStatusCode> ProcessMessageAsync(MessageAction eventType, string id, Uri url)
         {
             logger.LogInformation($"Processing message for: {id}: {eventType} {url}");
 

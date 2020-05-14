@@ -46,7 +46,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DFC.App.JobCategories.MessageFunctionApp.UnitTests\DFC.App.JobCategories.MessageFunctionApp.UnitTests.csproj" />
     <ProjectReference Include="..\DFC.App.JobCategories.PageService\DFC.App.JobCategories.PageService.csproj" />
   </ItemGroup>
 
