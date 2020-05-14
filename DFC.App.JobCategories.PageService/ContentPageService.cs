@@ -54,11 +54,13 @@ namespace DFC.App.JobCategories.PageService
         }
 
         public async Task<HttpStatusCode> UpsertAsync(T? contentPageModel)
-        {
+        {  
             if (contentPageModel == null)
             {
                 throw new ArgumentNullException(nameof(contentPageModel));
             }
+
+            contentPageModel.DateModified = DateTime.UtcNow;
 
             return await repository.UpsertAsync(contentPageModel).ConfigureAwait(false);
         }

@@ -132,7 +132,7 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
                 var categoryLinks = category!.Links.ToList();
 
                 //Job profile can only exist in a category link once
-                var linkToRemove = categoryLinks.Where(x => x.LinkValue.Key == "jobprofile" && x.LinkValue.Value.Href.ToString().Contains(id.ToString())).FirstOrDefault();
+                var linkToRemove = categoryLinks.Where(x => x.LinkValue.Key == "jobprofile" && x.LinkValue.Value.GetId<Guid>() == id).FirstOrDefault();
 
                 if (linkToRemove == null)
                 {
@@ -171,8 +171,14 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
         private async Task<HttpStatusCode> AddOrUpdateJobCategoryAsync(Uri url, Guid id)
         {
             var jobCategory = await apiDataService.GetByIdAsync<JobCategoryApiResponse>(nameof(JobCategory).ToLower(), id).ConfigureAwait(false);
-            await jobCategoryPageService.UpsertAsync(jobCategory.Map()).ConfigureAwait(false);
-            var jobCategoryJobProfileUpdateTasks = jobCategory.Links.Where(x => x.LinkValue.Key.ToLower() == "jobprofile").Select(z => RefreshJobProfile(Guid.Parse(z.LinkValue.Value.Href!.Segments.Last().TrimEnd('/'))));
+            var jobCategoryResult = await jobCategoryPageService.UpsertAsync(jobCategory.Map()).ConfigureAwait(false);
+
+            if (!jobCategoryResult.IsSuccessStatusCode())
+            {
+                throw new InvalidOperationException($"{nameof(AddOrUpdateJobCategoryAsync)} Id {id} Uri {url} result was not successful: {jobCategoryResult}");
+            }
+
+            var jobCategoryJobProfileUpdateTasks = jobCategory.Links.Where(x => x.LinkValue.Key.ToLower() == "jobprofile").Select(z => RefreshJobProfile(z.LinkValue.Value.GetId<Guid>()));
             return ProcessResults(await Task.WhenAll(jobCategoryJobProfileUpdateTasks).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
         }
 
@@ -186,6 +192,7 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
 
         private async Task<IEnumerable<JobCategory?>> GetJobCategoryByJobProfileIdAsync(Guid jobProfileId)
         {
+            //Can't use extension for ID here as Cosmos client can't compile expression
             var jobCategoriesWithJobProfile = await jobCategoryPageService.GetByQueryAsync(x => x.Links.Any(z => z.LinkValue.Key == "jobprofile" && z.LinkValue.Value.Href.ToString().Contains(jobProfileId.ToString()))).ConfigureAwait(false);
             return jobCategoriesWithJobProfile;
         }
@@ -217,8 +224,14 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
             else
             {
                 logger.LogInformation($"Action: {actionName} with Uri: {url} returned unsuccessful status codes: {string.Join(',', httpStatusCode.Distinct())}");
+
                 //Correct status code to return?
-                return HttpStatusCode.InternalServerError;
+                if (httpStatusCode.Length > 1)
+                {
+                    return HttpStatusCode.InternalServerError;
+                }
+
+                return httpStatusCode.FirstOrDefault();
             }
         }
 

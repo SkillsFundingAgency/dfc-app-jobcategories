@@ -42,5 +42,7 @@ namespace DFC.App.JobCategories.Data.Models
         public DateTime LastReviewed { get; set; }
 
         public Uri? Uri { get; set; }
+
+        public DateTime DateModified { get; set; }
     }
 }

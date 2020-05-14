@@ -62,9 +62,9 @@ namespace DFC.App.JobCategories.PageService.Helpers
 
         private async Task<IEnumerable<OccupationLabelApiResponse>> GetOccupationLabels(IEnumerable<OccupationApiResponse> occupations)
         {
-            var allLabels = occupations.Where(y => y != null).SelectMany(x => x.Links.Where(z => z.LinkValue.Key == "occupationlabel" && (z.LinkValue.Value.Relationship == "ncs__hasAltLabel")).Select(y => y.LinkValue.Value.Href.Segments.Last().TrimEnd('/')));
+            var allLabels = occupations.Where(y => y != null).SelectMany(x => x.Links.Where(z => z.LinkValue.Key == "occupationlabel" && (z.LinkValue.Value.Relationship == "ncs__hasAltLabel")).Select(y => y.LinkValue.Value.GetId<Guid>()));
 
-            var tasks = allLabels.Select(x => apiExtensions.LoadDataByIdAsync<OccupationLabelApiResponse>(OccuptionLabelApiName, Guid.Parse(x)));
+            var tasks = allLabels.Select(x => apiExtensions.LoadDataByIdAsync<OccupationLabelApiResponse>(OccuptionLabelApiName, x));
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);
 
             if (results.Any(x => x == null))
@@ -77,7 +77,7 @@ namespace DFC.App.JobCategories.PageService.Helpers
 
         private async Task<IEnumerable<OccupationApiResponse>> GetOccupations(IEnumerable<JobProfile> jobProfiles)
         {
-            var tasks = jobProfiles.Select(x => apiExtensions.LoadDataByIdAsync<OccupationApiResponse>(OccupationApiName, Guid.Parse(x.Links.FirstOrDefault(x => x.LinkValue.Key == "occupation").LinkValue.Value.Href.Segments.Last().TrimEnd('/').ToString())));
+            var tasks = jobProfiles.Select(x => apiExtensions.LoadDataByIdAsync<OccupationApiResponse>(OccupationApiName, x.Links.FirstOrDefault(x => x.LinkValue.Key == "occupation").LinkValue.Value.GetId<Guid>()));
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);
 
             if (results.Any(x => x == null))
