@@ -52,6 +52,9 @@
         "jobcategoriesAppDatabaseThroughput": {
             "type": "int"
         },
+        "JobCategoriesLoadDataOnStartup": {
+            "type": "bool"
+        },
         "sharedAppServicePlanName": {
             "type": "string",
             "defaultValue": ""
@@ -208,6 +211,10 @@
                             {
                                 "name": "ServiceTaxonomyApiClientOptions__BaseAddress",
                                 "value": "[parameters('ServiceTaxonomyApiClientOptionsBaseAddress')]"
+                            },
+                            {
+                                "name": "JobCategories__LoadDataOnStartup",
+                                "value": "[parameters('JobCategoriesLoadDataOnStartup')]"
                             }
                         ]
                     }
