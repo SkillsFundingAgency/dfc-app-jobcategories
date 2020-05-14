@@ -1,16 +1,11 @@
 ﻿using DFC.App.JobCategories.Data.Models;
 using DFC.App.JobCategories.Data.Models.API;
-using DFC.App.JobCategories.MessageFunctionApp.UnitTests.FakeHttpHandlers;
 using FakeItEasy;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
