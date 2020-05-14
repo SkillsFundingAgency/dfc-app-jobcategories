@@ -52,6 +52,9 @@
         "jobcategoriesAppDatabaseThroughput": {
             "type": "int"
         },
+        "JobCategoriesLoadDataOnStartup": {
+            "type": "bool"
+        },
         "sharedAppServicePlanName": {
             "type": "string",
             "defaultValue": ""
@@ -59,6 +62,12 @@
         "sharedAppServicePlanResourceGroup": {
             "type": "string",
             "defaultValue": ""
+        },
+        "ServiceTaxonomyApiClientOptionsTimeout": {
+            "type": "string"
+        },
+        "ServiceTaxonomyApiClientOptionsBaseAddress": {
+            "type": "string"
         },
         "enableAlerts": {
             "type": "bool",
@@ -176,24 +185,36 @@
                                 "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('appSharedStorageAccountName'),';AccountKey=',listKeys(resourceId(parameters('appSharedResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('appSharedStorageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ';EndpointSuffix=core.windows.net')]"
                             },
                             {
-                                "name": "Configuration__CosmosDbConnections__ContentPages__AccessKey",
+                                "name": "Configuration__CosmosDbConnections__JobCategories__AccessKey",
                                 "value": "[parameters('cosmosDbKey')]"
                             },
                             {
-                                "name": "Configuration__CosmosDbConnections__ContentPages__EndpointUrl",
+                                "name": "Configuration__CosmosDbConnections__JobCategories__EndpointUrl",
                                 "value": "[variables('cosmosDbEndpoint')]"
                             },
                             {
-                                "name": "Configuration__CosmosDbConnections__ContentPages__DatabaseId",
+                                "name": "Configuration__CosmosDbConnections__JobCategories__DatabaseId",
                                 "value": "[variables('cosmosDbDatabaseName')]"
                             },
                             {
-                                "name": "Configuration__CosmosDbConnections__ContentPages__CollectionId",
+                                "name": "Configuration__CosmosDbConnections__JobCategories__CollectionId",
                                 "value": "[parameters('cosmosDbCollectionName')]"
                             },
                             {
-                                "name": "Configuration__CosmosDbConnections__ContentPages__PartitionKey",
+                                "name": "Configuration__CosmosDbConnections__JobCategories__PartitionKey",
                                 "value": "[variables('cosmosDbCollectionPartitionKey')]"
+                            },
+                            {
+                                "name": "ServiceTaxonomyApiClientOptions__Timeout",
+                                "value": "[parameters('ServiceTaxonomyApiClientOptionsTimeout')]"
+                            },
+                            {
+                                "name": "ServiceTaxonomyApiClientOptions__BaseAddress",
+                                "value": "[parameters('ServiceTaxonomyApiClientOptionsBaseAddress')]"
+                            },
+                            {
+                                "name": "JobCategories__LoadDataOnStartup",
+                                "value": "[parameters('JobCategoriesLoadDataOnStartup')]"
                             }
                         ]
                     }
