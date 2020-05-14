@@ -8,6 +8,6 @@ namespace DFC.App.JobCategories.PageService.Helpers
     {
         Task<IEnumerable<JobProfile>> AddOccupationAndLabels(IEnumerable<JobProfile> jobProfiles);
 
-        Task<JobProfile> AddOccupationAndLabels(JobProfile jobProfiles);
+        Task<JobProfile> AddOccupationAndLabels(JobProfile jobProfile);
     }
 }

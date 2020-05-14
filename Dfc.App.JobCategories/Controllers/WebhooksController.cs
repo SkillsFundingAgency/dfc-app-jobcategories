@@ -23,13 +23,11 @@ namespace DFC.App.JobCategories.Controllers
         private const string EventTypeDeleted = "Deleted";
 
         private readonly ILogger<WebhooksController> logger;
-        private readonly AutoMapper.IMapper mapper;
         private readonly IEventProcessingService eventProcessingService;
 
-        public WebhooksController(ILogger<WebhooksController> logger, AutoMapper.IMapper mapper, IEventProcessingService eventProcessingService)
+        public WebhooksController(ILogger<WebhooksController> logger, IEventProcessingService eventProcessingService)
         {
             this.logger = logger;
-            this.mapper = mapper;
             this.eventProcessingService = eventProcessingService;
         }
 
