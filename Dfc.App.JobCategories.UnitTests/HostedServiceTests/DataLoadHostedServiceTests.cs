@@ -92,7 +92,7 @@ public class DataLoadHostedServiceTests
         A.CallTo(() => jobCategoryRepository.UpsertAsync(A<JobCategory>.Ignored)).Returns(HttpStatusCode.OK);
         A.CallTo(() => jobProfileRepository.UpsertAsync(A<JobProfile>.Ignored)).Returns(HttpStatusCode.OK);
 
-        var dataLoadHostedService = new DataLoadHostedService(A.Fake<IApiExtensions>(), jobProfileRepository, jobCategoryRepository, new JobProfileHelper(A.Fake<IApiExtensions>()));
+        var dataLoadHostedService = new DataLoadHostedService(new ApiExtensions(dataLoadService), jobProfileRepository, jobCategoryRepository, new JobProfileHelper(new ApiExtensions(dataLoadService)));
 
         // act
         await dataLoadHostedService.StartAsync(CancellationToken.None).ConfigureAwait(false);
