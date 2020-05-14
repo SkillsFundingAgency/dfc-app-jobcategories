@@ -2,6 +2,7 @@
 using DFC.App.JobCategories.Extensions;
 using DFC.App.JobCategories.PageService;
 using DFC.App.JobCategories.ViewModels;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -144,27 +145,56 @@ namespace DFC.App.JobCategories.Controllers
         [Route("pages/body")]
         public async Task<IActionResult> Body(string? article)
         {
-            var viewModel = new BodyViewModel();
             var contentPageModel = await GetContentPageAsync(article).ConfigureAwait(false);
 
-            if (contentPageModel != null)
+            if (contentPageModel == null)
             {
-                mapper.Map(contentPageModel, viewModel);
-                logger.LogInformation($"{nameof(Body)} has returned content for: {article}");
-
-                return this.NegotiateContentResult(viewModel, contentPageModel);
+                return NotFound();
             }
 
-            logger.LogWarning($"{nameof(Body)} has not returned any content for: {article}");
-            return NotFound();
+            var viewModel = new BodyViewModel();
+            viewModel.Category = contentPageModel.Title;
+
+            var jpsToRetrieveHrefs = contentPageModel.Links?.Where(x => x.LinkValue.Key == nameof(JobProfile).ToLower()).Select(z => z.LinkValue.Value.Href);
+
+            if (jpsToRetrieveHrefs != null)
+            {
+                var jobProfiles = await Task.WhenAll(jpsToRetrieveHrefs?.Select(x => jobProfilePageContentService.GetByUriAsync(x))).ConfigureAwait(false);
+
+                if (jobProfiles == null || !jobProfiles.Any())
+                {
+                    return NoContent();
+                }
+                
+                viewModel.Profiles = jobProfiles
+                    .Where(x => x != null)
+                    .Select(x => new JobProfileListItemViewModel(x.Title!, x.CanonicalName!, x.Occupation?.OccupationLabels?.Select(l => l.Title!) ?? null, x.Description!));
+            }
+
+            return this.NegotiateContentResult(viewModel, contentPageModel);
         }
 
         [HttpGet]
         [Route("pages/{article}/sidebarright")]
         [Route("pages/sidebarright")]
-        public IActionResult SidebarRight(string? article)
+        public async Task<IActionResult> SidebarRight(string? article)
         {
-            return NoContent();
+            var contentPageModel = await GetContentPageAsync(article).ConfigureAwait(false);
+
+            if (contentPageModel == null)
+            {
+                return NoContent();
+            }
+
+            var viewModel = new SidebarRightViewModel();
+            var categories = await jobCategoryPageContentService.GetAllAsync().ConfigureAwait(false);
+
+            viewModel.Categories = categories
+                .Where(x => x.CanonicalName != article)
+                .OrderBy(x => x.Title)
+                .ToDictionary(x => x.Title!, x => x.CanonicalName!);
+
+            return this.NegotiateContentResult(viewModel);
         }
 
         [HttpGet]

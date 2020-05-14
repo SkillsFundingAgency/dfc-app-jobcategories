@@ -13,10 +13,14 @@ namespace DFC.App.JobCategories.AutoMapperProfiles
         {
             CreateMap<ContentPageModel, BodyViewModel>()
                 .ForMember(d => d.Content, s => s.MapFrom(a => new HtmlString(a.Content)))
+                .ForMember(d => d.Category, s => s.Ignore())
+                .ForMember(d => d.Profiles, s => s.Ignore())
                 ;
 
             CreateMap<JobCategory, BodyViewModel>()
                 .ForMember(d => d.Content, s => s.MapFrom(a => new HtmlString(a.Description)))
+                .ForMember(d => d.Category, s => s.Ignore())
+                .ForMember(d => d.Profiles, s => s.Ignore())
                 ;
 
             CreateMap<JobCategory, DocumentViewModel>()
