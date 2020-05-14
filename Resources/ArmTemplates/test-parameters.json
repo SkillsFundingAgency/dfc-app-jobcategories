@@ -38,6 +38,9 @@
         "jobcategoriesAppDatabaseThroughput": {
             "value": 2
         },
+        "JobCategoriesLoadDataOnStartup": {
+            "value": true
+        },
         "ServiceTaxonomyApiClientOptionsTimeout": {
             "value": "foo"
         },
