@@ -43,7 +43,7 @@ namespace DFC.App.JobCategories.PageService
             return await repository.GetAsync(d => d.CanonicalName == canonicalName.ToLowerInvariant()).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<T?>> GetByQueryAsync(Expression<Func<T, bool>> where)
+        public async Task<IEnumerable<T?>?> GetByQueryAsync(Expression<Func<T, bool>> where)
         {
             return await repository.GetListAsync(where).ConfigureAwait(false);
         }
@@ -54,7 +54,7 @@ namespace DFC.App.JobCategories.PageService
         }
 
         public async Task<HttpStatusCode> UpsertAsync(T? contentPageModel)
-        {  
+        {
             if (contentPageModel == null)
             {
                 throw new ArgumentNullException(nameof(contentPageModel));

@@ -19,7 +19,6 @@ namespace DFC.App.JobCategories.PageService.UnitTests.DataLoadServiceTests
     [Trait("Category", "Data Load Service Unit Tests")]
     public class DataLoadServiceTests
     {
-
         [Fact]
         public async Task DataLoadServiceGetAllJobProfilesReturnsJobProfiles()
         {

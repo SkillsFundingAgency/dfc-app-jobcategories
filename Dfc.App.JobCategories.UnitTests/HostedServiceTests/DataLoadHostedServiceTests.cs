@@ -18,7 +18,7 @@ using Xunit;
 public class DataLoadHostedServiceTests
 {
     [Fact]
-    public async Task DataLoadHostedService_StartAsync_LoadsDataIntoCosmosDb()
+    public async Task DataLoadHostedServiceStartAsyncLoadsDataIntoCosmosDb()
     {
         // arrange
         var jobCategoryRepository = A.Fake<IContentPageService<JobCategory>>();
@@ -76,9 +76,16 @@ public class DataLoadHostedServiceTests
         {
             Title = "Some Occupation",
             Uri = new Uri($"http://somehost/someresource/occupation/{occupationGuid}/"),
-            Links = new List<Link> {
-                new Link { LinkValue = new KeyValuePair<string, DynamicLink>("occupationlabel", new DynamicLink() { Href = new Uri($"http://somehost/someresource/somelabel1/{Guid.NewGuid()}/"), Relationship = "ncs__hasAltLabel" }) },
-                new Link { LinkValue = new KeyValuePair<string, DynamicLink>("occupationlabel", new DynamicLink() { Href = new Uri($"http://somehost/someresource/somelabel2/{Guid.NewGuid()}/"), Relationship = "ncs__hasAltLabel" }) },
+            Links = new List<Link>
+            {
+                new Link
+                {
+                    LinkValue = new KeyValuePair<string, DynamicLink>("occupationlabel", new DynamicLink() { Href = new Uri($"http://somehost/someresource/somelabel1/{Guid.NewGuid()}/"), Relationship = "ncs__hasAltLabel" }),
+                },
+                new Link
+                {
+                    LinkValue = new KeyValuePair<string, DynamicLink>("occupationlabel", new DynamicLink() { Href = new Uri($"http://somehost/someresource/somelabel2/{Guid.NewGuid()}/"), Relationship = "ncs__hasAltLabel" }),
+                },
             },
         };
 

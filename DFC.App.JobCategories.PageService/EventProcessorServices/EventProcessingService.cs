@@ -36,19 +36,14 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
 
             logger.LogInformation($"Adding/Updating {contentType} Uri {url}");
 
-            switch (contentType)
+            return contentType switch
             {
-                case "jobcategory":
-                    return await AddOrUpdateJobCategoryAsync(url, id).ConfigureAwait(false);
-                case "jobprofile":
-                    return await AddOrUpdateJobProfileAsync(url, id).ConfigureAwait(false);
-                case "occupation":
-                    return await AddOrUpdateOccupationAsync(url, id).ConfigureAwait(false);
-                case "occupationlabel":
-                    return await AddOrUpdateOccupationLabelAsync(url, id).ConfigureAwait(false);
-                default:
-                    throw new InvalidOperationException($"Received message to delete type: {contentType}, id:{id}. There is no implementation to process this type.");
-            }
+                "jobcategory" => await AddOrUpdateJobCategoryAsync(url, id).ConfigureAwait(false),
+                "jobprofile" => await AddOrUpdateJobProfileAsync(url, id).ConfigureAwait(false),
+                "occupation" => await AddOrUpdateOccupationAsync(url, id).ConfigureAwait(false),
+                "occupationlabel" => await AddOrUpdateOccupationLabelAsync(url, id).ConfigureAwait(false),
+                _ => throw new InvalidOperationException($"Received message to delete type: {contentType}, id:{id}. There is no implementation to process this type."),
+            };
         }
 
         public async Task<HttpStatusCode> DeleteAsync(Uri url)
@@ -58,19 +53,14 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
 
             logger.LogInformation($"Deleting {contentType} Uri {url}");
 
-            switch (contentType)
+            return contentType switch
             {
-                case "jobcategory":
-                    return await RemoveJobCategory(id, url).ConfigureAwait(false);
-                case "jobprofile":
-                    return await RemoveJobProfile(id, url).ConfigureAwait(false);
-                case "occupation":
-                    return await RemoveOccupation(id, url).ConfigureAwait(false);
-                case "occupationlabel":
-                    return await RemoveOccupationLabel(id, url).ConfigureAwait(false);
-                default:
-                    throw new InvalidOperationException($"Received message to delete type: {contentType}, id:{id}. There is no implementation present to process this type.");
-            }
+                "jobcategory" => await RemoveJobCategory(id, url).ConfigureAwait(false),
+                "jobprofile" => await RemoveJobProfile(id, url).ConfigureAwait(false),
+                "occupation" => await RemoveOccupation(id, url).ConfigureAwait(false),
+                "occupationlabel" => await RemoveOccupationLabel(id, url).ConfigureAwait(false),
+                _ => throw new InvalidOperationException($"Received message to delete type: {contentType}, id:{id}. There is no implementation present to process this type."),
+            };
         }
 
         private async Task<HttpStatusCode> RemoveOccupationLabel(Guid id, Uri url)
@@ -110,7 +100,7 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
 
                 c.Occupation = null;
                 return c;
-            }).ToList();
+            });
 
             var occupationUpdateTasks = jobProfilesWithOccupation.Select(x => jobProfilePageService.UpsertAsync(x));
             return ProcessResults(await Task.WhenAll(occupationUpdateTasks).ConfigureAwait(false), url, nameof(RemoveOccupation));
@@ -132,7 +122,7 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
                 var categoryLinks = category!.Links.ToList();
 
                 //Job profile can only exist in a category link once
-                var linkToRemove = categoryLinks.Where(x => x.LinkValue.Key == "jobprofile" && x.LinkValue.Value.GetId<Guid>() == id).FirstOrDefault();
+                var linkToRemove = categoryLinks.FirstOrDefault(x => x.LinkValue.Key == "jobprofile" && x.LinkValue.Value.GetId<Guid>() == id);
 
                 if (linkToRemove == null)
                 {
@@ -152,14 +142,14 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
         private async Task<HttpStatusCode> AddOrUpdateOccupationLabelAsync(Uri url, Guid id)
         {
             var jobProfilesWithOccupationLabels = await GetJobProfilesByOccupationLabelIdAsync(id).ConfigureAwait(false);
-            var jobProfileWithOccupationLabelsUpdateTasks = jobProfilesWithOccupationLabels.Select(x => RefreshJobProfile(x.DocumentId!.Value));
+            var jobProfileWithOccupationLabelsUpdateTasks = jobProfilesWithOccupationLabels.Select(x => RefreshJobProfile(x!.DocumentId!.Value));
             return ProcessResults(await Task.WhenAll(jobProfileWithOccupationLabelsUpdateTasks).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
         }
 
         private async Task<HttpStatusCode> AddOrUpdateOccupationAsync(Uri url, Guid id)
         {
             var jobProfilesWithOccupation = await GetJobProfilesByOccupationIdAsync(id).ConfigureAwait(false);
-            var jobProfileUpdateTasks = jobProfilesWithOccupation.Select(x => RefreshJobProfile(x.DocumentId!.Value));
+            var jobProfileUpdateTasks = jobProfilesWithOccupation.Select(x => RefreshJobProfile(x!.DocumentId!.Value));
             return ProcessResults(await Task.WhenAll(jobProfileUpdateTasks).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
         }
 
@@ -193,19 +183,25 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
         private async Task<IEnumerable<JobCategory?>> GetJobCategoryByJobProfileIdAsync(Guid jobProfileId)
         {
             //Can't use extension for ID here as Cosmos client can't compile expression
-            var jobCategoriesWithJobProfile = await jobCategoryPageService.GetByQueryAsync(x => x.Links.Any(z => z.LinkValue.Key == "jobprofile" && z.LinkValue.Value.Href.ToString().Contains(jobProfileId.ToString()))).ConfigureAwait(false);
+            var jobCategoriesWithJobProfile = await jobCategoryPageService.GetByQueryAsync(x => x.Links.Any(z => z.LinkValue.Key == "jobprofile" && z.LinkValue.Value.Href!.ToString().Contains(jobProfileId.ToString()))).ConfigureAwait(false);
             return jobCategoriesWithJobProfile;
         }
 
         private async Task<IEnumerable<JobProfile?>> GetJobProfilesByOccupationIdAsync(Guid occupationId)
         {
-            var jobProfilesWithOccupation = await jobProfilePageService.GetByQueryAsync(x => x.Occupation.Uri.ToString().Contains(occupationId.ToString())).ConfigureAwait(false);
+            var jobProfilesWithOccupation = await jobProfilePageService.GetByQueryAsync(x => x!.Occupation!.Uri!.ToString().Contains(occupationId.ToString())).ConfigureAwait(false);
+
+            if (jobProfilesWithOccupation == null)
+            {
+                throw new InvalidOperationException($"{nameof(GetJobProfilesByOccupationIdAsync)} returned null Job Profiles for Occupation {occupationId}");
+            }
+
             return jobProfilesWithOccupation;
         }
 
         private async Task<IEnumerable<JobProfile?>> GetJobProfilesByOccupationLabelIdAsync(Guid occupationLabelId)
         {
-            var jobProfilesWithOccupationLabels = await jobProfilePageService.GetByQueryAsync(x => x.Occupation.OccupationLabels.Any(x => x.Uri.ToString().Contains(occupationLabelId.ToString()))).ConfigureAwait(false);
+            var jobProfilesWithOccupationLabels = await jobProfilePageService.GetByQueryAsync(x => x!.Occupation!.OccupationLabels.Any(x => x!.Uri!.ToString().Contains(occupationLabelId.ToString()))).ConfigureAwait(false);
             return jobProfilesWithOccupationLabels;
         }
 
@@ -234,6 +230,5 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
                 return httpStatusCode.FirstOrDefault();
             }
         }
-
     }
 }

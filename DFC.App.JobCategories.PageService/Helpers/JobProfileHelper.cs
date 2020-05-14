@@ -21,6 +21,11 @@ namespace DFC.App.JobCategories.PageService.Helpers
 
         public async Task<IEnumerable<JobProfile>> AddOccupationAndLabels(IEnumerable<JobProfile> jobProfiles)
         {
+            if (jobProfiles == null)
+            {
+                throw new InvalidOperationException($"{nameof(AddOccupationAndLabels)} JobProfiles parameter is null");
+            }
+
             var jpsToReturn = new List<JobProfile>();
 
             var occupations = await GetOccupations(jobProfiles).ConfigureAwait(false);
@@ -32,9 +37,9 @@ namespace DFC.App.JobCategories.PageService.Helpers
                 var jpOccupationUri = jp.Links.FirstOrDefault(x => x.LinkValue.Key.ToLower() == "occupation").LinkValue.Value.Href;
                 var occupation = occupations.FirstOrDefault(x => x.Uri == jpOccupationUri);
 
-                if (occupation == null)
+                if (occupation == null || occupation.Title == null || occupation.Uri == null)
                 {
-                    throw new InvalidOperationException($"Occupation for Job Profile {jp.Title} is null");
+                    throw new InvalidOperationException($"{nameof(AddOccupationAndLabels)} Occupation for Job Profile {jp.Title} is null");
                 }
 
                 var occupationLinks = occupation.Links.Where(z => z.LinkValue.Key.ToLower() == "occupationlabel" && z.LinkValue.Value.Relationship == "ncs__hasAltLabel").Select(y => y.LinkValue.Value.Href);
@@ -46,7 +51,7 @@ namespace DFC.App.JobCategories.PageService.Helpers
 
                 var jpOccupationlabels = occupationLabels.Where(x => occupationLinks.Contains(x.Uri));
 
-                jp.Occupation = new Occupation(occupation.Title, occupation.Uri, jpOccupationlabels.Select(z => new OccupationLabel(z.Title, z.Uri)));
+                jp.Occupation = new Occupation(occupation.Title, occupation.Uri, jpOccupationlabels.Select(z => new OccupationLabel(z.Title!, z.Uri!)));
 
                 jpsToReturn.Add(jp);
             }

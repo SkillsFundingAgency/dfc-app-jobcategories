@@ -197,7 +197,7 @@ namespace DFC.App.JobCategories.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingDocument = await jobCategoryPageContentService.GetByIdAsync(upsertContentPageModel.DocumentId.Value).ConfigureAwait(false);
+            var existingDocument = await jobCategoryPageContentService.GetByIdAsync(upsertContentPageModel.DocumentId!.Value).ConfigureAwait(false);
             if (existingDocument != null)
             {
                 return new StatusCodeResult((int)HttpStatusCode.AlreadyReported);
@@ -224,7 +224,7 @@ namespace DFC.App.JobCategories.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingDocument = await jobCategoryPageContentService.GetByIdAsync(upsertContentPageModel.DocumentId.Value).ConfigureAwait(false);
+            var existingDocument = await jobCategoryPageContentService.GetByIdAsync(upsertContentPageModel.DocumentId!.Value).ConfigureAwait(false);
             if (existingDocument == null)
             {
                 return new StatusCodeResult((int)HttpStatusCode.NotFound);

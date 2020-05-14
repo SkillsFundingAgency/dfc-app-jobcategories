@@ -80,7 +80,7 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
             return default;
         }
 
-        public async Task<IEnumerable<T?>> GetListAsync(Expression<Func<T, bool>> where)
+        public async Task<IEnumerable<T?>?> GetListAsync(Expression<Func<T, bool>> where)
         {
             var query = documentClient.CreateDocumentQuery<T>(DocumentCollectionUri, new FeedOptions { MaxItemCount = 1, PartitionKey = partitionKey })
                                       .Where(where)
@@ -141,7 +141,7 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
             if (model != null)
             {
                 var accessCondition = !string.IsNullOrEmpty(model.Etag) ? new AccessCondition { Condition = model.Etag, Type = AccessConditionType.IfMatch } : new AccessCondition();
-                
+
                 var result = await documentClient.DeleteDocumentAsync(documentUri, new RequestOptions { AccessCondition = accessCondition, PartitionKey = partitionKey }).ConfigureAwait(false);
 
                 return result.StatusCode;
@@ -152,7 +152,6 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
 
         public async Task<HttpStatusCode> DeleteAllAsync()
         {
-
             var query = documentClient.CreateDocumentQuery<T>(DocumentCollectionUri, new FeedOptions { PartitionKey = partitionKey })
                                       .AsDocumentQuery();
 

@@ -10,6 +10,7 @@ namespace DFC.App.JobCategories.Data.Models
     public class DynamicLink
     {
         public Uri? Href { get; set; }
-        public string Relationship { get; set; }
+
+        public string? Relationship { get; set; }
     }
 }

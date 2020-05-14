@@ -1,8 +1,4 @@
 ﻿using DFC.App.JobCategories.Data.Enums;
-using DFC.App.JobCategories.Data.Models;
-using DFC.App.JobCategories.Extensions;
-using DFC.App.JobCategories.PageService;
-using System.Linq;
 using DFC.App.JobCategories.PageService.EventProcessorServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid;
@@ -11,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +20,6 @@ namespace DFC.App.JobCategories.Controllers
         private const string EventTypePublished = "Published";
         private const string EventTypeDraft = "Draft";
         private const string EventTypeDeleted = "Deleted";
-        private static readonly string ClassFullName = typeof(WebhooksController).FullName!;
 
         private readonly ILogger<WebhooksController> logger;
         private readonly AutoMapper.IMapper mapper;

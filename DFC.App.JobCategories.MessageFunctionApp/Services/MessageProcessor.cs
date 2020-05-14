@@ -18,14 +18,11 @@ namespace DFC.App.JobCategories.MessageFunctionApp.Services
 
         public async Task<HttpStatusCode> ProcessAsync(string message, long sequenceNumber, MessageContentType messageContentType, MessageAction messageAction)
         {
-            switch (messageContentType)
+            return messageContentType switch
             {
-                case MessageContentType.Pages:
-                    return await ProcessItemAsync(message, messageAction, sequenceNumber).ConfigureAwait(false);
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(messageContentType), $"Unexpected content type '{messageContentType}'");
-            }
+                MessageContentType.Pages => await ProcessItemAsync(message, messageAction, sequenceNumber).ConfigureAwait(false),
+                _ => throw new ArgumentOutOfRangeException(nameof(messageContentType), $"Unexpected content type '{messageContentType}'"),
+            };
         }
 
         private async Task<HttpStatusCode> ProcessItemAsync(string message, MessageAction messageAction, long sequenceNumber)
@@ -45,7 +42,7 @@ namespace DFC.App.JobCategories.MessageFunctionApp.Services
                     return result;
 
                 case MessageAction.Deleted:
-                    return await httpClientService.DeleteAsync(contentPageModel.DocumentId.Value).ConfigureAwait(false);
+                    return await httpClientService.DeleteAsync(contentPageModel.DocumentId!.Value).ConfigureAwait(false);
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(messageAction), $"Invalid message action '{messageAction}' received, should be one of '{string.Join(",", Enum.GetNames(typeof(MessageAction)))}'");

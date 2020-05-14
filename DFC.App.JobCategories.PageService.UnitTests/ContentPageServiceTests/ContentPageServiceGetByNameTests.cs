@@ -26,13 +26,13 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
         {
             // arrange
             var expectedResult = A.Fake<JobCategory>();
-            A.CallTo(() => repository.GetAsync( A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
             // act
             var result = await contentPageService.GetByCanonicalNameAsync(CanonicalName).ConfigureAwait(false);
 
             // assert
-            A.CallTo(() => repository.GetAsync( A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
             Assert.Equal(result, expectedResult);
         }
 
@@ -55,13 +55,13 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
             // arrange
             JobCategory? expectedResult = null;
 
-            A.CallTo(() => repository.GetAsync( A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
             // act
             var result = await contentPageService.GetByCanonicalNameAsync(CanonicalName).ConfigureAwait(false);
 
             // assert
-            A.CallTo(() => repository.GetAsync( A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
             Assert.Null(result);
         }
     }
