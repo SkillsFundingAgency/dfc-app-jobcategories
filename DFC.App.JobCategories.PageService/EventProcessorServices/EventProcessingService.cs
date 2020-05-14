@@ -112,11 +112,6 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
 
             var associatedJobCategories = await GetJobCategoryByJobProfileIdAsync(id).ConfigureAwait(false);
 
-            if (associatedJobCategories == null || !associatedJobCategories.Any() || associatedJobCategories.Any(x => x == null))
-            {
-                throw new InvalidOperationException($"{nameof(RemoveJobProfile)} Id {id} Uri {url} returned null/no Job Categories");
-            }
-
             foreach (var category in associatedJobCategories.ToList())
             {
                 var categoryLinks = category!.Links.ToList();
@@ -184,6 +179,12 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
         {
             //Can't use extension for ID here as Cosmos client can't compile expression
             var jobCategoriesWithJobProfile = await jobCategoryPageService.GetByQueryAsync(x => x.Links.Any(z => z.LinkValue.Key == "jobprofile" && z.LinkValue.Value.Href!.ToString().Contains(jobProfileId.ToString()))).ConfigureAwait(false);
+
+            if (jobCategoriesWithJobProfile == null || !jobCategoriesWithJobProfile.Any() || jobCategoriesWithJobProfile.Any(x => x == null))
+            {
+                throw new InvalidOperationException($"{nameof(GetJobCategoryByJobProfileIdAsync)} returned null response for Job Categories with Job Profile");
+            }
+
             return jobCategoriesWithJobProfile;
         }
 
@@ -202,6 +203,12 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
         private async Task<IEnumerable<JobProfile?>> GetJobProfilesByOccupationLabelIdAsync(Guid occupationLabelId)
         {
             var jobProfilesWithOccupationLabels = await jobProfilePageService.GetByQueryAsync(x => x!.Occupation!.OccupationLabels.Any(x => x!.Uri!.ToString().Contains(occupationLabelId.ToString()))).ConfigureAwait(false);
+
+            if (jobProfilesWithOccupationLabels == null)
+            {
+                throw new InvalidOperationException($"{nameof(GetJobProfilesByOccupationLabelIdAsync)} returned null Job Profiles for Occupation Labels {occupationLabelId}");
+            }
+
             return jobProfilesWithOccupationLabels;
         }
 

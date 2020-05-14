@@ -1,6 +1,5 @@
 ﻿using DFC.App.JobCategories.Data.Models;
 using System;
-using System.ComponentModel;
 using System.Linq;
 
 namespace DFC.App.JobCategories.PageService.Extensions
