@@ -18,7 +18,7 @@
 		{
 			"PageRegion": 2,
 			"RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/pages/{0}/breadcrumb",
-			"OfflineHtml": "<div class=\"govuk-width-container\"><h1>Sorry, there is a problem with this service</h1><p>Please try again later.</p><p><a href='/contact-us'>Contact us</a> if you want to speak to a careers adviser.</p></div>",
+			"OfflineHtml": "<div class=\"govuk-width-container\"><h1 class=\"govuk-heading-xl\">Sorry, there is a problem with this service</h1><p class=\"govuk-body\">Please try again later.</p><p class=\"govuk-body\"><a href=\"/contact-us\" class=\"govuk-link\">Contact us</a> if you want to speak to a careers adviser.</p></div>",
 			"HealthCheckRequired": true,
 			"IsHealthy": true
 		},
@@ -26,21 +26,21 @@
 			"PageRegion": 3,
 			"HealthCheckRequired": true,
 			"RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/pages/{0}/bodytop",
-			"OfflineHtml": "<div class=\"govuk-width-container\"><h1>Sorry, there is a problem with this service</h1><p>Please try again later.</p><p><a href='/contact-us'>Contact us</a> if you want to speak to a careers adviser.</p></div>",
+			"OfflineHtml": "<div class=\"govuk-width-container\"><h1 class=\"govuk-heading-xl\">Sorry, there is a problem with this service</h1><p class=\"govuk-body\">Please try again later.</p><p class=\"govuk-body\"><a href=\"/contact-us\" class=\"govuk-link\">Contact us</a> if you want to speak to a careers adviser.</p></div>",
 			"IsHealthy": true
 		},
 		{
 			"PageRegion": 4,
 			"HealthCheckRequired": true,
 			"RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/pages/{0}/body",
-			"OfflineHtml": "<div class=\"govuk-width-container\"><h1>Sorry, there is a problem with this service</h1><p>Please try again later.</p><p><a href='/contact-us'>Contact us</a> if you want to speak to a careers adviser.</p></div>",
+			"OfflineHtml": "<div class=\"govuk-width-container\"><h1 class=\"govuk-heading-xl\">Sorry, there is a problem with this service</h1><p class=\"govuk-body\">Please try again later.</p><p class=\"govuk-body\"><a href=\"/contact-us\" class=\"govuk-link\">Contact us</a> if you want to speak to a careers adviser.</p></div>",
 			"IsHealthy": true
 		},
 		{
 			"PageRegion": 7,
 			"HealthCheckRequired": true,
 			"RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/pages/{0}/bodyfooter",
-			"OfflineHtml": "<div class=\"govuk-width-container\"><h1>Sorry, there is a problem with this service</h1><p>Please try again later.</p><p><a href='/contact-us'>Contact us</a> if you want to speak to a careers adviser.</p></div>",
+			"OfflineHtml": "<div class=\"govuk-width-container\"><h1 class=\"govuk-heading-xl\">Sorry, there is a problem with this service</h1><p class=\"govuk-body\">Please try again later.</p><p class=\"govuk-body\"><a href=\"/contact-us\" class=\"govuk-link\">Contact us</a> if you want to speak to a careers adviser.</p></div>",
 			"IsHealthy": true
 		}
 	]
