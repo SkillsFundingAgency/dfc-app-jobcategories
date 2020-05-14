@@ -142,7 +142,6 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
             {
                 var accessCondition = !string.IsNullOrEmpty(model.Etag) ? new AccessCondition { Condition = model.Etag, Type = AccessConditionType.IfMatch } : new AccessCondition();
                 
-
                 var result = await documentClient.DeleteDocumentAsync(documentUri, new RequestOptions { AccessCondition = accessCondition, PartitionKey = partitionKey }).ConfigureAwait(false);
 
                 return result.StatusCode;

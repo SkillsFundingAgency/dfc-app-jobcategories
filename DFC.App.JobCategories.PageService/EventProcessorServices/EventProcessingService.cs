@@ -39,45 +39,141 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
             switch (contentType)
             {
                 case "jobcategory":
-                    //Get JCs and associated JPS -> Reload
-                    var jobCategory = await apiDataService.GetByIdAsync<JobCategoryApiResponse>(nameof(JobCategory).ToLower(), id).ConfigureAwait(false);
-                    await jobCategoryPageService.UpsertAsync(jobCategory.Map()).ConfigureAwait(false);
-                    var jobCategoryJobProfileUpdateTasks = jobCategory.Links.Where(x => x.LinkValue.Key.ToLower() == "jobprofile").Select(z => RefreshJobProfile(Guid.Parse(z.LinkValue.Value.Href.Segments.Last().TrimEnd('/'))));
-                    return ProcessResults(await Task.WhenAll(jobCategoryJobProfileUpdateTasks).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
+                    return await AddOrUpdateJobCategoryAsync(url, id).ConfigureAwait(false);
                 case "jobprofile":
-                    return ProcessResults(await RefreshJobProfile(id).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
+                    return await AddOrUpdateJobProfileAsync(url, id).ConfigureAwait(false);
                 case "occupation":
-                    var jobProfilesWithOccupation = await GetJobProfilesByOccupationIdAsync(id).ConfigureAwait(false);
-                    var jobProfileUpdateTasks = jobProfilesWithOccupation.Select(async x => await RefreshJobProfile(x.DocumentId.Value));
-                    return ProcessResults(await Task.WhenAll(jobProfileUpdateTasks).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
+                    return await AddOrUpdateOccupationAsync(url, id).ConfigureAwait(false);
                 case "occupationlabel":
-                    var jobProfilesWithOccupationLabels = await GetJobProfilesByOccupationLabelIdAsync(id).ConfigureAwait(false);
-                    var jobProfileWithOccupationLabelsUpdateTasks = jobProfilesWithOccupationLabels.Select(async x => await RefreshJobProfile(x.DocumentId.Value));
-                    return ProcessResults(await Task.WhenAll(jobProfileWithOccupationLabelsUpdateTasks).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
+                    return await AddOrUpdateOccupationLabelAsync(url, id).ConfigureAwait(false);
                 default:
                     throw new InvalidOperationException($"Received message to delete type: {contentType}, id:{id}. There is no implementation to process this type.");
             }
         }
 
-        private HttpStatusCode ProcessResults(HttpStatusCode statusCode, Uri url, string actionName)
+        public async Task<HttpStatusCode> DeleteAsync(Uri url)
         {
-            return ProcessResults(new HttpStatusCode[] { statusCode }, url, actionName);
+            var contentType = url.GetContentItemType().ToLower();
+            var id = url.GetContentItemId();
+
+            logger.LogInformation($"Deleting {contentType} Uri {url}");
+
+            switch (contentType)
+            {
+                case "jobcategory":
+                    return await RemoveJobCategory(id, url).ConfigureAwait(false);
+                case "jobprofile":
+                    return await RemoveJobProfile(id, url).ConfigureAwait(false);
+                case "occupation":
+                    return await RemoveOccupation(id, url).ConfigureAwait(false);
+                case "occupationlabel":
+                    return await RemoveOccupationLabel(id, url).ConfigureAwait(false);
+                default:
+                    throw new InvalidOperationException($"Received message to delete type: {contentType}, id:{id}. There is no implementation present to process this type.");
+            }
         }
 
-        private HttpStatusCode ProcessResults(HttpStatusCode[] httpStatusCode, Uri url, string actionName)
+        private async Task<HttpStatusCode> RemoveOccupationLabel(Guid id, Uri url)
         {
-            //Check if all HttpStatusCodes start with 2 for success classificaiton
-            if (httpStatusCode.All(x => x.ToString().Substring(0, 1) == "2"))
+            var jobProfilesWithOccupationLabels = await GetJobProfilesByOccupationLabelIdAsync(id).ConfigureAwait(false);
+            foreach (var jp in jobProfilesWithOccupationLabels)
             {
-                logger.LogInformation($"Action: {actionName} with Uri: {url} returned successful status codes: {string.Join(',', httpStatusCode.Distinct())}");
-                return HttpStatusCode.OK;
+                var newOccLabels = jp!.Occupation!.OccupationLabels.Where(x => !x.Uri!.ToString().Contains(id.ToString()));
+                jp.Occupation.OccupationLabels = newOccLabels;
             }
-            else
+
+            var occupationLabelUpdateTasks = jobProfilesWithOccupationLabels.Select(x => jobProfilePageService.UpsertAsync(x));
+            return ProcessResults(await Task.WhenAll(occupationLabelUpdateTasks).ConfigureAwait(false), url, nameof(RemoveOccupationLabel));
+        }
+
+        private async Task<HttpStatusCode> RemoveJobCategory(Guid id, Uri url)
+        {
+            return ProcessResults(await jobCategoryPageService.DeleteAsync(id).ConfigureAwait(false), url, nameof(RemoveJobCategory));
+        }
+
+        private async Task<HttpStatusCode> RemoveOccupation(Guid id, Uri url)
+        {
+            //Should never happen due to relationship restrictions in OC
+            var jobProfilesWithOccupation = await GetJobProfilesByOccupationIdAsync(id).ConfigureAwait(false);
+
+            if (jobProfilesWithOccupation == null || !jobProfilesWithOccupation.Any() || jobProfilesWithOccupation.Any(x => x == null))
             {
-                logger.LogInformation($"Action: {actionName} with Uri: {url} returned unsuccessful status codes: {string.Join(',', httpStatusCode.Distinct())}");
-                //Correct status code to return?
-                return HttpStatusCode.InternalServerError;
+                throw new InvalidOperationException($"{nameof(RemoveOccupation)} Id {id} Uri {url} returned null/no Job Profiles for given Occupation");
             }
+
+            jobProfilesWithOccupation.Select(c =>
+            {
+                if (c == null)
+                {
+                    return c;
+                }
+
+                c.Occupation = null;
+                return c;
+            }).ToList();
+
+            var occupationUpdateTasks = jobProfilesWithOccupation.Select(x => jobProfilePageService.UpsertAsync(x));
+            return ProcessResults(await Task.WhenAll(occupationUpdateTasks).ConfigureAwait(false), url, nameof(RemoveOccupation));
+        }
+
+        private async Task<HttpStatusCode> RemoveJobProfile(Guid id, Uri url)
+        {
+            var statusCodesToReturn = new List<HttpStatusCode>();
+
+            var associatedJobCategories = await GetJobCategoryByJobProfileIdAsync(id).ConfigureAwait(false);
+
+            if (associatedJobCategories == null || !associatedJobCategories.Any() || associatedJobCategories.Any(x => x == null))
+            {
+                throw new InvalidOperationException($"{nameof(RemoveJobProfile)} Id {id} Uri {url} returned null/no Job Categories");
+            }
+
+            foreach (var category in associatedJobCategories.ToList())
+            {
+                var categoryLinks = category!.Links.ToList();
+
+                //Job profile can only exist in a category link once
+                var linkToRemove = categoryLinks.Where(x => x.LinkValue.Key == "jobprofile" && x.LinkValue.Value.Href.ToString().Contains(id.ToString())).FirstOrDefault();
+
+                if (linkToRemove == null)
+                {
+                    throw new InvalidOperationException($"{nameof(RemoveJobProfile)} Id {id} Uri {url} Job Profile not found in Job Category links");
+                }
+
+                categoryLinks.Remove(linkToRemove);
+                category.Links = categoryLinks;
+                statusCodesToReturn.Add(await jobCategoryPageService.UpsertAsync(category).ConfigureAwait(false));
+            }
+
+            statusCodesToReturn.Add(await jobProfilePageService.DeleteAsync(id).ConfigureAwait(false));
+
+            return ProcessResults(statusCodesToReturn.ToArray(), url, nameof(RemoveJobProfile));
+        }
+
+        private async Task<HttpStatusCode> AddOrUpdateOccupationLabelAsync(Uri url, Guid id)
+        {
+            var jobProfilesWithOccupationLabels = await GetJobProfilesByOccupationLabelIdAsync(id).ConfigureAwait(false);
+            var jobProfileWithOccupationLabelsUpdateTasks = jobProfilesWithOccupationLabels.Select(x => RefreshJobProfile(x.DocumentId!.Value));
+            return ProcessResults(await Task.WhenAll(jobProfileWithOccupationLabelsUpdateTasks).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
+        }
+
+        private async Task<HttpStatusCode> AddOrUpdateOccupationAsync(Uri url, Guid id)
+        {
+            var jobProfilesWithOccupation = await GetJobProfilesByOccupationIdAsync(id).ConfigureAwait(false);
+            var jobProfileUpdateTasks = jobProfilesWithOccupation.Select(x => RefreshJobProfile(x.DocumentId!.Value));
+            return ProcessResults(await Task.WhenAll(jobProfileUpdateTasks).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
+        }
+
+        private async Task<HttpStatusCode> AddOrUpdateJobProfileAsync(Uri url, Guid id)
+        {
+            return ProcessResults(await RefreshJobProfile(id).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
+        }
+
+        private async Task<HttpStatusCode> AddOrUpdateJobCategoryAsync(Uri url, Guid id)
+        {
+            var jobCategory = await apiDataService.GetByIdAsync<JobCategoryApiResponse>(nameof(JobCategory).ToLower(), id).ConfigureAwait(false);
+            await jobCategoryPageService.UpsertAsync(jobCategory.Map()).ConfigureAwait(false);
+            var jobCategoryJobProfileUpdateTasks = jobCategory.Links.Where(x => x.LinkValue.Key.ToLower() == "jobprofile").Select(z => RefreshJobProfile(Guid.Parse(z.LinkValue.Value.Href!.Segments.Last().TrimEnd('/'))));
+            return ProcessResults(await Task.WhenAll(jobCategoryJobProfileUpdateTasks).ConfigureAwait(false), url, nameof(AddOrUpdateAsync));
         }
 
         private async Task<HttpStatusCode> RefreshJobProfile(Guid id)
@@ -86,6 +182,12 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
             var newJobProfile = newJobProfileApi.Map();
             var constructedJobProfile = await jobProfileHelper.AddOccupationAndLabels(newJobProfile).ConfigureAwait(false);
             return await jobProfilePageService.UpsertAsync(constructedJobProfile).ConfigureAwait(false);
+        }
+
+        private async Task<IEnumerable<JobCategory?>> GetJobCategoryByJobProfileIdAsync(Guid jobProfileId)
+        {
+            var jobCategoriesWithJobProfile = await jobCategoryPageService.GetByQueryAsync(x => x.Links.Any(z => z.LinkValue.Key == "jobprofile" && z.LinkValue.Value.Href.ToString().Contains(jobProfileId.ToString()))).ConfigureAwait(false);
+            return jobCategoriesWithJobProfile;
         }
 
         private async Task<IEnumerable<JobProfile?>> GetJobProfilesByOccupationIdAsync(Guid occupationId)
@@ -100,55 +202,25 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
             return jobProfilesWithOccupationLabels;
         }
 
-        public async Task<HttpStatusCode> DeleteAsync(Uri url)
+        private HttpStatusCode ProcessResults(HttpStatusCode statusCode, Uri url, string actionName)
         {
-            var contentType = url.GetContentItemType().ToLower();
-            var id = url.GetContentItemId();
-
-            logger.LogInformation($"Deleting {contentType} Uri {url}");
-
-            switch (contentType)
-            {
-                case "jobcategory":
-                    return await jobCategoryPageService.DeleteAsync(id).ConfigureAwait(false);
-                case "jobprofile":
-                    return await jobProfilePageService.DeleteAsync(id).ConfigureAwait(false);
-                case "occupation":
-                    //Should never happen due to relationship restrictions in OC
-                    var jobProfilesWithOccupation = await GetJobProfilesByOccupationIdAsync(id).ConfigureAwait(false);
-                    if (jobProfilesWithOccupation != null)
-                    {
-                        jobProfilesWithOccupation.Select(c =>
-                        {
-                            if (c == null)
-                            {
-                                return c;
-                            }
-
-                            c.Occupation = null;
-                            return c;
-                        }).ToList();
-                        var occupationUpdateTasks = jobProfilesWithOccupation.Select(x => jobProfilePageService.UpsertAsync(x));
-                        await Task.WhenAll(occupationUpdateTasks).ConfigureAwait(false);
-                    }
-
-                    break;
-                case "occupationlabel":
-                    var jobProfilesWithOccupationLabels = await GetJobProfilesByOccupationLabelIdAsync(id).ConfigureAwait(false);
-                    foreach (var jp in jobProfilesWithOccupationLabels)
-                    {
-                        var newOccLabels = jp!.Occupation!.OccupationLabels.Where(x => !x.Uri.ToString().Contains(id.ToString()));
-                        jp.Occupation.OccupationLabels = newOccLabels;
-                    }
-
-                    var occupationLabelUpdateTasks = jobProfilesWithOccupationLabels.Select(x => jobProfilePageService.UpsertAsync(x));
-                    await Task.WhenAll(occupationLabelUpdateTasks).ConfigureAwait(false);
-                    break;
-                default:
-                    throw new InvalidOperationException($"Received message to delete type: {contentType}, id:{id}. There is no implementation present to process this type.");
-            }
-
-            return HttpStatusCode.OK;
+            return ProcessResults(new HttpStatusCode[] { statusCode }, url, actionName);
         }
+
+        private HttpStatusCode ProcessResults(HttpStatusCode[] httpStatusCode, Uri url, string actionName)
+        {
+            if (httpStatusCode.All(x => x.IsSuccessStatusCode()))
+            {
+                logger.LogInformation($"Action: {actionName} with Uri: {url} returned successful status codes: {string.Join(',', httpStatusCode.Distinct())}");
+                return HttpStatusCode.OK;
+            }
+            else
+            {
+                logger.LogInformation($"Action: {actionName} with Uri: {url} returned unsuccessful status codes: {string.Join(',', httpStatusCode.Distinct())}");
+                //Correct status code to return?
+                return HttpStatusCode.InternalServerError;
+            }
+        }
+
     }
 }
