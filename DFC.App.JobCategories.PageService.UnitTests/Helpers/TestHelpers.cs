@@ -3,10 +3,11 @@ using DFC.App.JobCategories.Data.Models;
 using DFC.App.JobCategories.Data.Models.API;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.JobCategories.PageService.UnitTests.Helpers
 {
+    [ExcludeFromCodeCoverage]
     public static class TestHelpers
     {
 
@@ -43,7 +44,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.Helpers
                 Uri = new Uri("http://somehost/someresource/occupation/18419c07-400b-4de1-a893-36d419b18ec7/"),
                 Links = new List<Link>
                 {
-                    new Link { LinkValue = new KeyValuePair<string, DynamicLink>("jobprofile", new DynamicLink() { Href = new Uri($"http://somehost/someresource/jobprofile/{Guid.NewGuid()}/") }) },
+                    new Link { LinkValue = new KeyValuePair<string, DynamicLink>("jobprofile", new DynamicLink() { Href = new Uri($"http://somehost/someresource/jobprofile/46a884da-22bb-4ebe-87ac-228f42698ee2/") }) },
                     new Link { LinkValue = new KeyValuePair<string, DynamicLink>("jobprofile", new DynamicLink() { Href = new Uri($"http://somehost/someresource/jobprofile/{Guid.NewGuid()}/") }) },
                 },
             };
@@ -55,7 +56,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.Helpers
             {
                 Description = "A Test Job Profile",
                 Title = "Test Job Profile",
-                Uri = new Uri($"http://somehost/someresource/jobprofile/{Guid.NewGuid()}"),
+                Uri = new Uri($"http://somehost/someresource/jobprofile/46a884da-22bb-4ebe-87ac-228f42698ee2"),
                 Links = new List<Link>
                 {
                     new Link { LinkValue = new KeyValuePair<string, DynamicLink>("occupation", new DynamicLink() { Href = new Uri("http://somehost/someresource/occupation/54288fad-2f99-43cb-8df0-d10d29977a4b") }) },
@@ -66,6 +67,11 @@ namespace DFC.App.JobCategories.PageService.UnitTests.Helpers
         public static JobProfile GetJobProfile()
         {
             return GetJobProfileApiResponse().Map();
+        }
+
+        public static JobCategory GetJobCategory()
+        {
+            return GetJobCategoryApiResponse().Map();
         }
     }
 }
