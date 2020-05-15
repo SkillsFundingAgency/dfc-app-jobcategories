@@ -229,7 +229,7 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
                 logger.LogInformation($"Action: {actionName} with Uri: {url} returned unsuccessful status codes: {string.Join(',', httpStatusCode.Distinct())}");
 
                 //Correct status code to return?
-                if (httpStatusCode.Length > 1)
+                if (httpStatusCode.Length > 1 && httpStatusCode.Distinct().Count() > 1)
                 {
                     return HttpStatusCode.InternalServerError;
                 }

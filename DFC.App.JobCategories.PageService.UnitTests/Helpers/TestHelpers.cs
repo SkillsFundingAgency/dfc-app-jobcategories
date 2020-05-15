@@ -66,7 +66,12 @@ namespace DFC.App.JobCategories.PageService.UnitTests.Helpers
 
         public static JobProfile GetJobProfile()
         {
-            return GetJobProfileApiResponse().Map();
+            var jp = GetJobProfileApiResponse().Map();
+            var occupation = GetOccupationApiResponse();
+
+            jp.Occupation = new Occupation(occupation.Title, occupation.Uri, new List<OccupationLabel>());
+
+            return jp;
         }
 
         public static JobCategory GetJobCategory()

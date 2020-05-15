@@ -54,7 +54,7 @@ namespace DFC.App.JobCategories.PageService.Helpers
 
                 var jpOccupationlabels = occupationLabels.Where(x => occupationLinks.Contains(x.Uri));
 
-                if (jpOccupationlabels == null || !jpOccupationlabels.Any())
+                if (jpOccupationlabels != null || jpOccupationlabels.Any())
                 {
                     jp.Occupation = new Occupation(occupation.Title, occupation.Uri, jpOccupationlabels.Select(z => new OccupationLabel(z.Title!, z.Uri!)));
                 }
