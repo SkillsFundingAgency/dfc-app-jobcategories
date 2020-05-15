@@ -11,8 +11,8 @@ using Xunit;
 
 namespace DFC.App.JobCategories.PageService.UnitTests.DataLoadServiceTests
 {
-    [Trait("Category", "Data Load Service Unit Tests")]
-    public class DataLoadServiceTests
+    [Trait("Category", "API Data Service Unit Tests")]
+    public class ApiDataServiceTests
     {
         [Fact]
         public async Task DataLoadServiceGetAllJobProfilesReturnsJobProfiles()

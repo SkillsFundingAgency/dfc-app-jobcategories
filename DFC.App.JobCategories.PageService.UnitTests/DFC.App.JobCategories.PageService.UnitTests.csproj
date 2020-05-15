@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="DataLoadServiceTests\Files\DataLoadService_GetAll_JobProfile_Response.json" />
-    <None Remove="DataLoadServiceTests\Files\DataLoadService_GetById_JobProfile_Response.json" />
+    <None Remove="ApiDataServiceTests\Files\DataLoadService_GetAll_JobProfile_Response.json" />
+    <None Remove="ApiDataServiceTests\Files\DataLoadService_GetById_JobProfile_Response.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,10 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="DataLoadServiceTests\Files\DataLoadService_GetById_JobProfile_Response.json">
+    <Content Include="ApiDataServiceTests\Files\DataLoadService_GetById_JobProfile_Response.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="DataLoadServiceTests\Files\DataLoadService_GetAll_JobProfile_Response.json">
+    <Content Include="ApiDataServiceTests\Files\DataLoadService_GetAll_JobProfile_Response.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
