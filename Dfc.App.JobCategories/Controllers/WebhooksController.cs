@@ -1,5 +1,6 @@
 ﻿using DFC.App.JobCategories.Data.Enums;
 using DFC.App.JobCategories.PageService.EventProcessorServices;
+using DFC.App.JobCategories.PageService.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.EventGrid.Models;
@@ -33,7 +34,7 @@ namespace DFC.App.JobCategories.Controllers
 
         [HttpPost]
         [Route("ReceiveJobCategoryEvents")]
-        public async Task<IActionResult> ReceiveContactUsEvents()
+        public async Task<IActionResult> ReceiveJobCategoriesEvents()
         {
             using var reader = new StreamReader(Request.Body, Encoding.UTF8);
             string requestContent = await reader.ReadToEndAsync().ConfigureAwait(false);
@@ -89,8 +90,10 @@ namespace DFC.App.JobCategories.Controllers
 
                     var result = await ProcessMessageAsync(eventType, id, url).ConfigureAwait(false);
 
-                    var statusCodeResult = new StatusCodeResult((int)result);
-                    return statusCodeResult;
+                    if (!result.IsSuccessStatusCode())
+                    {
+                        throw new InvalidOperationException($"Result of message processing did not indicate success. Actual: {result}");
+                    }
                 }
             }
 
@@ -104,15 +107,22 @@ namespace DFC.App.JobCategories.Controllers
                 throw new InvalidDataException($"Data property in message {eventGridEvent.Id} is null");
             }
 
-            var dataJObject = JObject.Parse(eventGridEvent.Data.ToString()!);
-            var url = dataJObject.Properties().FirstOrDefault(x => x.Name == "api");
+            try
+            {
+                var dataJObject = JObject.Parse(eventGridEvent.Data.ToString()!);
+                var url = dataJObject.Properties().FirstOrDefault(x => x.Name.Equals("api", StringComparison.OrdinalIgnoreCase));
 
-            if (url == null)
+                if (url == null)
+                {
+                    throw new InvalidDataException($"Could not retrieve property api from Data in Event Grid Message {eventGridEvent.Id}");
+                }
+
+                return new Uri(url.Value.ToString());
+            }
+            catch (Exception)
             {
                 throw new InvalidDataException($"Could not retrieve property api from Data in Event Grid Message {eventGridEvent.Id}");
             }
-
-            return new Uri(url.Value.ToString());
         }
 
         private async Task<HttpStatusCode> ProcessMessageAsync(MessageAction eventType, string id, Uri url)
