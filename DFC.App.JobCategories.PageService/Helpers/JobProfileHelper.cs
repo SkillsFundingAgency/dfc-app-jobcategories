@@ -24,9 +24,9 @@ namespace DFC.App.JobCategories.PageService.Helpers
 
         public async Task<IEnumerable<JobProfile>> AddOccupationAndLabels(IEnumerable<JobProfile> jobProfiles)
         {
-            if (jobProfiles == null)
+            if (jobProfiles == null || !jobProfiles.Any())
             {
-                throw new InvalidOperationException($"{nameof(AddOccupationAndLabels)} JobProfiles parameter is null");
+                throw new InvalidDataException($"{nameof(AddOccupationAndLabels)} JobProfiles parameter is null");
             }
 
             var jpsToReturn = new List<JobProfile>();

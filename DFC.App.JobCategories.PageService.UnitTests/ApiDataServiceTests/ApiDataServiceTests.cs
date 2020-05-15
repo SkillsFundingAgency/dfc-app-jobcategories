@@ -18,7 +18,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.DataLoadServiceTests
         public async Task DataLoadServiceGetAllJobProfilesReturnsJobProfiles()
         {
             // arrange
-            var apiResponse = File.ReadAllText(Directory.GetCurrentDirectory() + "/DataLoadServiceTests/Files/DataLoadService_GetAll_JobProfile_Response.json");
+            var apiResponse = File.ReadAllText(Directory.GetCurrentDirectory() + "/ApiDataServiceTests/Files/DataLoadService_GetAll_JobProfile_Response.json");
             var httpResponse = new HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = new StringContent(apiResponse) };
             var fakeHttpRequestSender = A.Fake<IFakeHttpRequestSender>();
             var fakeHttpMessageHandler = new FakeHttpMessageHandler(fakeHttpRequestSender);
@@ -45,7 +45,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.DataLoadServiceTests
         public async Task DataLoadServiceGetJobProfileByIdReturnsJobProfile()
         {
             // arrange
-            var apiResponse = File.ReadAllText(Directory.GetCurrentDirectory() + "/DataLoadServiceTests/Files/DataLoadService_GetById_JobProfile_Response.json");
+            var apiResponse = File.ReadAllText(Directory.GetCurrentDirectory() + "/ApiDataServiceTests/Files/DataLoadService_GetById_JobProfile_Response.json");
             var httpResponse = new HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = new StringContent(apiResponse) };
 
             var fakeHttpRequestSender = A.Fake<IFakeHttpRequestSender>();
@@ -72,7 +72,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.DataLoadServiceTests
         public async Task DataLoadServiceGetJobProfileByIdReturnsEmptyResponse()
         {
             // arrange
-            var apiResponse = File.ReadAllText(Directory.GetCurrentDirectory() + "/DataLoadServiceTests/Files/DataLoadService_GetAll_JobProfile_Response.json");
+            var apiResponse = File.ReadAllText(Directory.GetCurrentDirectory() + "/ApiDataServiceTests/Files/DataLoadService_GetAll_JobProfile_Response.json");
             var httpResponse = new HttpResponseMessage { StatusCode = HttpStatusCode.InternalServerError, Content = new StringContent(apiResponse) };
 
             var fakeHttpRequestSender = A.Fake<IFakeHttpRequestSender>();

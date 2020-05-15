@@ -14,8 +14,8 @@ namespace DFC.App.JobCategories.HostedService
 {
     public class DataLoadHostedService : IHostedService
     {
-        private const string JobProfileApiName = "JobProfile";
-        private const string JobCategoryApiName = "JobCategory";
+        private const string JobProfileApiName = "jobprofile";
+        private const string JobCategoryApiName = "jobcategory";
 
         private readonly IApiExtensions apiExtensions;
         private readonly IContentPageService<JobProfile> jobProfileRepository;
