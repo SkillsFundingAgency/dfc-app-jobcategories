@@ -91,16 +91,10 @@ namespace DFC.App.JobCategories.PageService.EventProcessorServices
                 throw new InvalidOperationException($"{nameof(RemoveOccupation)} Id {id} Uri {url} returned null/no Job Profiles for given Occupation");
             }
 
-            jobProfilesWithOccupation.Select(c =>
+            foreach (var jp in jobProfilesWithOccupation)
             {
-                if (c == null)
-                {
-                    return c;
-                }
-
-                c.Occupation = null;
-                return c;
-            });
+                jp.Occupation = null;
+            }
 
             var occupationUpdateTasks = jobProfilesWithOccupation.Select(x => jobProfilePageService.UpsertAsync(x));
             return ProcessResults(await Task.WhenAll(occupationUpdateTasks).ConfigureAwait(false), url, nameof(RemoveOccupation));
