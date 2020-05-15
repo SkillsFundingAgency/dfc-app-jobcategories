@@ -1,7 +1,9 @@
-﻿using DFC.App.JobCategories.Data.Models;
+﻿using DFC.App.JobCategories.Data.Extensions;
+using DFC.App.JobCategories.Data.Models;
 using DFC.App.JobCategories.Data.Models.API;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace DFC.App.JobCategories.PageService.UnitTests.Helpers
 {
@@ -59,6 +61,11 @@ namespace DFC.App.JobCategories.PageService.UnitTests.Helpers
                     new Link { LinkValue = new KeyValuePair<string, DynamicLink>("occupation", new DynamicLink() { Href = new Uri("http://somehost/someresource/occupation/54288fad-2f99-43cb-8df0-d10d29977a4b") }) },
                 },
             };
+        }
+
+        public static JobProfile GetJobProfile()
+        {
+            return GetJobProfileApiResponse().Map();
         }
     }
 }
