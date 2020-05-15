@@ -78,7 +78,7 @@ namespace DFC.App.JobCategories
             var cosmosDbConnection = configuration.GetSection(CosmosDbConfigAppSettings).Get<CosmosDbConnection>();
             var documentClient = new DocumentClient(cosmosDbConnection!.EndpointUrl, cosmosDbConnection!.AccessKey);
 
-            services.AddDFCLogging("<<IntrumentationKey>>");
+            services.AddDFCLogging(configuration["ApplicationInsights:InstrumentationKey"]);
             services.AddSingleton(configuration.GetSection(nameof(ServiceTaxonomyApiClientOptions)).Get<ServiceTaxonomyApiClientOptions>());
             services.AddApplicationInsightsTelemetry();
             services.AddHttpContextAccessor();
