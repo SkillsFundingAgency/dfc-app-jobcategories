@@ -3,6 +3,7 @@ using DFC.App.JobCategories.Data.Models.API;
 using DFC.App.JobCategories.PageService.Extensions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,8 +11,10 @@ namespace DFC.App.JobCategories.PageService.Helpers
 {
     public class JobProfileHelper : IJobProfileHelper
     {
-        private const string OccupationApiName = "Occupation";
-        private const string OccuptionLabelApiName = "OccupationLabel";
+        private const string OccupationApiName = "occupation";
+        private const string OccuptionLabelApiName = "occupationlabel";
+        //Move to config
+        private const string NcsAltLabelRelationshipName = "ncs__hasAltLabel";
         private readonly IApiExtensions apiExtensions;
 
         public JobProfileHelper(IApiExtensions apiExtensions)
@@ -39,19 +42,22 @@ namespace DFC.App.JobCategories.PageService.Helpers
 
                 if (occupation == null || occupation.Title == null || occupation.Uri == null)
                 {
-                    throw new InvalidOperationException($"{nameof(AddOccupationAndLabels)} Occupation for Job Profile {jp.Title} is null");
+                    throw new InvalidDataException($"{nameof(AddOccupationAndLabels)} Occupation for Job Profile {jp.Title} is null");
                 }
 
-                var occupationLinks = occupation.Links.Where(z => z.LinkValue.Key.ToLower() == "occupationlabel" && z.LinkValue.Value.Relationship == "ncs__hasAltLabel").Select(y => y.LinkValue.Value.Href);
+                var occupationLinks = occupation.Links.Where(z => z.LinkValue.Key.ToLower() == "occupationlabel" && z.LinkValue.Value.Relationship == NcsAltLabelRelationshipName).Select(y => y.LinkValue.Value.Href);
 
-                if (occupationLinks == null)
+                if (occupationLinks == null || !occupationLinks.Any())
                 {
-                    throw new InvalidOperationException($"No Occupation Labels Job Profile {jp.Title}");
+                    throw new InvalidDataException($"No Occupation Labels Job Profile {jp.Title}");
                 }
 
                 var jpOccupationlabels = occupationLabels.Where(x => occupationLinks.Contains(x.Uri));
 
-                jp.Occupation = new Occupation(occupation.Title, occupation.Uri, jpOccupationlabels.Select(z => new OccupationLabel(z.Title!, z.Uri!)));
+                if (jpOccupationlabels == null || !jpOccupationlabels.Any())
+                {
+                    jp.Occupation = new Occupation(occupation.Title, occupation.Uri, jpOccupationlabels.Select(z => new OccupationLabel(z.Title!, z.Uri!)));
+                }
 
                 jpsToReturn.Add(jp);
             }
