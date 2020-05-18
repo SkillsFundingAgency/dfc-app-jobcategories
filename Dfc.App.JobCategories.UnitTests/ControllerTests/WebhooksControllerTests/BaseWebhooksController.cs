@@ -12,7 +12,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace DFC.App.JobCategories.IntegrationTests.ControllerTests.WebhooksControllerTests
+namespace DFC.App.JobCategories.UnitTests.ControllerTests.WebhooksControllerTests
 {
     public abstract class BaseWebhooksController
     {
