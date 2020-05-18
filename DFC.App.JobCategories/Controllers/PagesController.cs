@@ -2,7 +2,6 @@
 using DFC.App.JobCategories.Extensions;
 using DFC.App.JobCategories.PageService;
 using DFC.App.JobCategories.ViewModels;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -70,26 +69,13 @@ namespace DFC.App.JobCategories.Controllers
             var jpsToRetrieveHrefs = contentPageModel.Links?.Where(x => x.LinkValue.Key == nameof(JobProfile).ToLower()).Select(z => z.LinkValue.Value.Href);
             var jobProfiles = jpsToRetrieveHrefs?.Select(x => jobProfilePageContentService.GetByUriAsync(x));
 
-            if (jobProfiles != null)
-            {
-                var results = await Task.WhenAll(jobProfiles).ConfigureAwait(false);
-                contentPageModel.JobProfiles = results != null ? results.ToList() : null;
-            }
+            var viewModel = mapper.Map<DocumentViewModel>(contentPageModel);
 
-            if (contentPageModel != null)
-            {
-                var viewModel = mapper.Map<DocumentViewModel>(contentPageModel);
+            viewModel.Breadcrumb = BuildBreadcrumb(contentPageModel);
 
-                viewModel.Breadcrumb = BuildBreadcrumb(contentPageModel);
+            logger.LogInformation($"{nameof(Document)} has succeeded for: {jobCategory}");
 
-                logger.LogInformation($"{nameof(Document)} has succeeded for: {jobCategory}");
-
-                return this.NegotiateContentResult(viewModel);
-            }
-
-            logger.LogWarning($"{nameof(Document)} has returned no content for: {jobCategory}");
-
-            return NoContent();
+            return this.NegotiateContentResult(viewModel);
         }
 
         [HttpGet]
@@ -165,7 +151,7 @@ namespace DFC.App.JobCategories.Controllers
                 {
                     return NoContent();
                 }
-                
+
                 viewModel.Profiles = jobProfiles
                     .Where(x => x != null)
                     .Select(x => new JobProfileListItemViewModel(x.Title!, x.CanonicalName!, x.Occupation?.OccupationLabels?.Select(l => l.Title!) ?? null, x.Description!));
@@ -227,7 +213,7 @@ namespace DFC.App.JobCategories.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingDocument = await jobCategoryPageContentService.GetByIdAsync(upsertContentPageModel.DocumentId.Value).ConfigureAwait(false);
+            var existingDocument = await jobCategoryPageContentService.GetByIdAsync(upsertContentPageModel.DocumentId!.Value).ConfigureAwait(false);
             if (existingDocument != null)
             {
                 return new StatusCodeResult((int)HttpStatusCode.AlreadyReported);
@@ -254,7 +240,7 @@ namespace DFC.App.JobCategories.Controllers
                 return BadRequest(ModelState);
             }
 
-            var existingDocument = await jobCategoryPageContentService.GetByIdAsync(upsertContentPageModel.DocumentId.Value).ConfigureAwait(false);
+            var existingDocument = await jobCategoryPageContentService.GetByIdAsync(upsertContentPageModel.DocumentId!.Value).ConfigureAwait(false);
             if (existingDocument == null)
             {
                 return new StatusCodeResult((int)HttpStatusCode.NotFound);
@@ -273,8 +259,9 @@ namespace DFC.App.JobCategories.Controllers
         [Route("pages/{documentId}")]
         public async Task<IActionResult> Delete(Guid documentId)
         {
-            var isDeleted = await jobCategoryPageContentService.DeleteAsync(documentId).ConfigureAwait(false);
-            if (isDeleted)
+            var deletedHttpStatusCode = await jobCategoryPageContentService.DeleteAsync(documentId).ConfigureAwait(false);
+
+            if (deletedHttpStatusCode == HttpStatusCode.NoContent)
             {
                 logger.LogInformation($"{nameof(Delete)} has deleted content for document Id: {documentId}");
                 return Ok();

@@ -14,7 +14,6 @@ namespace DFC.App.JobCategories.MessageFunctionApp.AutoMapperProfile
                 .ForPath(d => d.MetaTags.Description, o => o.MapFrom(s => s.Description))
                 .ForPath(d => d.MetaTags.Keywords, o => o.MapFrom(s => s.Keywords))
                 .ForMember(d => d.LastReviewed, o => o.MapFrom(s => s.LastModified))
-                .ForMember(d => d.SequenceNumber, o => o.Ignore())
                 ;
         }
     }

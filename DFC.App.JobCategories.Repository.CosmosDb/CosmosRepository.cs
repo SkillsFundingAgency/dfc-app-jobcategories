@@ -80,6 +80,27 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
             return default;
         }
 
+        public async Task<IEnumerable<T?>?> GetListAsync(Expression<Func<T, bool>> where)
+        {
+            var query = documentClient.CreateDocumentQuery<T>(DocumentCollectionUri, new FeedOptions { MaxItemCount = 1, PartitionKey = partitionKey })
+                                      .Where(where)
+                                      .AsDocumentQuery();
+
+            if (query == null)
+            {
+                return default;
+            }
+
+            var models = await query.ExecuteNextAsync<T>().ConfigureAwait(false);
+
+            if (models != null && models.Count > 0)
+            {
+                return models;
+            }
+
+            return default;
+        }
+
         public async Task<IEnumerable<T>?> GetAllAsync()
         {
             var query = documentClient.CreateDocumentQuery<T>(DocumentCollectionUri, new FeedOptions { PartitionKey = partitionKey })
@@ -120,7 +141,6 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
             if (model != null)
             {
                 var accessCondition = !string.IsNullOrEmpty(model.Etag) ? new AccessCondition { Condition = model.Etag, Type = AccessConditionType.IfMatch } : new AccessCondition();
-                
 
                 var result = await documentClient.DeleteDocumentAsync(documentUri, new RequestOptions { AccessCondition = accessCondition, PartitionKey = partitionKey }).ConfigureAwait(false);
 
@@ -130,10 +150,8 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
             return HttpStatusCode.NotFound;
         }
 
-        public async Task<HttpStatusCode> DeleteAllAsync<TModel>()
-            where TModel : IDataModel
+        public async Task<HttpStatusCode> DeleteAllAsync()
         {
-
             var query = documentClient.CreateDocumentQuery<T>(DocumentCollectionUri, new FeedOptions { PartitionKey = partitionKey })
                                       .AsDocumentQuery();
 

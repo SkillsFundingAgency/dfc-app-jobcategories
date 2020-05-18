@@ -18,6 +18,7 @@ namespace DFC.App.JobCategories.Data.Extensions
                     Title = resp.Title,
                     Uri = resp.Uri,
                     Links = resp.Links,
+                    DateModified = DateTime.UtcNow,
                 };
             }
 
@@ -35,8 +36,10 @@ namespace DFC.App.JobCategories.Data.Extensions
                     Title = resp.Title,
                     Uri = resp.Uri,
                     Links = resp.Links,
+
                     //Build a fake URI to get the last segment
                     CanonicalName = new Uri("http://unspecifiedhost" + resp.WebsiteUri).Segments.Last().TrimEnd('/'),
+                    DateModified = DateTime.UtcNow,
                 };
             }
 

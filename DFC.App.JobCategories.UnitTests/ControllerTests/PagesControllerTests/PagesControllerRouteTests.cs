@@ -117,7 +117,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             httpContext.Request.Path = route;
             httpContext.Request.Headers[HeaderNames.Accept] = MediaTypeNames.Application.Json;
 
-            return new PagesController(logger, fakeJobCategoryPageContentService, fakeJobProfilePageContentService ,fakeMapper)
+            return new PagesController(logger, fakeJobCategoryPageContentService, fakeJobProfilePageContentService, fakeMapper)
             {
                 ControllerContext = new ControllerContext
                 {
