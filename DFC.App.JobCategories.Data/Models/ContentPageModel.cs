@@ -3,9 +3,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.JobCategories.Data.Models
 {
+    [ExcludeFromCodeCoverage]
     public class ContentPageModel : IDataModel
     {
         [Guid]
