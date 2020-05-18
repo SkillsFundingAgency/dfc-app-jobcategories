@@ -1,4 +1,5 @@
-﻿using FakeItEasy;
+﻿using DFC.App.JobCategories.UnitTests.ControllerTests.Models;
+using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid.Models;
 using Newtonsoft.Json;
