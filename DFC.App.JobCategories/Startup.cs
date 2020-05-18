@@ -9,6 +9,9 @@ using DFC.App.JobCategories.Framework;
 using DFC.App.JobCategories.HostedService;
 using DFC.App.JobCategories.HttpClientPolicies;
 using DFC.App.JobCategories.PageService;
+using DFC.App.JobCategories.PageService.EventProcessorServices;
+using DFC.App.JobCategories.PageService.Extensions;
+using DFC.App.JobCategories.PageService.Helpers;
 using DFC.App.JobCategories.Repository.CosmosDb;
 using DFC.Logger.AppInsights.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -75,7 +78,7 @@ namespace DFC.App.JobCategories
             var cosmosDbConnection = configuration.GetSection(CosmosDbConfigAppSettings).Get<CosmosDbConnection>();
             var documentClient = new DocumentClient(cosmosDbConnection!.EndpointUrl, cosmosDbConnection!.AccessKey);
 
-            services.AddDFCLogging("Some thing");
+            services.AddDFCLogging(configuration["ApplicationInsights:InstrumentationKey"]);
             services.AddSingleton(configuration.GetSection(nameof(ServiceTaxonomyApiClientOptions)).Get<ServiceTaxonomyApiClientOptions>());
             services.AddApplicationInsightsTelemetry();
             services.AddHttpContextAccessor();
@@ -85,8 +88,11 @@ namespace DFC.App.JobCategories
             services.AddSingleton<IDocumentClient>(documentClient);
             services.AddSingleton<ICosmosRepository<JobProfile>, CosmosRepository<JobProfile>>();
             services.AddSingleton<ICosmosRepository<JobCategory>, CosmosRepository<JobCategory>>();
-            services.AddScoped<IContentPageService<JobCategory>, ContentPageService<JobCategory>>();
-            services.AddScoped<IContentPageService<JobProfile>, ContentPageService<JobProfile>>();
+            services.AddTransient<IContentPageService<JobCategory>, ContentPageService<JobCategory>>();
+            services.AddTransient<IContentPageService<JobProfile>, ContentPageService<JobProfile>>();
+            services.AddTransient<IEventProcessingService, EventProcessingService>();
+            services.AddTransient<IApiExtensions, ApiExtensions>();
+            services.AddTransient<IJobProfileHelper, JobProfileHelper>();
             services.AddTransient<CorrelationIdDelegatingHandler>();
             services.AddAutoMapper(typeof(Startup).Assembly);
 
@@ -102,7 +108,7 @@ namespace DFC.App.JobCategories
 
             services
                .AddPolicies(policyRegistry, nameof(ServiceTaxonomyApiClientOptions), policyOptions)
-               .AddHttpClient<IDataLoadService<ServiceTaxonomyApiClientOptions>, DataLoadService<ServiceTaxonomyApiClientOptions>, ServiceTaxonomyApiClientOptions>(configuration, nameof(ServiceTaxonomyApiClientOptions), nameof(PolicyOptions.HttpRetry), nameof(PolicyOptions.HttpCircuitBreaker));
+               .AddHttpClient<IApiDataService<ServiceTaxonomyApiClientOptions>, ApiDataService<ServiceTaxonomyApiClientOptions>, ServiceTaxonomyApiClientOptions>(configuration, nameof(ServiceTaxonomyApiClientOptions), nameof(PolicyOptions.HttpRetry), nameof(PolicyOptions.HttpCircuitBreaker));
 
             services.AddMvc(config =>
                 {

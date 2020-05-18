@@ -26,10 +26,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DFC.App.JobCategories.Data\DFC.App.JobCategories.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="EventProcessorServices\Models\" />
   </ItemGroup>
 
 </Project>

@@ -64,7 +64,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
 
             // assert
             A.CallTo(() => repository.UpsertAsync(contentPageModel)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => repository.GetAsync( A<Expression<Func<JobCategory, bool>>>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustNotHaveHappened();
             A.Equals(result, expectedResult);
         }
 
@@ -85,7 +85,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.ContentPageServiceTests
 
             // assert
             A.CallTo(() => repository.UpsertAsync(contentPageModel)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => repository.GetAsync( A<Expression<Func<JobCategory, bool>>>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => repository.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustNotHaveHappened();
             A.Equals(result, expectedResult);
         }
     }

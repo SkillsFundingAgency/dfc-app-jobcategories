@@ -3,9 +3,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.JobCategories.Data.Models
 {
+    [ExcludeFromCodeCoverage]
     public class ContentPageModel : IDataModel
     {
         [Guid]
@@ -20,9 +22,7 @@ namespace DFC.App.JobCategories.Data.Models
         [UrlPath]
         public string? CanonicalName { get; set; }
 
-        public string PartitionKey => "static-page";
-
-        public long SequenceNumber { get; set; }
+        public string? PartitionKey { get; set; }
 
         [Display(Name = "Breadcrumb Title")]
         public string? BreadcrumbTitle { get; set; }
@@ -42,5 +42,7 @@ namespace DFC.App.JobCategories.Data.Models
         public DateTime LastReviewed { get; set; }
 
         public Uri? Uri { get; set; }
+
+        public DateTime DateModified { get; set; }
     }
 }

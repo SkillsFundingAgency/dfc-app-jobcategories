@@ -39,6 +39,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
         protected ILogger<PagesController> Logger { get; }
 
         protected IContentPageService<JobCategory> FakeJobCategoryContentPageService { get; }
+
         protected IContentPageService<JobProfile> FakeJobProfileContentPageService { get; }
 
         protected AutoMapper.IMapper FakeMapper { get; }

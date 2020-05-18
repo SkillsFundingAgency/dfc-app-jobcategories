@@ -26,5 +26,8 @@ namespace DFC.App.JobCategories.Data.Models
 
         [Required]
         Uri? Uri { get; set; }
+
+        [Required]
+        DateTime DateModified { get; set; }
     }
 }

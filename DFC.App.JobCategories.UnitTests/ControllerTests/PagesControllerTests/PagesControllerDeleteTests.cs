@@ -18,7 +18,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             Guid documentId = Guid.NewGuid();
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeJobCategoryContentPageService.DeleteAsync(A<Guid>.Ignored)).Returns(true);
+            A.CallTo(() => FakeJobCategoryContentPageService.DeleteAsync(A<Guid>.Ignored)).Returns(HttpStatusCode.NoContent);
 
             // Act
             var result = await controller.Delete(documentId).ConfigureAwait(false);
@@ -41,7 +41,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             Guid documentId = Guid.NewGuid();
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeJobCategoryContentPageService.DeleteAsync(A<Guid>.Ignored)).Returns(false);
+            A.CallTo(() => FakeJobCategoryContentPageService.DeleteAsync(A<Guid>.Ignored)).Returns(HttpStatusCode.OK);
 
             // Act
             var result = await controller.Delete(documentId).ConfigureAwait(false);
