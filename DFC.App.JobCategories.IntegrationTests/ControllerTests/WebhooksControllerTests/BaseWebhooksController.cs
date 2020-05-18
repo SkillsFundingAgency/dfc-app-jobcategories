@@ -31,7 +31,8 @@ namespace DFC.App.JobCategories.IntegrationTests.ControllerTests.WebhooksControl
         }
 
         protected ILogger<WebhooksController> Logger { get; }
-        protected IEventProcessingService FakeEventMessageService { get; }
+
+        public IEventProcessingService FakeEventMessageService { get; }
 
         protected static EventGridEvent[] BuildValidEventGridEvent<TModel>(string eventType, TModel data)
         {
