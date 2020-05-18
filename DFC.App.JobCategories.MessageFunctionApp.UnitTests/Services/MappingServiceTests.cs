@@ -63,7 +63,6 @@ namespace DFC.App.JobCategories.MessageFunctionApp.UnitTests.Services
             {
                 CanonicalName = TestPageName,
                 DocumentId = ContentPageId,
-                SequenceNumber = SequenceNumber,
                 Etag = null,
                 BreadcrumbTitle = BreadcrumbTitle,
                 IncludeInSitemap = IncludeInSitemap,

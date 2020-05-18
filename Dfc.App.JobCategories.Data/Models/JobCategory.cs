@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
 
 namespace DFC.App.JobCategories.Data.Models
 {
@@ -28,6 +26,6 @@ namespace DFC.App.JobCategories.Data.Models
 
         public string? CanonicalName { get; set; }
 
-        public IEnumerable<JobProfile?>? JobProfiles { get; set; }
+        public DateTime DateModified { get; set; }
     }
 }

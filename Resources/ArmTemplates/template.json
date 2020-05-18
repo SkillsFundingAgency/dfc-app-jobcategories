@@ -52,6 +52,9 @@
         "jobcategoriesAppDatabaseThroughput": {
             "type": "int"
         },
+        "JobCategoriesLoadDataOnStartup": {
+            "type": "bool"
+        },
         "sharedAppServicePlanName": {
             "type": "string",
             "defaultValue": ""
@@ -208,6 +211,26 @@
                             {
                                 "name": "ServiceTaxonomyApiClientOptions__BaseAddress",
                                 "value": "[parameters('ServiceTaxonomyApiClientOptionsBaseAddress')]"
+                            },
+                            {
+                                "name": "JobCategories__LoadDataOnStartup",
+                                "value": "[parameters('JobCategoriesLoadDataOnStartup')]"
+                            },
+                            {
+                                "name": "Policies__HttpCircuitBreaker__DurationOfBreak",
+                                "value": "00:01:00"
+                            },
+                            {
+                                "name": "Policies__HttpCircuitBreaker__ExceptionsAllowedBeforeBreaking",
+                                "value": 3
+                            },
+                            {
+                                "name": "Policies__HttpRetry__BackoffPower",
+                                "value": 2
+                            },
+                            {
+                                "name": "Policies__HttpRetry__Count",
+                                "value": 3
                             }
                         ]
                     }

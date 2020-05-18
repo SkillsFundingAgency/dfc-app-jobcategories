@@ -1,13 +1,11 @@
 ﻿using DFC.App.JobCategories.Data.Models;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DFC.App.JobCategories.PageService
 {
-    public interface IDataLoadService<TClientOptions>
+    public interface IApiDataService<TClientOptions>
         where TClientOptions : ServiceTaxonomyApiClientOptions
     {
         Task<IEnumerable<T>> GetAllAsync<T>(string contentType)
