@@ -83,35 +83,6 @@ namespace DFC.App.JobCategories.IntegrationTests.ControllerTests.WebhooksControl
             controller.Dispose();
         }
 
-        //[Theory]
-        //[MemberData(nameof(PublishedEvents))]
-        //public async Task WebhooksControllerPublishUpdatePostReturnsAlreadyReported(string mediaTypeName, string eventType)
-        //{
-        //    // Arrange
-        //    const HttpStatusCode expectedResponse = HttpStatusCode.OK;
-        //    var expectedValidApiModel = BuildValidContactUsApiDataModel();
-        //    var eventGridEvents = BuildValidEventGridEvent(eventType, "http://localhost");
-        //    var controller = BuildWebhooksController(mediaTypeName);
-        //    controller.HttpContext.Request.Body = BuildStreamFromEventGridEvents(eventGridEvents);
-
-        //    A.CallTo(() => FakeApiDataProcessorService.GetAsync<ContactUsApiDataModel>(A<Uri>.Ignored)).Returns(expectedValidApiModel);
-        //    A.CallTo(() => FakeEventMessageService.UpdateAsync(A<ContentPageModel>.Ignored)).Returns(HttpStatusCode.AlreadyReported);
-
-        //    // Act
-        //    var result = await controller.ReceiveJobCategoriesEvents().ConfigureAwait(false);
-
-        //    // Assert
-        //    A.CallTo(() => FakeApiDataProcessorService.GetAsync<ContactUsApiDataModel>(A<Uri>.Ignored)).MustHaveHappenedOnceExactly();
-        //    A.CallTo(() => FakeEventMessageService.UpdateAsync(A<ContentPageModel>.Ignored)).MustHaveHappenedOnceExactly();
-        //    A.CallTo(() => FakeEventMessageService.CreateAsync(A<ContentPageModel>.Ignored)).MustNotHaveHappened();
-        //    A.CallTo(() => FakeEventMessageService.DeleteAsync(A<Guid>.Ignored)).MustNotHaveHappened();
-        //    var okResult = Assert.IsType<OkResult>(result);
-
-        //    Assert.Equal((int)expectedResponse, okResult.StatusCode);
-
-        //    controller.Dispose();
-        //}
-
         [Theory]
         [MemberData(nameof(InvalidIdValues))]
         public async Task WebhooksControllerPostReturnsErrorForInvalidId(string id)
@@ -157,6 +128,29 @@ namespace DFC.App.JobCategories.IntegrationTests.ControllerTests.WebhooksControl
 
             // Act
             await Assert.ThrowsAsync<InvalidDataException>(async () => await controller.ReceiveJobCategoriesEvents().ConfigureAwait(false)).ConfigureAwait(false);
+            controller.Dispose();
+        }
+
+        [Fact]
+        public async Task WebhooksControllerSubscriptionValidationReturnsSuccess()
+        {
+            // Arrange
+            const HttpStatusCode expectedResponse = HttpStatusCode.OK;
+            string expectedValidationCode = Guid.NewGuid().ToString();
+            var eventGridEvents = BuildValidEventGridEvent(Microsoft.Azure.EventGrid.EventTypes.EventGridSubscriptionValidationEvent, new SubscriptionValidationEventData(expectedValidationCode, "https://somewhere.com"));
+            var controller = BuildWebhooksController(MediaTypeNames.Application.Json);
+            controller.HttpContext.Request.Body = BuildStreamFromModel(eventGridEvents);
+
+            // Act
+            var result = await controller.ReceiveJobCategoriesEvents().ConfigureAwait(false);
+
+            // Assert
+            var jsonResult = Assert.IsType<OkObjectResult>(result);
+            var response = Assert.IsAssignableFrom<SubscriptionValidationResponse>(jsonResult.Value);
+
+            Assert.Equal((int)expectedResponse, jsonResult.StatusCode);
+            Assert.Equal(expectedValidationCode, response.ValidationResponse);
+
             controller.Dispose();
         }
 
