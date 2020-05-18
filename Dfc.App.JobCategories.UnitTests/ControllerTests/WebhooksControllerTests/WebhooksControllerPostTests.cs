@@ -1,5 +1,4 @@
-﻿using DFC.App.JobCategories.IntegrationTests.Models;
-using FakeItEasy;
+﻿using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid.Models;
 using Newtonsoft.Json;
@@ -13,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DFC.App.JobCategories.IntegrationTests.ControllerTests.WebhooksControllerTests
+namespace DFC.App.JobCategories.UnitTests.ControllerTests.WebhooksControllerTests
 {
     [Trait("Category", "Webhooks Controller Unit Tests")]
     public class WebhooksControllerPostTests : BaseWebhooksController
