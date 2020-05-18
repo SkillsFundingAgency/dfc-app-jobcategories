@@ -20,9 +20,7 @@ namespace DFC.App.JobCategories.Data.Models
         [UrlPath]
         public string? CanonicalName { get; set; }
 
-        public string PartitionKey { get; set; }
-
-        public long SequenceNumber { get; set; }
+        public string? PartitionKey { get; set; }
 
         [Display(Name = "Breadcrumb Title")]
         public string? BreadcrumbTitle { get; set; }
