@@ -1,0 +1,16 @@
+﻿@model IEnumerable<DFC.App.JobCategories.Data.Models.JobCategory>
+
+@if (Model.Any())
+{
+    <h2 class="govuk-heading-m">Explore by job category</h2>
+    <!-- Needs confirming that the homepage-jobcategories class exists in the jobprofile/shell apps, as there are no classes relating to columns in the GDS toolkit -->
+    <!-- Included some horrible inline styles for now, but these are probably blocked by CSP anywhere other than local! -->
+    <ul class="homepage-jobcategories" style="column-count: 3; column-gap: 30px;">
+        @foreach (var category in Model)
+        {
+            <li>
+                <a class="govuk-link" href="/job-categories/@category.CanonicalName">@category.Title</a>
+            </li>
+        }
+    </ul>
+}
