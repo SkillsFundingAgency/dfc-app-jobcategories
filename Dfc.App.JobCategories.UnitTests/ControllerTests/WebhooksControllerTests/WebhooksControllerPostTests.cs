@@ -188,7 +188,6 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.WebhooksControllerTest
         public async Task WebhooksControllerBlobStorageCreationReturnsSuccess()
         {
             // Arrange
-            const HttpStatusCode expectedResponse = HttpStatusCode.OK;
             var eventGridEvents = BuildValidEventGridEvent(Microsoft.Azure.EventGrid.EventTypes.StorageBlobCreatedEvent, new StorageBlobCreatedEventData() { Url = "http://somewhere.com" });
             var controller = BuildWebhooksController(MediaTypeNames.Application.Json);
             controller.HttpContext.Request.Body = BuildStreamFromModel(eventGridEvents);
@@ -197,10 +196,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.WebhooksControllerTest
             var result = await controller.ReceiveJobCategoriesEvents().ConfigureAwait(false);
 
             // Assert
-            var jsonResult = Assert.IsType<OkObjectResult>(result);
-            var response = Assert.IsAssignableFrom<OkResult>(jsonResult.Value);
-
-            Assert.Equal((int)expectedResponse, jsonResult.StatusCode);
+            var response = Assert.IsAssignableFrom<OkResult>(result);
 
             controller.Dispose();
         }
