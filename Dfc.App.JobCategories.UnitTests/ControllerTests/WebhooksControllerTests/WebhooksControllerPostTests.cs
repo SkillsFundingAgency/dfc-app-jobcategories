@@ -196,7 +196,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.WebhooksControllerTest
             var result = await controller.ReceiveJobCategoriesEvents().ConfigureAwait(false);
 
             // Assert
-            var response = Assert.IsAssignableFrom<OkResult>(result);
+            Assert.IsAssignableFrom<OkResult>(result);
 
             controller.Dispose();
         }
