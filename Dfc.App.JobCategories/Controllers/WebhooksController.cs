@@ -49,9 +49,11 @@ namespace DFC.App.JobCategories.Controllers
 
             foreach (var eventGridEvent in eventGridEvents)
             {
-                if (eventGridEvent.Data is SubscriptionValidationEventData)
+                if (eventGridEvent!.EventType.Equals(EventTypes.EventGridSubscriptionValidationEvent, StringComparison.OrdinalIgnoreCase))
                 {
-                    var eventData = eventGridEvent.Data as SubscriptionValidationEventData;
+                    var eventDataAsJObject = (JObject)eventGridEvent.Data;
+
+                    var eventData = eventDataAsJObject.ToObject<SubscriptionValidationEventData>();
 
                     logger.LogInformation($"Got SubscriptionValidation event data, validationCode: {eventData!.ValidationCode},  validationUrl: {eventData.ValidationUrl}, topic: {eventGridEvent.Topic}");
 
@@ -64,9 +66,11 @@ namespace DFC.App.JobCategories.Controllers
 
                     return Ok(responseData);
                 }
-                else if (eventGridEvent.Data is StorageBlobCreatedEventData)
+                else if (eventGridEvent.EventType.Equals(EventTypes.StorageBlobCreatedEvent, StringComparison.OrdinalIgnoreCase))
                 {
-                    var eventData = eventGridEvent.Data as StorageBlobCreatedEventData;
+                    var eventDataAsJObject = (JObject)eventGridEvent.Data;
+                    var eventData = eventDataAsJObject.ToObject<StorageBlobCreatedEventData>();
+
                     logger.LogInformation($"Got BlobCreated event data, blob URI {eventData!.Url}");
                 }
                 else
