@@ -184,6 +184,27 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.WebhooksControllerTest
             controller.Dispose();
         }
 
+        [Fact]
+        public async Task WebhooksControllerBlobStorageCreationReturnsSuccess()
+        {
+            // Arrange
+            const HttpStatusCode expectedResponse = HttpStatusCode.OK;
+            var eventGridEvents = BuildValidEventGridEvent(Microsoft.Azure.EventGrid.EventTypes.StorageBlobCreatedEvent, new StorageBlobCreatedEventData() { Url = "http://somewhere.com" });
+            var controller = BuildWebhooksController(MediaTypeNames.Application.Json);
+            controller.HttpContext.Request.Body = BuildStreamFromModel(eventGridEvents);
+
+            // Act
+            var result = await controller.ReceiveJobCategoriesEvents().ConfigureAwait(false);
+
+            // Assert
+            var jsonResult = Assert.IsType<OkObjectResult>(result);
+            var response = Assert.IsAssignableFrom<OkResult>(jsonResult.Value);
+
+            Assert.Equal((int)expectedResponse, jsonResult.StatusCode);
+
+            controller.Dispose();
+        }
+
         private static EventGridEvent[] BuildValidEventGridEvent(string eventType, object data)
         {
             var models = new EventGridEvent[]
