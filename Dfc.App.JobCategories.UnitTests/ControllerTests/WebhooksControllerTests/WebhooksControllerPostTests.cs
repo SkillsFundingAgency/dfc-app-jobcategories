@@ -160,6 +160,30 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.WebhooksControllerTest
             controller.Dispose();
         }
 
+
+        [Fact]
+        public async Task WebhooksControllerSubscriptionValidationReturnsSuccess()
+        {
+            // Arrange
+            const HttpStatusCode expectedResponse = HttpStatusCode.OK;
+            string expectedValidationCode = Guid.NewGuid().ToString();
+            var eventGridEvents = BuildValidEventGridEvent(Microsoft.Azure.EventGrid.EventTypes.EventGridSubscriptionValidationEvent, new SubscriptionValidationEventData(expectedValidationCode, "https://somewhere.com"));
+            var controller = BuildWebhooksController(MediaTypeNames.Application.Json);
+            controller.HttpContext.Request.Body = BuildStreamFromModel(eventGridEvents);
+
+            // Act
+            var result = await controller.ReceiveJobCategoriesEvents().ConfigureAwait(false);
+
+            // Assert
+            var jsonResult = Assert.IsType<OkObjectResult>(result);
+            var response = Assert.IsAssignableFrom<SubscriptionValidationResponse>(jsonResult.Value);
+
+            Assert.Equal((int)expectedResponse, jsonResult.StatusCode);
+            Assert.Equal(expectedValidationCode, response.ValidationResponse);
+
+            controller.Dispose();
+        }
+
         private static EventGridEvent[] BuildValidEventGridEvent(string eventType, object data)
         {
             var models = new EventGridEvent[]

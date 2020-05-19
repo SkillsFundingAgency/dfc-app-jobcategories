@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json;
+using System.IO;
+using System.Text;
 
 namespace DFC.App.JobCategories.UnitTests.ControllerTests.WebhooksControllerTests
 {
@@ -26,6 +29,15 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.WebhooksControllerTest
         protected ILogger<WebhooksController> Logger { get; }
 
         protected IEventProcessingService FakeEventMessageService { get; }
+
+        protected static Stream BuildStreamFromModel<TModel>(TModel model)
+        {
+            var jsonData = JsonConvert.SerializeObject(model);
+            byte[] byteArray = Encoding.ASCII.GetBytes(jsonData);
+            MemoryStream stream = new MemoryStream(byteArray);
+
+            return stream;
+        }
 
         protected WebhooksController BuildWebhooksController(string mediaTypeName)
         {
