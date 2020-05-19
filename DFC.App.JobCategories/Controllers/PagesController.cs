@@ -273,6 +273,20 @@ namespace DFC.App.JobCategories.Controllers
             }
         }
 
+        //Not sure where this belongs really so plonking it here for now!
+        [HttpGet("pages/explore-careers")]
+        public async Task<IActionResult> ExploreCareers()
+        {
+            var categories = await jobCategoryPageContentService.GetAllAsync().ConfigureAwait(false);
+
+            if (categories == null)
+            {
+                return NoContent();
+            }
+
+            return this.NegotiateContentResult(categories);
+        }
+
         #region Define helper methods
 
         private static BreadcrumbViewModel BuildBreadcrumb(JobCategory? jobCategoryModel)

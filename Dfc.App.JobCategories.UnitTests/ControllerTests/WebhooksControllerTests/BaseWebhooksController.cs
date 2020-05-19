@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 
-namespace DFC.App.JobCategories.IntegrationTests.ControllerTests.WebhooksControllerTests
+namespace DFC.App.JobCategories.UnitTests.ControllerTests.WebhooksControllerTests
 {
     public abstract class BaseWebhooksController
     {
