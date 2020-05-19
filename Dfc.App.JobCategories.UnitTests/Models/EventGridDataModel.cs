@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace DFC.App.JobCategories.IntegrationTests.Models
+namespace DFC.App.JobCategories.UnitTests.ControllerTests.Models
 {
     public class EventGridDataModel
     {
