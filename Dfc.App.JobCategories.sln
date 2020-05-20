@@ -1,0 +1,132 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{CE77911F-39D8-4CA3-AF5F-D082068AF7AE}"
+	ProjectSection(SolutionItems) = preProject
+		..\dfc-app-contentpages\.gitignore = ..\dfc-app-contentpages\.gitignore
+		..\dfc-app-contentpages\CODEOWNERS = ..\dfc-app-contentpages\CODEOWNERS
+		..\dfc-app-contentpages\DFC.Digital.CodeAnalysis.ruleset = ..\dfc-app-contentpages\DFC.Digital.CodeAnalysis.ruleset
+		..\dfc-app-contentpages\LICENSE = ..\dfc-app-contentpages\LICENSE
+		..\dfc-app-contentpages\README.md = ..\dfc-app-contentpages\README.md
+		..\dfc-app-contentpages\stylecop.json = ..\dfc-app-contentpages\stylecop.json
+		..\dfc-app-contentpages\UnitTests.CodeAnalysis.ruleset = ..\dfc-app-contentpages\UnitTests.CodeAnalysis.ruleset
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{D0587E07-62EF-4109-8152-A671290112E4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.Data", "DFC.App.JobCategories.Data\DFC.App.JobCategories.Data.csproj", "{F1550973-C11D-4327-8DBE-F39F05A0B16A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repositories", "Repositories", "{E643011F-E65D-45DC-B65B-E39FE63C66B6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.Repository.CosmosDb", "DFC.App.JobCategories.Repository.CosmosDb\DFC.App.JobCategories.Repository.CosmosDb.csproj", "{E644A32D-96CE-4DD3-B24D-AAACF3FF0614}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{AACB29C2-82EB-49DE-9A3B-EFCDE0CCC3E0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.PageService", "DFC.App.JobCategories.PageService\DFC.App.JobCategories.PageService.csproj", "{B2F590C8-8C2B-451F-B164-74B1E30E8BB1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories", "DFC.App.JobCategories\DFC.App.JobCategories.csproj", "{2E0335CA-82A7-404D-8806-42C4BB8A2F99}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{BDE56743-9F74-46CE-A817-D4EA6A852DAB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.MessageFunctionApp", "DFC.App.JobCategories.MessageFunctionApp\DFC.App.JobCategories.MessageFunctionApp.csproj", "{0D5FA7BC-4D3D-4B5C-81A4-A415CA882C0A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C5C77B1C-2974-4F60-8816-D36E7E8C0415}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{D87447EF-08DF-4F0D-9A75-DCE830D65E7D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{18C4AEC8-D45E-433E-AFC3-D53AB4EA4B17}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.IntegrationTests", "DFC.App.JobCategories.IntegrationTests\DFC.App.JobCategories.IntegrationTests.csproj", "{2CC977EE-BCCD-4899-920B-E379456526B2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{37D79C19-0999-4643-A9E6-9A30B0E05026}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{62311015-EC1A-4F50-902B-1E42C2C4B85A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.Data.UnitTests", "DFC.App.JobCategories.Data.UnitTests\DFC.App.JobCategories.Data.UnitTests.csproj", "{858B02E8-47E8-4ED3-A726-9C77F4758674}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{693B8EEC-5BA5-4FA4-BB46-E8366C5B7146}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.MessageFunctionApp.UnitTests", "DFC.App.JobCategories.MessageFunctionApp.UnitTests\DFC.App.JobCategories.MessageFunctionApp.UnitTests.csproj", "{AC343D3F-348C-416A-B61C-1E71CC4F4628}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A99B9FCD-EEA6-43AE-9FF0-1BB19D4959C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.PageService.UnitTests", "DFC.App.JobCategories.PageService.UnitTests\DFC.App.JobCategories.PageService.UnitTests.csproj", "{CF0209AC-4647-468C-B4D3-6846042FE748}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{51F82478-9298-4ECA-A8D0-944F8FAD89A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.JobCategories.UnitTests", "DFC.App.JobCategories.UnitTests\DFC.App.JobCategories.UnitTests.csproj", "{99DA9722-061D-4BA3-B307-0F3A66C5DC0D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F1550973-C11D-4327-8DBE-F39F05A0B16A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1550973-C11D-4327-8DBE-F39F05A0B16A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1550973-C11D-4327-8DBE-F39F05A0B16A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1550973-C11D-4327-8DBE-F39F05A0B16A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E644A32D-96CE-4DD3-B24D-AAACF3FF0614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E644A32D-96CE-4DD3-B24D-AAACF3FF0614}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E644A32D-96CE-4DD3-B24D-AAACF3FF0614}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E644A32D-96CE-4DD3-B24D-AAACF3FF0614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2F590C8-8C2B-451F-B164-74B1E30E8BB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2F590C8-8C2B-451F-B164-74B1E30E8BB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2F590C8-8C2B-451F-B164-74B1E30E8BB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2F590C8-8C2B-451F-B164-74B1E30E8BB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E0335CA-82A7-404D-8806-42C4BB8A2F99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E0335CA-82A7-404D-8806-42C4BB8A2F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E0335CA-82A7-404D-8806-42C4BB8A2F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E0335CA-82A7-404D-8806-42C4BB8A2F99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D5FA7BC-4D3D-4B5C-81A4-A415CA882C0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D5FA7BC-4D3D-4B5C-81A4-A415CA882C0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D5FA7BC-4D3D-4B5C-81A4-A415CA882C0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D5FA7BC-4D3D-4B5C-81A4-A415CA882C0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CC977EE-BCCD-4899-920B-E379456526B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CC977EE-BCCD-4899-920B-E379456526B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CC977EE-BCCD-4899-920B-E379456526B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CC977EE-BCCD-4899-920B-E379456526B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{858B02E8-47E8-4ED3-A726-9C77F4758674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{858B02E8-47E8-4ED3-A726-9C77F4758674}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{858B02E8-47E8-4ED3-A726-9C77F4758674}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{858B02E8-47E8-4ED3-A726-9C77F4758674}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC343D3F-348C-416A-B61C-1E71CC4F4628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC343D3F-348C-416A-B61C-1E71CC4F4628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC343D3F-348C-416A-B61C-1E71CC4F4628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC343D3F-348C-416A-B61C-1E71CC4F4628}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF0209AC-4647-468C-B4D3-6846042FE748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF0209AC-4647-468C-B4D3-6846042FE748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF0209AC-4647-468C-B4D3-6846042FE748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF0209AC-4647-468C-B4D3-6846042FE748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99DA9722-061D-4BA3-B307-0F3A66C5DC0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99DA9722-061D-4BA3-B307-0F3A66C5DC0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99DA9722-061D-4BA3-B307-0F3A66C5DC0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99DA9722-061D-4BA3-B307-0F3A66C5DC0D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F1550973-C11D-4327-8DBE-F39F05A0B16A} = {D0587E07-62EF-4109-8152-A671290112E4}
+		{E644A32D-96CE-4DD3-B24D-AAACF3FF0614} = {E643011F-E65D-45DC-B65B-E39FE63C66B6}
+		{B2F590C8-8C2B-451F-B164-74B1E30E8BB1} = {AACB29C2-82EB-49DE-9A3B-EFCDE0CCC3E0}
+		{0D5FA7BC-4D3D-4B5C-81A4-A415CA882C0A} = {BDE56743-9F74-46CE-A817-D4EA6A852DAB}
+		{D87447EF-08DF-4F0D-9A75-DCE830D65E7D} = {C5C77B1C-2974-4F60-8816-D36E7E8C0415}
+		{18C4AEC8-D45E-433E-AFC3-D53AB4EA4B17} = {D87447EF-08DF-4F0D-9A75-DCE830D65E7D}
+		{2CC977EE-BCCD-4899-920B-E379456526B2} = {18C4AEC8-D45E-433E-AFC3-D53AB4EA4B17}
+		{37D79C19-0999-4643-A9E6-9A30B0E05026} = {C5C77B1C-2974-4F60-8816-D36E7E8C0415}
+		{62311015-EC1A-4F50-902B-1E42C2C4B85A} = {37D79C19-0999-4643-A9E6-9A30B0E05026}
+		{858B02E8-47E8-4ED3-A726-9C77F4758674} = {62311015-EC1A-4F50-902B-1E42C2C4B85A}
+		{693B8EEC-5BA5-4FA4-BB46-E8366C5B7146} = {37D79C19-0999-4643-A9E6-9A30B0E05026}
+		{AC343D3F-348C-416A-B61C-1E71CC4F4628} = {693B8EEC-5BA5-4FA4-BB46-E8366C5B7146}
+		{A99B9FCD-EEA6-43AE-9FF0-1BB19D4959C6} = {37D79C19-0999-4643-A9E6-9A30B0E05026}
+		{CF0209AC-4647-468C-B4D3-6846042FE748} = {A99B9FCD-EEA6-43AE-9FF0-1BB19D4959C6}
+		{51F82478-9298-4ECA-A8D0-944F8FAD89A0} = {37D79C19-0999-4643-A9E6-9A30B0E05026}
+		{99DA9722-061D-4BA3-B307-0F3A66C5DC0D} = {51F82478-9298-4ECA-A8D0-944F8FAD89A0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38502E13-C719-4022-BD97-BEDD0964438C}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,63 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "environment": {
+            "value": "__ReleaseEnvironmentName__",
+            "metadata": {
+                "comment": "Bug in tokenisation task prevents referencing Release.EnvironmentName directly.  https://github.com/TotalALM/VSTS-Tasks/issues/29"
+            }
+        },
+        "appSharedResourceGroup": {
+            "value": "__appSharedResourceGroup__"
+        },
+        "appSharedStorageAccountName": {
+            "value": "__appSharedStorageAccountName__"
+        },
+        "aseHostingEnvironmentName": {
+            "value": "__aseHostingEnvironmentName__"
+        },
+        "aseResourceGroup": {
+            "value": "__aseResourceGroup__"
+        },
+        "aspTier": {
+            "value": "__aspTier__"
+        },
+        "sharedAppServicePlanName": {
+            "value": "__sharedAppServicePlanName__"
+        },
+        "sharedAppServicePlanResourceGroup": {
+            "value": "__appSharedResourceGroup__"
+        },
+        "enableAlerts": {
+            "value": __EnableAzureMonitorAlerting__
+        },
+        "CosmosDbResourceGroup": {
+            "value": "__appSharedResourceGroup__"
+        },
+        "cosmosDBName": {
+            "value": "__appSharedCosmosDBName__"
+        },
+        "cosmosDbKey": {
+            "value": "__appSharedCosmosPrimaryKey__"
+        },
+        "cosmosDbCollectionName": {
+            "value": "__cosmosDbCollectionName__"
+        },
+        "jobcategoriesAppDatabaseNeedsCreation": {
+            "value": __CosmosDbDatabaseDoesntExist__
+        },
+        "jobcategoriesAppDatabaseThroughput": {
+            "value": __jobcategoriesAppDatabaseThroughput__
+        },
+        "JobCategoriesLoadDataOnStartup": {
+            "value": __JobCategoriesLoadDataOnStartup__
+        },
+        "ServiceTaxonomyApiClientOptionsTimeout": {
+            "value": "__ServiceTaxonomyApiClientOptionsTimeout__"
+        },
+        "ServiceTaxonomyApiClientOptionsBaseAddress": {
+            "value": "__ServiceTaxonomyApiClientOptionsBaseAddress__"
+        }
+    }
+}

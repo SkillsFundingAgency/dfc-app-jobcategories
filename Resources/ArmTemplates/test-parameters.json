@@ -1,0 +1,51 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "Environment": {
+            "value": "FOO"
+        },
+        "appSharedResourceGroup": {
+            "value": "dfc-dev-app-sharedresources-rg"
+        },
+        "appSharedStorageAccountName": {
+            "value": "dfcdevappsharedstr"
+        },
+        "sharedAppServicePlanName": {
+            "value": "dfc-dev-app-shared-asp"
+        },
+        "sharedAppServicePlanResourceGroup": {
+            "value": "dfc-dev-app-sharedresources-rg"
+        },
+        "enableAlerts": {
+            "value": false
+        },
+        "CosmosDbResourceGroup": {
+            "value": "dfc-dev-app-sharedresources-rg"
+        },
+        "cosmosDBName": {
+            "value": "dfc-dev-app-sharedresources-cdb"
+        },
+        "cosmosDbKey": {
+            "value": "not-a-real-key"
+        },
+        "cosmosDbCollectionName": {
+            "value": "a-test-collection"
+        },
+        "jobcategoriesAppDatabaseNeedsCreation": {
+            "value": true
+        },
+        "jobcategoriesAppDatabaseThroughput": {
+            "value": 2
+        },
+        "JobCategoriesLoadDataOnStartup": {
+            "value": true
+        },
+        "ServiceTaxonomyApiClientOptionsTimeout": {
+            "value": "foo"
+        },
+        "ServiceTaxonomyApiClientOptionsBaseAddress": {
+            "value": "bar"
+        }
+    }
+}

@@ -1,0 +1,24 @@
+﻿@model BodyViewModel
+
+
+@if (Model.Profiles?.Any() ?? false)
+{
+    <h1 class="govuk-heading-xl">@Model.Category</h1>
+    <ul class="govuk-list">
+        @foreach (var profile in Model.Profiles)
+        {
+            <li>
+                <h2 class="govuk-heading-m">
+                    <a class="govuk-link" href="/job-profiles/@profile.URL">@profile.Title</a>
+                </h2>
+                @if (profile.AltTitles != null)
+                {
+                    <h3 class="govuk-secondary-colour govuk-!-font-size-16 govuk-!-font-weight-regular">
+                        @profile.AltTitles
+                    </h3>
+                }
+                @Html.Raw(profile.Description)
+            </li>
+        }
+    </ul>
+}
