@@ -28,8 +28,8 @@ namespace DFC.App.JobCategories.PageService.UnitTests.Helpers
                 Uri = new Uri("http://somehost/someresource/occupation/54288fad-2f99-43cb-8df0-d10d29977a4b"),
                 Links = new List<Link>
                 {
-                    new Link { LinkValue = new KeyValuePair<string, DynamicLink>("occupationlabel", new DynamicLink() { Href = new Uri("http://somehost/someresource/occupationlabel/a4415817-0ca4-487e-af74-2e8276c606d9"), Relationship="ncs__hasAltLabel" }) },
-                    new Link { LinkValue = new KeyValuePair<string, DynamicLink>("occupationlabel", new DynamicLink() { Href = new Uri("http://somehost/someresource/occupationlabel/a4415817-0ca4-487e-af74-2e8276c606d9"), Relationship="ncs__hasAltLabel" }) },
+                    new Link { LinkValue = new KeyValuePair<string, DynamicLink>("occupationlabel", new DynamicLink() { Href = new Uri("http://somehost/someresource/occupationlabel/a4415817-0ca4-487e-af74-2e8276c606d9"), Relationship="hasAltLabel" }) },
+                    new Link { LinkValue = new KeyValuePair<string, DynamicLink>("occupationlabel", new DynamicLink() { Href = new Uri("http://somehost/someresource/occupationlabel/a4415817-0ca4-487e-af74-2e8276c606d9"), Relationship="hasAltLabel" }) },
                 },
             };
         }

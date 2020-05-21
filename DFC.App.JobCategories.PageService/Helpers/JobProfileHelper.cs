@@ -14,7 +14,7 @@ namespace DFC.App.JobCategories.PageService.Helpers
         private const string OccupationApiName = "occupation";
         private const string OccuptionLabelApiName = "occupationlabel";
         //Move to config
-        private const string NcsAltLabelRelationshipName = "ncs__hasAltLabel";
+        private const string NcsAltLabelRelationshipName = "hasAltLabel";
         private readonly IApiExtensions apiExtensions;
 
         public JobProfileHelper(IApiExtensions apiExtensions)
@@ -73,7 +73,7 @@ namespace DFC.App.JobCategories.PageService.Helpers
 
         private async Task<IEnumerable<OccupationLabelApiResponse>> GetOccupationLabels(IEnumerable<OccupationApiResponse> occupations)
         {
-            var allLabels = occupations.Where(y => y != null).SelectMany(x => x.Links.Where(z => z.LinkValue.Key == "occupationlabel" && (z.LinkValue.Value.Relationship == "ncs__hasAltLabel")).Select(y => y.LinkValue.Value.GetId<Guid>()));
+            var allLabels = occupations.Where(y => y != null).SelectMany(x => x.Links.Where(z => z.LinkValue.Key == "occupationlabel" && (z.LinkValue.Value.Relationship == "hasAltLabel")).Select(y => y.LinkValue.Value.GetId<Guid>()));
 
             var tasks = allLabels.Select(x => apiExtensions.LoadDataByIdAsync<OccupationLabelApiResponse>(OccuptionLabelApiName, x));
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);

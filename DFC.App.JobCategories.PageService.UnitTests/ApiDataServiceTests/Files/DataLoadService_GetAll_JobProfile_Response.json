@@ -1,331 +1,331 @@
 ﻿[
   {
-    "ncs__SalaryStarter": "12000",
-    "ncs__HtbCareerTips": "<p>Some airlines and private providers run 2-day cabin crew courses, which may help your chances of getting a job.</p>",
-    "ncs__HtbBodies": "",
+    "SalaryStarter": "12000",
+    "HtbCareerTips": "<p>Some airlines and private providers run 2-day cabin crew courses, which may help your chances of getting a job.</p>",
+    "HtbBodies": "",
     "skos__prefLabel": "Cabin crew",
-    "ncs__CareerPathAndProgression": "<p>With experience, you could progress to cabin crew supervisor or a senior air cabin crew role.</p><p>You could also work in a ground-based role like cabin crew training, recruitment, passenger services, marketing or sales.</p>",
-    "ncs__WorkingPatternDetails": "away from home",
-    "ncs__ModifiedDate": "2020-04-20T07:00:44.794340300Z",
-    "ncs__SalaryExperienced": "30000",
-    "ncs__HtbFurtherInformation": "<p>You'll find details about working as air cabin crew from <a href=\"http://www.careersthatmove.co.uk/A-Career-in-Passenger-Transport-and-Travel/Career-Map#/industry/aviation\">Careers That Move</a>.</p>",
-    "ncs__WorkingPattern": "evenings / weekends / bank holidays",
+    "CareerPathAndProgression": "<p>With experience, you could progress to cabin crew supervisor or a senior air cabin crew role.</p><p>You could also work in a ground-based role like cabin crew training, recruitment, passenger services, marketing or sales.</p>",
+    "WorkingPatternDetails": "away from home",
+    "ModifiedDate": "2020-04-20T07:00:44.794340300Z",
+    "SalaryExperienced": "30000",
+    "HtbFurtherInformation": "<p>You'll find details about working as air cabin crew from <a href=\"http://www.careersthatmove.co.uk/A-Career-in-Passenger-Transport-and-Travel/Career-Map#/industry/aviation\">Careers That Move</a>.</p>",
+    "WorkingPattern": "evenings / weekends / bank holidays",
     "uri": "http://nationalcareers.service.gov.uk/jobprofile/1691de35-7576-4db0-a50d-267240e5c2d4",
-    "ncs__Description": "<p>Air cabin crew help make sure that airline passengers have a comfortable, safe and pleasant flight.</p>",
-    "ncs__WorkingHoursDetails": "a week",
-    "ncs__JobProfileWebsiteUrl": "cabin-crew",
-    "ncs__MaximumHours": 40.0,
-    "ncs__MinimumHours": 30.0,
-    "ncs__CreatedDate": "2020-04-20T06:07:57.115806100Z",
-    "ncs__WitDigitalSkillsLevel": "<p>to be able to carry out basic tasks on a computer or hand-held device</p>",
+    "Description": "<p>Air cabin crew help make sure that airline passengers have a comfortable, safe and pleasant flight.</p>",
+    "WorkingHoursDetails": "a week",
+    "JobProfileWebsiteUrl": "cabin-crew",
+    "MaximumHours": 40.0,
+    "MinimumHours": 30.0,
+    "CreatedDate": "2020-04-20T06:07:57.115806100Z",
+    "WitDigitalSkillsLevel": "<p>to be able to carry out basic tasks on a computer or hand-held device</p>",
     "_links": [
       {
-        "ncs__DirectRoute": {
-          "relationship": "ncs__hasHtbDirectRoute",
+        "DirectRoute": {
+          "relationship": "hasHtbDirectRoute",
           "href": "http://nationalcareers.service.gov.uk/directroute/34f4f0dc-a6a7-4e81-be48-80e3b63e0aaa"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/ab78d069-c92e-4ffc-910e-e63d01060b59"
         }
       },
       {
         "soccode": {
-          "relationship": "ncs__hasSocCode",
+          "relationship": "hasSocCode",
           "href": "http://nationalcareers.service.gov.uk/soccode/f22d937e-db32-4640-8fb2-97104d60bcf5"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/12411cbf-8ba2-4298-9b06-2fd7cde9da4a"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/61479c13-4c64-4dc9-a9a6-185e7319864f"
         }
       },
       {
         "apprenticeshiproute": {
-          "relationship": "ncs__hasHtbApprenticeshipRoute",
+          "relationship": "hasHtbApprenticeshipRoute",
           "href": "http://nationalcareers.service.gov.uk/apprenticeshiproute/5bc927e1-fd7d-427c-b408-f34b68545ffd"
         }
       },
       {
         "otherrequirement": {
-          "relationship": "ncs__hasWitOtherRequirement",
+          "relationship": "hasWitOtherRequirement",
           "href": "http://nationalcareers.service.gov.uk/otherrequirement/de76788a-5c6c-45d5-9169-73a58a964ac0"
         }
       },
       {
         "occupation": {
-          "relationship": "ncs__relatedOccupation",
+          "relationship": "relatedOccupation",
           "href": "http://data.europa.eu/esco/occupation/58ff0ec2-08ba-4b21-b765-babb6d76ca36"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/f4f70db5-c3ed-4d43-af11-561220b7932a"
         }
       },
       {
         "workinguniform": {
-          "relationship": "ncs__hasWorkingUniform",
+          "relationship": "hasWorkingUniform",
           "href": "http://nationalcareers.service.gov.uk/workinguniform/f648faf2-2f40-464e-8b16-e90aa3cc5220"
         }
       },
       {
         "workinglocation": {
-          "relationship": "ncs__hasWorkingLocation",
+          "relationship": "hasWorkingLocation",
           "href": "http://nationalcareers.service.gov.uk/workinglocation/a9c9608a-0544-4eb2-9e0e-3e68cb508159"
         }
       },
       {
         "restriction": {
-          "relationship": "ncs__hasWitRestriction",
+          "relationship": "hasWitRestriction",
           "href": "http://nationalcareers.service.gov.uk/restriction/3a521a13-d69f-4e0c-b4de-bfc3e2c4378d"
         }
       },
       {
         "workingenvironment": {
-          "relationship": "ncs__hasWorkingEnvironment",
+          "relationship": "hasWorkingEnvironment",
           "href": "http://nationalcareers.service.gov.uk/workingenvironment/5d8f5b34-2ee7-48cf-8a6c-8206ece57661"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/3258ff01-66bb-4762-9c62-fe3561ee5335"
         }
       },
       {
         "restriction": {
-          "relationship": "ncs__hasWitRestriction",
+          "relationship": "hasWitRestriction",
           "href": "http://nationalcareers.service.gov.uk/restriction/f68685ef-bd87-4092-a9a7-424305655b2c"
         }
       },
       {
         "otherrequirement": {
-          "relationship": "ncs__hasWitOtherRequirement",
+          "relationship": "hasWitOtherRequirement",
           "href": "http://nationalcareers.service.gov.uk/otherrequirement/db008297-91cb-4043-a324-abb1d3ac36f2"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/f57158ec-fc9e-4430-b548-1f2dd80c4718"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/c89e8a89-59e5-49b6-b59b-d131bd0f841f"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/827e6f5c-0f37-4b4c-9aa9-e08a1dba53de"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/9e6b6e4e-ea74-47a3-a5ff-bb444f0c367d"
         }
       },
       {
         "restriction": {
-          "relationship": "ncs__hasWitRestriction",
+          "relationship": "hasWitRestriction",
           "href": "http://nationalcareers.service.gov.uk/restriction/cc1c2650-0cd3-417e-bc7e-3dec12813300"
         }
       },
       {
         "restriction": {
-          "relationship": "ncs__hasWitRestriction",
+          "relationship": "hasWitRestriction",
           "href": "http://nationalcareers.service.gov.uk/restriction/26a2e699-57bb-4832-ad86-b163e4ceb6bc"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/728c7fb3-ca95-4f66-9776-9e21a1183fc5"
         }
       },
       {
         "collegeroute": {
-          "relationship": "ncs__hasHtbCollegeRoute",
+          "relationship": "hasHtbCollegeRoute",
           "href": "http://nationalcareers.service.gov.uk/collegeroute/2a4bf0d5-a463-4347-98d5-c5625b408fb2"
         }
       },
       {
         "otherrequirement": {
-          "relationship": "ncs__hasWitOtherRequirement",
+          "relationship": "hasWitOtherRequirement",
           "href": "http://nationalcareers.service.gov.uk/otherrequirement/506f01f4-0e98-4ee0-ba45-6129aa2d5ff5"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/10f91166-ab24-4168-9b2b-b2d44d26994b"
         }
       }
     ]
   },
   {
-    "ncs__SalaryStarter": "12500",
-    "ncs__HtbCareerTips": "<p>Time spent caring for someone you know also counts as having experience in a caring role.</p>",
+    "SalaryStarter": "12500",
+    "HtbCareerTips": "<p>Time spent caring for someone you know also counts as having experience in a caring role.</p>",
     "skos__prefLabel": "Care worker",
-    "ncs__CareerPathAndProgression": "<p>You could progress to a more senior role, managing people or services.</p><p>As your career develops, you can move on to higher level qualifications, such as a foundation degree, social work degree or Level 5 Diploma in Leadership and Management for Adult Care.</p>",
-    "ncs__WorkingPatternDetails": "on shifts",
-    "ncs__ModifiedDate": "2020-04-28T09:45:16.348673000Z",
-    "ncs__HtbTitleOptions": "as_defined",
-    "ncs__SalaryExperienced": "25000",
-    "ncs__HtbFurtherInformation": "<p>You can find out more about careers in care from <a href=\"https://www.skillsforcare.org.uk/Careers-in-care/Job-roles/Job-roles-in-social-care.aspx\">Think Care Careers</a> and <a href=\"https://www.scie.org.uk/socialcaretv/\">Social Care TV</a>.</p>",
-    "ncs__WorkingPattern": "evenings / weekends",
+    "CareerPathAndProgression": "<p>You could progress to a more senior role, managing people or services.</p><p>As your career develops, you can move on to higher level qualifications, such as a foundation degree, social work degree or Level 5 Diploma in Leadership and Management for Adult Care.</p>",
+    "WorkingPatternDetails": "on shifts",
+    "ModifiedDate": "2020-04-28T09:45:16.348673000Z",
+    "HtbTitleOptions": "as_defined",
+    "SalaryExperienced": "25000",
+    "HtbFurtherInformation": "<p>You can find out more about careers in care from <a href=\"https://www.skillsforcare.org.uk/Careers-in-care/Job-roles/Job-roles-in-social-care.aspx\">Think Care Careers</a> and <a href=\"https://www.scie.org.uk/socialcaretv/\">Social Care TV</a>.</p>",
+    "WorkingPattern": "evenings / weekends",
     "uri": "http://nationalcareers.service.gov.uk/jobprofile/4f00d4b5-ba96-49d4-a5b9-cd593f01af1d",
-    "ncs__Description": "<p>Care workers help vulnerable people to manage their daily activities and to live as independently as possible.</p>",
-    "ncs__WorkingHoursDetails": "a week",
-    "ncs__JobProfileWebsiteUrl": "care-worker",
-    "ncs__MaximumHours": 40.0,
-    "ncs__MinimumHours": 35.0,
-    "ncs__CreatedDate": "2020-04-20T06:07:57.115806100Z",
-    "ncs__WitDigitalSkillsLevel": "<p>to be able to carry out basic tasks on a computer or hand-held device</p>",
+    "Description": "<p>Care workers help vulnerable people to manage their daily activities and to live as independently as possible.</p>",
+    "WorkingHoursDetails": "a week",
+    "JobProfileWebsiteUrl": "care-worker",
+    "MaximumHours": 40.0,
+    "MinimumHours": 35.0,
+    "CreatedDate": "2020-04-20T06:07:57.115806100Z",
+    "WitDigitalSkillsLevel": "<p>to be able to carry out basic tasks on a computer or hand-held device</p>",
     "_links": [
       {
         "apprenticeshipstandard": {
-          "relationship": "ncs__hasApprenticeshipStandard",
+          "relationship": "hasApprenticeshipStandard",
           "href": "http://nationalcareers.service.gov.uk/apprenticeshipstandard/300d3bb3-b8e5-4e02-a81f-d11b8e5a4ac2"
         }
       },
       {
         "workinglocation": {
-          "relationship": "ncs__hasWorkingLocation",
+          "relationship": "hasWorkingLocation",
           "href": "http://nationalcareers.service.gov.uk/workinglocation/a460b9b1-52e3-4774-a457-c77f038d7e97"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/2de2e5ee-58a9-44d9-9530-487e8955d7e4"
         }
       },
       {
         "collegeroute": {
-          "relationship": "ncs__hasHtbCollegeRoute",
+          "relationship": "hasHtbCollegeRoute",
           "href": "http://nationalcareers.service.gov.uk/collegeroute/9fc0ed9b-d337-45a6-a7f5-6e02aab3f461"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/e96eeae6-8229-4e70-bb1b-7d2810c98da9"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/0b380e1c-f9ed-4a17-b28a-dbdb379836c1"
         }
       },
       {
         "occupation": {
-          "relationship": "ncs__relatedOccupation",
+          "relationship": "relatedOccupation",
           "href": "http://data.europa.eu/esco/occupation/81309031-dad2-4a7a-bde6-7f6e518f89ff"
         }
       },
       {
         "workingenvironment": {
-          "relationship": "ncs__hasWorkingEnvironment",
+          "relationship": "hasWorkingEnvironment",
           "href": "http://nationalcareers.service.gov.uk/workingenvironment/17b81b2e-0a0e-4c36-98c0-31fe2b84004c"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/dea19b7d-f0b6-46e0-af81-657a8046b9b4"
         }
       },
       {
         "workinguniform": {
-          "relationship": "ncs__hasWorkingUniform",
+          "relationship": "hasWorkingUniform",
           "href": "http://nationalcareers.service.gov.uk/workinguniform/f648faf2-2f40-464e-8b16-e90aa3cc5220"
         }
       },
       {
         "soccode": {
-          "relationship": "ncs__hasSocCode",
+          "relationship": "hasSocCode",
           "href": "http://nationalcareers.service.gov.uk/soccode/dcd38fec-e6ec-40cf-96d4-77a5ce7d2a98"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/f33ec30d-d227-4f50-a895-864fb227b2d5"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/6e407541-d5e1-413e-a94a-fe34f554df19"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/ae83bbed-6101-4b52-b1cc-7d64bbd8d754"
         }
       },
       {
         "restriction": {
-          "relationship": "ncs__hasWitRestriction",
+          "relationship": "hasWitRestriction",
           "href": "http://nationalcareers.service.gov.uk/restriction/cc1c2650-0cd3-417e-bc7e-3dec12813300"
         }
       },
       {
         "apprenticeshipstandard": {
-          "relationship": "ncs__hasApprenticeshipStandard",
+          "relationship": "hasApprenticeshipStandard",
           "href": "http://nationalcareers.service.gov.uk/apprenticeshipstandard/f3da822a-0227-4f83-a43f-b9444630694f"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/4e97479e-2ba1-48f8-8cb7-d900e7be2096"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/8d3509fb-bc39-432d-8c0f-43ea8114baf3"
         }
       },
       {
         "apprenticeshiproute": {
-          "relationship": "ncs__hasHtbApprenticeshipRoute",
+          "relationship": "hasHtbApprenticeshipRoute",
           "href": "http://nationalcareers.service.gov.uk/apprenticeshiproute/500a3b99-2f38-4aca-a9c7-9145a369fa43"
         }
       },
       {
         "daytodaytask": {
-          "relationship": "ncs__hasDayToDayTask",
+          "relationship": "hasDayToDayTask",
           "href": "http://nationalcareers.service.gov.uk/daytodaytask/8743417e-1319-43b3-8e09-a6e24bb8f57f"
         }
       },
       {
-        "ncs__DirectRoute": {
-          "relationship": "ncs__hasHtbDirectRoute",
+        "DirectRoute": {
+          "relationship": "hasHtbDirectRoute",
           "href": "http://nationalcareers.service.gov.uk/directroute/5cb4e23d-0f84-488e-aa88-1e57952c114a"
         }
       },
       {
         "volunterringroute": {
-          "relationship": "ncs__hasHtbVolunteeringRoute",
+          "relationship": "hasHtbVolunteeringRoute",
           "href": "http://nationalcareers.service.gov.uk/volunteeringroute/ed845bdc-df09-4518-83e9-9a105f510bc8"
         }
       }
