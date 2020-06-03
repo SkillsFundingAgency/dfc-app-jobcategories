@@ -44,5 +44,6 @@ namespace DFC.App.JobCategories.Data.Models
         public Uri? Uri { get; set; }
 
         public DateTime DateModified { get; set; }
+        public string TraceId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

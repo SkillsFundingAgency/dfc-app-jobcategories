@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace DFC.App.JobCategories.Data.Models
 {
     [ExcludeFromCodeCoverage]
-    public class JobProfile : IDataModel
+    public class JobProfile : RequestTrace, IDataModel
     {
         public string? Title { get; set; }
 

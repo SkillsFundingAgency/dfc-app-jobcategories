@@ -12,12 +12,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
+using DFC.App.JobCategories.Repository.CosmosDb.Extensions;
 
 namespace DFC.App.JobCategories.Repository.CosmosDb
 {
     [ExcludeFromCodeCoverage]
     public class CosmosRepository<T> : ICosmosRepository<T>
-        where T : class, IDataModel
+        where T : RequestTrace, IDataModel
     {
         private readonly CosmosDbConnection cosmosDbConnection;
         private readonly IDocumentClient documentClient;
@@ -122,6 +123,7 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
         {
             if (model != null)
             {
+                model.AddTraceInformation();
                 var accessCondition = new AccessCondition { Condition = model.Etag, Type = AccessConditionType.IfMatch };
 
                 var result = await documentClient.UpsertDocumentAsync(DocumentCollectionUri, model, new RequestOptions { AccessCondition = accessCondition, PartitionKey = partitionKey }).ConfigureAwait(false);
