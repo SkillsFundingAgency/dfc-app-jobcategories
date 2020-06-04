@@ -1,6 +1,8 @@
 ﻿using DFC.App.JobCategories.Data.Enums;
 using DFC.App.JobCategories.PageService.EventProcessorServices;
 using DFC.App.JobCategories.PageService.Extensions;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.EventGrid.Models;
@@ -19,6 +21,8 @@ namespace DFC.App.JobCategories.Controllers
     [Route("api/webhook")]
     public class WebhooksController : Controller
     {
+        private readonly TelemetryClient _telemetryClient;
+
         private const string EventTypePublished = "Published";
         private const string EventTypeDraft = "Draft";
         private const string EventTypeDeleted = "Deleted";
@@ -29,6 +33,7 @@ namespace DFC.App.JobCategories.Controllers
         public WebhooksController(ILogger<WebhooksController> logger, IEventProcessingService eventProcessingService)
         {
             this.logger = logger;
+            this.eventProcessingService = eventProcessingService;
             this.eventProcessingService = eventProcessingService;
         }
 
@@ -91,6 +96,8 @@ namespace DFC.App.JobCategories.Controllers
                     var eventType = Enum.Parse<MessageAction>(eventGridEvent.EventType, true);
 
                     logger.LogInformation($"Got Event Id: {id}: {eventType} {url}");
+
+                    //Telemetry magic goes here
 
                     var result = await ProcessMessageAsync(eventType, id, url).ConfigureAwait(false);
 

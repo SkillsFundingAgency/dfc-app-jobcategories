@@ -52,6 +52,7 @@ namespace DFC.App.JobCategories
                 app.UseHsts();
             }
 
+            app.UseEventGridTracing();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
