@@ -33,7 +33,7 @@ namespace DFC.App.JobCategories.Controllers
         }
 
         [HttpPost]
-        [Route("ReceiveJobCategoryEvents")]
+        [Route("ReceiveEvents")]
         public async Task<IActionResult> ReceiveJobCategoriesEvents()
         {
             using var reader = new StreamReader(Request.Body, Encoding.UTF8);

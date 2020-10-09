@@ -1,6 +1,9 @@
 using DFC.App.JobCategories.Data.Models;
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
@@ -17,9 +20,9 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             // Arrange
             const string article = "an-article-name";
             var controller = BuildPagesController(mediaTypeName);
-            JobCategory? expectedResult = null;
+            List<JobCategory>? expectedResult = null;
 
-            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
             // Act
             var result = await controller.SidebarRight(article).ConfigureAwait(false);
@@ -39,9 +42,9 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             // Arrange
             const string? article = null;
             var controller = BuildPagesController(mediaTypeName);
-            JobCategory? expectedResult = null;
+            List<JobCategory>? expectedResult = null;
 
-            A.CallTo(() => FakeJobCategoryContentPageService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
             // Act
             var result = await controller.SidebarRight(article);

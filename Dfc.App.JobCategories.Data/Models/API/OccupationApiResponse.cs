@@ -1,21 +1,15 @@
-﻿using DFC.App.JobCategories.Data.Converters;
+﻿using DFC.Content.Pkg.Netcore.Data.Contracts;
+using DFC.Content.Pkg.Netcore.Data.Models;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DFC.App.JobCategories.Data.Models.API
 {
-    public class OccupationApiResponse
+    public class OccupationApiResponse : BaseContentItemModel, IBaseContentItemModel
     {
         [JsonProperty("skos__prefLabel")]
         public string? Title { get; set; }
 
-        [JsonProperty("uri")]
-        public Uri? Uri { get; set; }
-
-        [JsonProperty("_links")]
-        [JsonConverter(typeof(DynamicKeyJsonConverter))]
-        public IEnumerable<Link>? Links { get; set; }
+        public new IList<IBaseContentItemModel> ContentItems { get; set; } = new List<IBaseContentItemModel>();
     }
 }

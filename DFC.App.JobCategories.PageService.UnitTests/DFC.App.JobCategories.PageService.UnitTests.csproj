@@ -10,21 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="ApiDataServiceTests\Files\DataLoadService_GetAll_JobProfile_Response.json" />
-    <None Remove="ApiDataServiceTests\Files\DataLoadService_GetById_JobProfile_Response.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="ApiDataServiceTests\Files\DataLoadService_GetById_JobProfile_Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ApiDataServiceTests\Files\DataLoadService_GetAll_JobProfile_Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>

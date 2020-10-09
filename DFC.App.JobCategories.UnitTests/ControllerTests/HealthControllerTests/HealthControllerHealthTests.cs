@@ -21,13 +21,13 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.HealthControllerTests
             bool expectedResult = true;
             var controller = BuildHealthController();
 
-            A.CallTo(() => FakeContentPageService.PingAsync()).Returns(expectedResult);
+            A.CallTo(() => FakeDocumentService.PingAsync()).Returns(expectedResult);
 
             // Act
             var result = await controller.Health().ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.PingAsync()).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeDocumentService.PingAsync()).MustHaveHappenedOnceExactly();
 
             var jsonResult = Assert.IsType<OkObjectResult>(result);
             var models = Assert.IsAssignableFrom<List<HealthItemViewModel>>(jsonResult.Value);
@@ -46,13 +46,13 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.HealthControllerTests
             bool expectedResult = false;
             var controller = BuildHealthController();
 
-            A.CallTo(() => FakeContentPageService.PingAsync()).Returns(expectedResult);
+            A.CallTo(() => FakeDocumentService.PingAsync()).Returns(expectedResult);
 
             // Act
             var result = await controller.Health().ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.PingAsync()).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeDocumentService.PingAsync()).MustHaveHappenedOnceExactly();
 
             var statusResult = Assert.IsType<StatusCodeResult>(result);
 
@@ -67,13 +67,13 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.HealthControllerTests
             // Arrange
             var controller = BuildHealthController();
 
-            A.CallTo(() => FakeContentPageService.PingAsync()).Throws<Exception>();
+            A.CallTo(() => FakeDocumentService.PingAsync()).Throws<Exception>();
 
             // Act
             var result = await controller.Health().ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeContentPageService.PingAsync()).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeDocumentService.PingAsync()).MustHaveHappenedOnceExactly();
 
             var statusResult = Assert.IsType<StatusCodeResult>(result);
 

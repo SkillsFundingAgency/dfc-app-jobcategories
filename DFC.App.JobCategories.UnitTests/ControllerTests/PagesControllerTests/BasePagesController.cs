@@ -1,6 +1,6 @@
 ﻿using DFC.App.JobCategories.Controllers;
 using DFC.App.JobCategories.Data.Models;
-using DFC.App.JobCategories.PageService;
+using DFC.Compui.Cosmos.Contracts;
 using FakeItEasy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +16,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
         public BasePagesController()
         {
             Logger = A.Fake<ILogger<PagesController>>();
-            FakeJobCategoryContentPageService = A.Fake<IContentPageService<JobCategory>>();
+            FakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
             FakeMapper = A.Fake<AutoMapper.IMapper>();
         }
 
@@ -38,9 +38,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
         protected ILogger<PagesController> Logger { get; }
 
-        protected IContentPageService<JobCategory> FakeJobCategoryContentPageService { get; }
-
-        protected IContentPageService<JobProfile> FakeJobProfileContentPageService { get; }
+        protected IDocumentService<JobCategory> FakeDocumentService { get; }
 
         protected AutoMapper.IMapper FakeMapper { get; }
 
@@ -50,7 +48,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new PagesController(Logger, FakeJobCategoryContentPageService, FakeJobProfileContentPageService, FakeMapper)
+            var controller = new PagesController(Logger, FakeDocumentService, FakeMapper)
             {
                 ControllerContext = new ControllerContext()
                 {

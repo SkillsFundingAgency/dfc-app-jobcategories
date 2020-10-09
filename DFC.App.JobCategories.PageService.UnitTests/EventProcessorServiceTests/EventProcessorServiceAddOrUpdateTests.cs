@@ -1,17 +1,14 @@
-﻿using Castle.Core.Logging;
-using DFC.App.JobCategories.Data.Models;
+﻿using DFC.App.JobCategories.Data.Models;
 using DFC.App.JobCategories.Data.Models.API;
 using DFC.App.JobCategories.PageService.EventProcessorServices;
-using DFC.App.JobCategories.PageService.Extensions;
-using DFC.App.JobCategories.PageService.Helpers;
 using DFC.App.JobCategories.PageService.UnitTests.Helpers;
+using DFC.Compui.Cosmos.Contracts;
+using DFC.Content.Pkg.Netcore.Data.Contracts;
 using FakeItEasy;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -25,117 +22,90 @@ namespace DFC.App.JobCategories.PageService.UnitTests.EventProcessorServiceTests
         public async Task EventProcessingServiceAddOrUpdateJobCategoryReturnsOk()
         {
             //Arrange
-            var fakeJobProfilePageContentService = A.Fake<IContentPageService<JobProfile>>();
-            var fakeJobCategoryPageContentService = A.Fake<IContentPageService<JobCategory>>();
-            var fakeApiService = A.Fake<IApiDataService<ServiceTaxonomyApiClientOptions>>();
-            var jobProfileHelper = new JobProfileHelper(new ApiExtensions(fakeApiService));
+            var fakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
+            var fakeApiService = A.Fake<ICmsApiService>();
 
-            A.CallTo(() => fakeApiService.GetByIdAsync<JobProfileApiResponse>(nameof(JobProfile).ToLower(), A<Guid>.Ignored)).Returns(TestHelpers.GetJobProfileApiResponse());
-            A.CallTo(() => fakeApiService.GetByIdAsync<JobCategoryApiResponse>(nameof(JobCategory).ToLower(), A<Guid>.Ignored)).Returns(TestHelpers.GetJobCategoryApiResponse());
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationApiResponse>(nameof(Occupation).ToLower(), A<Guid>.Ignored)).Returns(TestHelpers.GetOccupationApiResponse());
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationLabelApiResponse>(nameof(OccupationLabel).ToLower(), A<Guid>.Ignored)).Returns(TestHelpers.GetOccupationLabelApiResponse());
+            A.CallTo(() => fakeApiService.GetItemAsync<JobCategoryApiResponse>(A<Uri>.Ignored)).Returns(TestHelpers.GetJobCategoryApiResponse());
+            A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobCategory?>.Ignored)).Returns(HttpStatusCode.OK);
 
-            A.CallTo(() => fakeJobCategoryPageContentService.UpsertAsync(A<JobCategory?>.Ignored)).Returns(System.Net.HttpStatusCode.OK);
-            A.CallTo(() => fakeJobProfilePageContentService.UpsertAsync(A<JobProfile?>.Ignored)).Returns(System.Net.HttpStatusCode.OK);
-
-            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeJobCategoryPageContentService, fakeJobProfilePageContentService, fakeApiService, jobProfileHelper);
+            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService);
 
             //Act
             var result = await eventProcessingService.AddOrUpdateAsync(new Uri($"http://somehost.com/jobcategory/{Guid.NewGuid()}")).ConfigureAwait(false);
 
             //Assert
             Assert.Equal(HttpStatusCode.OK, result);
-            A.CallTo(() => fakeJobCategoryPageContentService.UpsertAsync(A<JobCategory>.Ignored)).MustHaveHappened(1, Times.Exactly);
-            A.CallTo(() => fakeJobProfilePageContentService.UpsertAsync(A<JobProfile>.Ignored)).MustHaveHappened(2, Times.Exactly);
-            A.CallTo(() => fakeApiService.GetByIdAsync<JobCategoryApiResponse>(nameof(JobCategory).ToLower(), A<Guid>.Ignored)).MustHaveHappened(1, Times.Exactly);
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationApiResponse>(nameof(Occupation).ToLower(), A<Guid>.Ignored)).MustHaveHappened(2, Times.Exactly);
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationLabelApiResponse>(nameof(OccupationLabel).ToLower(), A<Guid>.Ignored)).MustHaveHappened(4, Times.Exactly);
+            A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobCategory>.Ignored)).MustHaveHappened(1, Times.Exactly);
+            A.CallTo(() => fakeApiService.GetItemAsync<JobCategoryApiResponse>(A<Uri>.Ignored)).MustHaveHappened(1, Times.Exactly);
         }
 
         [Fact]
         public async Task EventProcessingServiceAddOrUpdateJobProfileReturnsOk()
         {
             //Arrange
-            var fakeJobProfilePageContentService = A.Fake<IContentPageService<JobProfile>>();
-            var fakeJobCategoryPageContentService = A.Fake<IContentPageService<JobCategory>>();
-            var fakeApiService = A.Fake<IApiDataService<ServiceTaxonomyApiClientOptions>>();
-            var jobProfileHelper = new JobProfileHelper(new ApiExtensions(fakeApiService));
+            var fakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
+            var fakeApiService = A.Fake<ICmsApiService>();
 
-            A.CallTo(() => fakeApiService.GetByIdAsync<JobProfileApiResponse>(nameof(JobProfile).ToLower(), A<Guid>.Ignored)).Returns(TestHelpers.GetJobProfileApiResponse());
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationApiResponse>(nameof(Occupation).ToLower(), A<Guid>.Ignored)).Returns(TestHelpers.GetOccupationApiResponse());
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationLabelApiResponse>(nameof(OccupationLabel).ToLower(), A<Guid>.Ignored)).Returns(TestHelpers.GetOccupationLabelApiResponse());
+            A.CallTo(() => fakeApiService.GetItemAsync<JobProfileApiResponse>(A<Uri>.Ignored)).Returns(TestHelpers.GetJobProfileApiResponse());
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(TestHelpers.GetJobCategoryList());
+            A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobCategory?>.Ignored)).Returns(HttpStatusCode.OK);
 
-            A.CallTo(() => fakeJobCategoryPageContentService.UpsertAsync(A<JobCategory?>.Ignored)).Returns(System.Net.HttpStatusCode.OK);
-            A.CallTo(() => fakeJobProfilePageContentService.UpsertAsync(A<JobProfile?>.Ignored)).Returns(System.Net.HttpStatusCode.OK);
-
-            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeJobCategoryPageContentService, fakeJobProfilePageContentService, fakeApiService, jobProfileHelper);
+            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService);
 
             //Act
             var result = await eventProcessingService.AddOrUpdateAsync(new Uri($"http://somehost.com/jobprofile/{Guid.NewGuid()}")).ConfigureAwait(false);
 
             //Assert
             Assert.Equal(HttpStatusCode.OK, result);
-            A.CallTo(() => fakeJobProfilePageContentService.UpsertAsync(A<JobProfile>.Ignored)).MustHaveHappened(1, Times.Exactly);
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationApiResponse>(nameof(Occupation).ToLower(), A<Guid>.Ignored)).MustHaveHappened(1, Times.Exactly);
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationLabelApiResponse>(nameof(OccupationLabel).ToLower(), A<Guid>.Ignored)).MustHaveHappened(2, Times.Exactly);
+            A.CallTo(() => fakeApiService.GetItemAsync<JobProfileApiResponse>(A<Uri>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobCategory>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
         public async Task EventProcessingServiceAddOrUpdateOccupationReturnsOk()
         {
             //Arrange
-            var fakeJobProfilePageContentService = A.Fake<IContentPageService<JobProfile>>();
-            var fakeJobCategoryPageContentService = A.Fake<IContentPageService<JobCategory>>();
-            var fakeApiService = A.Fake<IApiDataService<ServiceTaxonomyApiClientOptions>>();
-            var jobProfileHelper = new JobProfileHelper(new ApiExtensions(fakeApiService));
+            var fakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
+            var fakeApiService = A.Fake<ICmsApiService>();
 
-            A.CallTo(() => fakeApiService.GetByIdAsync<JobProfileApiResponse>(nameof(JobProfile).ToLower(), A<Guid>.Ignored)).Returns(TestHelpers.GetJobProfileApiResponse());
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationApiResponse>(nameof(Occupation).ToLower(), A<Guid>.Ignored)).Returns(TestHelpers.GetOccupationApiResponse());
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationLabelApiResponse>(nameof(OccupationLabel).ToLower(), A<Guid>.Ignored)).Returns(TestHelpers.GetOccupationLabelApiResponse());
+            A.CallTo(() => fakeApiService.GetItemAsync<JobProfileApiResponse>(A<Uri>.Ignored)).Returns(TestHelpers.GetJobProfileApiResponse());
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(TestHelpers.GetJobCategoryList());
+            A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobCategory?>.Ignored)).Returns(HttpStatusCode.OK);
 
-            A.CallTo(() => fakeJobCategoryPageContentService.UpsertAsync(A<JobCategory?>.Ignored)).Returns(HttpStatusCode.OK);
-            A.CallTo(() => fakeJobProfilePageContentService.UpsertAsync(A<JobProfile?>.Ignored)).Returns(HttpStatusCode.OK);
-            A.CallTo(() => fakeJobProfilePageContentService.GetByQueryAsync(A<Expression<Func<JobProfile, bool>>>.Ignored)).Returns(new List<JobProfile> { TestHelpers.GetJobProfile() });
-
-            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeJobCategoryPageContentService, fakeJobProfilePageContentService, fakeApiService, jobProfileHelper);
+            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService);
 
             //Act
             var result = await eventProcessingService.AddOrUpdateAsync(new Uri($"http://somehost.com/occupation/{Guid.NewGuid()}")).ConfigureAwait(false);
 
             //Assert
             Assert.Equal(HttpStatusCode.OK, result);
-            A.CallTo(() => fakeJobProfilePageContentService.UpsertAsync(A<JobProfile>.Ignored)).MustHaveHappened(1, Times.Exactly);
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationApiResponse>(nameof(Occupation).ToLower(), A<Guid>.Ignored)).MustHaveHappened(1, Times.Exactly);
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationLabelApiResponse>(nameof(OccupationLabel).ToLower(), A<Guid>.Ignored)).MustHaveHappened(2, Times.Exactly);
+            A.CallTo(() => fakeApiService.GetItemAsync<JobProfileApiResponse>(A<Uri>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedTwiceExactly();
+            A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobCategory>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
         [Fact]
         public async Task EventProcessingServiceAddOrUpdateOccupationLabelReturnsOk()
         {
             //Arrange
-            var fakeJobProfilePageContentService = A.Fake<IContentPageService<JobProfile>>();
-            var fakeJobCategoryPageContentService = A.Fake<IContentPageService<JobCategory>>();
-            var fakeApiService = A.Fake<IApiDataService<ServiceTaxonomyApiClientOptions>>();
-            var jobProfileHelper = new JobProfileHelper(new ApiExtensions(fakeApiService));
+            var fakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
+            var fakeApiService = A.Fake<ICmsApiService>();
 
-            A.CallTo(() => fakeApiService.GetByIdAsync<JobProfileApiResponse>(nameof(JobProfile).ToLower(), A<Guid>.Ignored)).Returns(TestHelpers.GetJobProfileApiResponse());
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationApiResponse>(nameof(Occupation).ToLower(), A<Guid>.Ignored)).Returns(TestHelpers.GetOccupationApiResponse());
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationLabelApiResponse>(nameof(OccupationLabel).ToLower(), A<Guid>.Ignored)).Returns(TestHelpers.GetOccupationLabelApiResponse());
+            A.CallTo(() => fakeApiService.GetItemAsync<JobProfileApiResponse>(A<Uri>.Ignored)).Returns(TestHelpers.GetJobProfileApiResponse());
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(TestHelpers.GetJobCategoryList());
+            A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobCategory?>.Ignored)).Returns(HttpStatusCode.OK);
 
-            A.CallTo(() => fakeJobCategoryPageContentService.UpsertAsync(A<JobCategory?>.Ignored)).Returns(HttpStatusCode.OK);
-            A.CallTo(() => fakeJobProfilePageContentService.UpsertAsync(A<JobProfile?>.Ignored)).Returns(HttpStatusCode.OK);
-            A.CallTo(() => fakeJobProfilePageContentService.GetByQueryAsync(A<Expression<Func<JobProfile, bool>>>.Ignored)).Returns(new List<JobProfile> { TestHelpers.GetJobProfile() });
-
-            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeJobCategoryPageContentService, fakeJobProfilePageContentService, fakeApiService, jobProfileHelper);
+            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService);
 
             //Act
             var result = await eventProcessingService.AddOrUpdateAsync(new Uri($"http://somehost.com/occupationlabel/{Guid.NewGuid()}")).ConfigureAwait(false);
 
             //Assert
             Assert.Equal(HttpStatusCode.OK, result);
-            A.CallTo(() => fakeJobProfilePageContentService.UpsertAsync(A<JobProfile>.Ignored)).MustHaveHappened(1, Times.Exactly);
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationApiResponse>(nameof(Occupation).ToLower(), A<Guid>.Ignored)).MustHaveHappened(1, Times.Exactly);
-            A.CallTo(() => fakeApiService.GetByIdAsync<OccupationLabelApiResponse>(nameof(OccupationLabel).ToLower(), A<Guid>.Ignored)).MustHaveHappened(2, Times.Exactly);
+            A.CallTo(() => fakeApiService.GetItemAsync<JobProfileApiResponse>(A<Uri>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedTwiceExactly();
+            A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobCategory>.Ignored)).MustHaveHappenedOnceExactly();
         }
     }
 }

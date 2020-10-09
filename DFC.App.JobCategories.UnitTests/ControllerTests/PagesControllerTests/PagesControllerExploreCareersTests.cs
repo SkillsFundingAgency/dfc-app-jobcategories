@@ -19,7 +19,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             var controller = BuildPagesController(mediaTypeName);
             IEnumerable<JobCategory>? expectedResult = new List<JobCategory>();
 
-            A.CallTo(() => FakeJobCategoryContentPageService.GetAllAsync()).Returns(expectedResult);
+            A.CallTo(() => FakeDocumentService.GetAllAsync(null)).Returns(expectedResult);
 
             // Act
             var result = await controller.ExploreCareers().ConfigureAwait(false);
@@ -41,7 +41,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             var controller = BuildPagesController(mediaTypeName);
             IEnumerable<JobCategory>? expectedResult = new List<JobCategory>();
 
-            A.CallTo(() => FakeJobCategoryContentPageService.GetAllAsync()).Returns(expectedResult);
+            A.CallTo(() => FakeDocumentService.GetAllAsync(null)).Returns(expectedResult);
 
             // Act
             var result = await controller.ExploreCareers().ConfigureAwait(false);
@@ -64,7 +64,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             var controller = BuildPagesController(mediaTypeName);
             IEnumerable<JobCategory>? expectedResult = null;
 
-            A.CallTo(() => FakeJobCategoryContentPageService.GetAllAsync()).Returns(expectedResult);
+            A.CallTo(() => FakeDocumentService.GetAllAsync(null)).Returns(expectedResult);
 
             // Act
             var result = await controller.ExploreCareers().ConfigureAwait(false);

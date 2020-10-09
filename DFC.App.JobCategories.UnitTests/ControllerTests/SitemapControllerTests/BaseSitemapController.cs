@@ -1,6 +1,6 @@
 ﻿using DFC.App.JobCategories.Controllers;
 using DFC.App.JobCategories.Data.Models;
-using DFC.App.JobCategories.PageService;
+using DFC.Compui.Cosmos.Contracts;
 using FakeItEasy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,16 +13,16 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.SitemapControllerTests
         public BaseSitemapController()
         {
             FakeLogger = A.Fake<ILogger<SitemapController>>();
-            FakeContentPageService = A.Fake<IContentPageService<JobCategory>>();
+            FakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
         }
 
         protected ILogger<SitemapController> FakeLogger { get; }
 
-        protected IContentPageService<JobCategory> FakeContentPageService { get; }
+        protected IDocumentService<JobCategory> FakeDocumentService { get; }
 
         protected SitemapController BuildSitemapController()
         {
-            var controller = new SitemapController(FakeLogger, FakeContentPageService)
+            var controller = new SitemapController(FakeLogger, FakeDocumentService)
             {
                 ControllerContext = new ControllerContext()
                 {
