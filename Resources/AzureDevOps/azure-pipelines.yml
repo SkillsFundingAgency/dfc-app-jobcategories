@@ -30,6 +30,12 @@ stages:
       parameters:
         ArmTemplateRoot: $(ArmTemplateRoot)
 
+    - task: PublishPipelineArtifact@0
+      displayName: Publish Page Registration artifact
+      inputs:
+        targetPath: '$(Build.SourcesDirectory)/Resources/PageRegistration'
+        artifactName: ${{ variables.SolutionBaseName }}.PageRegistrations
+
   #Build and test web application
   - job: BuildTestAndAnalyzeWeb
     steps:
