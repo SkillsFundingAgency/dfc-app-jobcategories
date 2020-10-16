@@ -2,7 +2,7 @@
 	"Path": "job-categories",
 	"TopNavigationText": "",
 	"TopNavigationOrder": 0,
-	"Layout": 2
+	"Layout": 2,
 	"IsOnline": true,
 	"OfflineHtml": "<div class=\"govuk-width-container\"><h1>Sorry, there is a problem with this service</h1><p>Please try again later.</p><p><a href='/contact-us'>Contact us</a> if you want to speak to a careers adviser.</p></div>",
 	"PhaseBannerHtml": "",
