@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
+using DFC.App.JobCategories.Data.Contracts;
 using Xunit;
 
 namespace DFC.App.JobCategories.PageService.UnitTests.EventProcessorServiceTests
@@ -25,11 +26,12 @@ namespace DFC.App.JobCategories.PageService.UnitTests.EventProcessorServiceTests
             //Arrange
             var fakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
             var fakeApiService = A.Fake<ICmsApiService>();
+            var fakeEventGridService = A.Fake<IEventGridService>();
 
             A.CallTo(() => fakeApiService.GetItemAsync<JobCategoryApiResponse>(A<Uri>.Ignored)).Returns(TestHelpers.GetJobCategoryApiResponse());
             A.CallTo(() => fakeDocumentService.DeleteAsync(A<Guid>.Ignored)).Returns(true);
 
-            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService);
+            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService, fakeEventGridService);
 
             //Act
             var result = await eventProcessingService.DeleteAsync(new Uri($"http://somehost.com/jobcategory/{Guid.NewGuid()}")).ConfigureAwait(false);
@@ -45,11 +47,12 @@ namespace DFC.App.JobCategories.PageService.UnitTests.EventProcessorServiceTests
             //Arrange
             var fakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
             var fakeApiService = A.Fake<ICmsApiService>();
+            var fakeEventGridService = A.Fake<IEventGridService>();
 
             A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(TestHelpers.GetJobCategoryList());
             A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobCategory?>.Ignored)).Returns(HttpStatusCode.OK);
 
-            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService);
+            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService, fakeEventGridService);
 
             //Act
             var result = await eventProcessingService.DeleteAsync(new Uri($"http://somehost.com/jobprofile/46a884da-22bb-4ebe-87ac-228f42698ee2")).ConfigureAwait(false);
@@ -66,11 +69,12 @@ namespace DFC.App.JobCategories.PageService.UnitTests.EventProcessorServiceTests
             //Arrange
             var fakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
             var fakeApiService = A.Fake<ICmsApiService>();
+            var fakeEventGridService = A.Fake<IEventGridService>();
 
             A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(TestHelpers.GetJobCategoryList());
             A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobCategory?>.Ignored)).Returns(HttpStatusCode.OK);
 
-            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService);
+            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService, fakeEventGridService);
 
             //Act
             var result = await eventProcessingService.DeleteAsync(new Uri($"http://somehost.com/occupation/54288fad-2f99-43cb-8df0-d10d29977a4b")).ConfigureAwait(false);
@@ -87,11 +91,12 @@ namespace DFC.App.JobCategories.PageService.UnitTests.EventProcessorServiceTests
             //Arrange
             var fakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
             var fakeApiService = A.Fake<ICmsApiService>();
+            var fakeEventGridService = A.Fake<IEventGridService>();
 
             A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(TestHelpers.GetJobCategoryList());
             A.CallTo(() => fakeDocumentService.UpsertAsync(A<JobCategory?>.Ignored)).Returns(HttpStatusCode.OK);
 
-            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService);
+            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService, fakeEventGridService);
 
             //Act
             var result = await eventProcessingService.DeleteAsync(new Uri($"http://somehost.com/occupationlabel/a4415817-0ca4-487e-af74-2e8276c606d9")).ConfigureAwait(false);
@@ -108,10 +113,11 @@ namespace DFC.App.JobCategories.PageService.UnitTests.EventProcessorServiceTests
             //Arrange
             var fakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
             var fakeApiService = A.Fake<ICmsApiService>();
+            var fakeEventGridService = A.Fake<IEventGridService>();
 
             A.CallTo(() => fakeDocumentService.DeleteAsync(A<Guid>.Ignored)).Returns(false);
 
-            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService);
+            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService, fakeEventGridService);
 
             //Act
             var result = await eventProcessingService.DeleteAsync(new Uri($"http://somehost.com/jobcategory/{Guid.NewGuid()}")).ConfigureAwait(false);
@@ -127,10 +133,11 @@ namespace DFC.App.JobCategories.PageService.UnitTests.EventProcessorServiceTests
             //Arrange
             var fakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
             var fakeApiService = A.Fake<ICmsApiService>();
+            var fakeEventGridService = A.Fake<IEventGridService>();
 
             A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns((List<JobCategory>?)null);
 
-            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService);
+            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService, fakeEventGridService);
 
             //Act
             var result = await eventProcessingService.DeleteAsync(new Uri($"http://somehost.com/jobprofile/46a884da-22bb-4ebe-87ac-228f42698ee2")).ConfigureAwait(false);
@@ -146,10 +153,11 @@ namespace DFC.App.JobCategories.PageService.UnitTests.EventProcessorServiceTests
             //Arrange
             var fakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
             var fakeApiService = A.Fake<ICmsApiService>();
+            var fakeEventGridService = A.Fake<IEventGridService>();
 
             A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns((List<JobCategory>?)null);
 
-            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService);
+            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService, fakeEventGridService);
 
             //Act
             var result = await eventProcessingService.DeleteAsync(new Uri($"http://somehost.com/occupation/54288fad-2f99-43cb-8df0-d10d29977a4b")).ConfigureAwait(false);
@@ -165,10 +173,11 @@ namespace DFC.App.JobCategories.PageService.UnitTests.EventProcessorServiceTests
             //Arrange
             var fakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
             var fakeApiService = A.Fake<ICmsApiService>();
+            var fakeEventGridService = A.Fake<IEventGridService>();
 
             A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns((List<JobCategory>?)null);
 
-            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService);
+            var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService, fakeEventGridService);
 
             //Act
             var result = await eventProcessingService.DeleteAsync(new Uri($"http://somehost.com/occupationlabel/a4415817-0ca4-487e-af74-2e8276c606d9")).ConfigureAwait(false);

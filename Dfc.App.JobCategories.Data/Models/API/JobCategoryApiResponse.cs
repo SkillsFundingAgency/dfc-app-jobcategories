@@ -13,8 +13,11 @@ namespace DFC.App.JobCategories.Data.Models.API
         [JsonProperty("skos__prefLabel")]
         public string? Title { get; set; }
 
-        [JsonProperty("WebsiteURI")]
+        [JsonProperty("pagelocation_FullUrl")]
         public Uri? WebsiteUri { get; set; }
+
+        [JsonProperty("pagelocation_UrlName")]
+        public string? CanonicalName { get; set; }
 
         public string? Description { get; set; }
 

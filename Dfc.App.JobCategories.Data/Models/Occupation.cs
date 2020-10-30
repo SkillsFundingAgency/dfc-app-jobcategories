@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.JobCategories.Data.Models
 {
+    [ExcludeFromCodeCoverage]
     public class Occupation
     {
         public Guid? ItemId { get; set; }

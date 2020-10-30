@@ -19,15 +19,13 @@ namespace DFC.App.JobCategories.PageService
         private readonly IContentTypeMappingService contentTypeMappingService;
         private readonly IDocumentService<JobCategory> documentService;
         private readonly ICmsApiService cmsApiService;
-        private readonly IContentCacheService contentCacheService;
 
-        public CacheReloadService(ILogger<CacheReloadService> logger, IContentTypeMappingService contentTypeMappingService, IDocumentService<JobCategory> documentService, ICmsApiService cmsApiService, IContentCacheService contentCacheService)
+        public CacheReloadService(ILogger<CacheReloadService> logger, IContentTypeMappingService contentTypeMappingService, IDocumentService<JobCategory> documentService, ICmsApiService cmsApiService)
         {
             this.logger = logger;
             this.contentTypeMappingService = contentTypeMappingService;
             this.documentService = documentService;
             this.cmsApiService = cmsApiService;
-            this.contentCacheService = contentCacheService;
         }
 
         public async Task Reload(CancellationToken stoppingToken)
@@ -61,7 +59,7 @@ namespace DFC.App.JobCategories.PageService
             }
         }
 
-        public async Task<IList<JobCategoriesSummaryItemModel>?> GetSummaryListAsync()
+        private async Task<IList<JobCategoriesSummaryItemModel>?> GetSummaryListAsync()
         {
             logger.LogInformation("Get summary list");
 
@@ -72,7 +70,7 @@ namespace DFC.App.JobCategories.PageService
             return summaryList;
         }
 
-        public async Task ProcessSummaryListAsync(IList<JobCategoriesSummaryItemModel> summaryList, CancellationToken stoppingToken)
+        private async Task ProcessSummaryListAsync(IList<JobCategoriesSummaryItemModel> summaryList, CancellationToken stoppingToken)
         {
             logger.LogInformation("Process summary list started");
 
@@ -90,7 +88,7 @@ namespace DFC.App.JobCategories.PageService
             logger.LogInformation("Process summary list completed");
         }
 
-        public async Task GetAndSaveItemAsync(JobCategoriesSummaryItemModel item, CancellationToken stoppingToken)
+        private async Task GetAndSaveItemAsync(JobCategoriesSummaryItemModel item, CancellationToken stoppingToken)
         {
             _ = item ?? throw new ArgumentNullException(nameof(item));
 
@@ -115,8 +113,6 @@ namespace DFC.App.JobCategories.PageService
                 var jobCategory = apiDataModel.Map();
 
                 await documentService.UpsertAsync(jobCategory).ConfigureAwait(false);
-
-                contentCacheService.AddOrReplace(jobCategory.Id, jobCategory.JobProfiles.Select(x => Guid.Parse(x.Uri!.Segments.Last().Trim('/'))).ToList(), "JobCategory");
             }
             catch (Exception ex)
             {
