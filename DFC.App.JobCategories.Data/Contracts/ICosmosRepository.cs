@@ -1,4 +1,4 @@
-﻿using DFC.App.JobCategories.Data.Models;
+﻿using DFC.Compui.Cosmos.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DFC.App.JobCategories.Data.Contracts
 {
     public interface ICosmosRepository<T>
-        where T : class, IDataModel
+        where T : class, IDocumentModel
     {
         Task<bool> PingAsync();
 

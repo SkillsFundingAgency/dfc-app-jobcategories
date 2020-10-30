@@ -19,17 +19,17 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             const HttpStatusCode expectedResponse = HttpStatusCode.NotFound;
             JobCategory? expectedResult = null;
             var modelToUpsert = A.Fake<JobCategory>();
-            modelToUpsert.DocumentId = Guid.NewGuid();
+            modelToUpsert.Id = Guid.NewGuid();
 
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeJobCategoryContentPageService.GetByIdAsync(A<Guid>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => FakeDocumentService.GetByIdAsync(A<Guid>.Ignored, null)).Returns(expectedResult);
 
             // Act
             var result = await controller.Update(modelToUpsert).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeJobCategoryContentPageService.GetByIdAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeDocumentService.GetByIdAsync(A<Guid>.Ignored, null)).MustHaveHappenedOnceExactly();
             var statusCodeResult = Assert.IsType<StatusCodeResult>(result);
             Assert.Equal((int)expectedResponse, statusCodeResult.StatusCode);
 

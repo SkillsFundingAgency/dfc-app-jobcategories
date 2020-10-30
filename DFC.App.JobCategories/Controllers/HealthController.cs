@@ -2,6 +2,7 @@
 using DFC.App.JobCategories.Extensions;
 using DFC.App.JobCategories.PageService;
 using DFC.App.JobCategories.ViewModels;
+using DFC.Compui.Cosmos.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,13 +15,13 @@ namespace DFC.App.JobCategories.Controllers
     public class HealthController : Controller
     {
         private readonly ILogger<HealthController> logger;
-        private readonly IContentPageService<JobCategory> contentPageService;
+        private readonly IDocumentService<JobCategory> documentService;
         private readonly string resourceName = typeof(Program).Namespace!;
 
-        public HealthController(ILogger<HealthController> logger, IContentPageService<JobCategory> contentPageService)
+        public HealthController(ILogger<HealthController> logger, IDocumentService<JobCategory> documentService)
         {
             this.logger = logger;
-            this.contentPageService = contentPageService;
+            this.documentService = documentService;
         }
 
         [HttpGet]
@@ -31,7 +32,7 @@ namespace DFC.App.JobCategories.Controllers
 
             try
             {
-                var isHealthy = await contentPageService.PingAsync().ConfigureAwait(false);
+                var isHealthy = await documentService.PingAsync().ConfigureAwait(false);
 
                 if (isHealthy)
                 {

@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
 using DFC.App.JobCategories.Controllers;
 using DFC.App.JobCategories.Data.Models;
-using DFC.App.JobCategories.PageService;
+using DFC.Compui.Cosmos.Contracts;
 using FakeItEasy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
@@ -19,15 +21,13 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
     public class PagesControllerRouteTests
     {
         private readonly ILogger<PagesController> logger;
-        private readonly IContentPageService<JobCategory> fakeJobCategoryPageContentService;
-        private readonly IContentPageService<JobProfile> fakeJobProfilePageContentService;
+        private readonly IDocumentService<JobCategory> fakeDocumentService;
         private readonly IMapper fakeMapper;
 
         public PagesControllerRouteTests()
         {
             logger = A.Fake<ILogger<PagesController>>();
-            fakeJobCategoryPageContentService = A.Fake<IContentPageService<JobCategory>>();
-            fakeJobProfilePageContentService = A.Fake<IContentPageService<JobProfile>>();
+            fakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
             fakeMapper = A.Fake<IMapper>();
         }
 
@@ -61,16 +61,32 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
         {
             // Arrange
             var controller = BuildController(route);
-            var expectedResult = new JobCategory() { Title = "Care Worker" };
+            var expectedResult = new List<JobCategory>
+            {
+                new JobCategory()
+                {
+                    Title = "Care Worker",
+                    CanonicalName = article,
+                    JobProfiles = new List<JobProfile>()
+                    {
+                        new JobProfile()
+                        {
+                            Title = "Care Worker",
+                            Description = "Job Profile",
+                            Uri = new Uri("http://some.web.site/jobprofile/blah"),
+                        },
+                    },
+                },
+            };
 
-            A.CallTo(() => fakeJobCategoryPageContentService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
             // Act
             var result = await RunControllerAction(controller, article, actionMethod).ConfigureAwait(false);
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
-            A.CallTo(() => fakeJobCategoryPageContentService.GetByCanonicalNameAsync(A<string>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
 
             controller.Dispose();
         }
@@ -81,9 +97,9 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
         {
             // Arrange
             var controller = BuildController(route);
-            JobCategory? expectedResult = null;
+            List<JobCategory>? expectedResult = null;
 
-            A.CallTo(() => fakeJobCategoryPageContentService.GetByCanonicalNameAsync(A<string>.Ignored)).Returns(expectedResult);
+            A.CallTo(() => fakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
             // Act
             var result = await RunControllerAction(controller, article, actionMethod).ConfigureAwait(false);
@@ -117,7 +133,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             httpContext.Request.Path = route;
             httpContext.Request.Headers[HeaderNames.Accept] = MediaTypeNames.Application.Json;
 
-            return new PagesController(logger, fakeJobCategoryPageContentService, fakeJobProfilePageContentService, fakeMapper)
+            return new PagesController(logger, fakeDocumentService, fakeMapper)
             {
                 ControllerContext = new ControllerContext
                 {

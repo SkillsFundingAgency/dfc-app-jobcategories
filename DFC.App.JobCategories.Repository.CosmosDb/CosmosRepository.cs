@@ -1,5 +1,4 @@
-﻿using DFC.App.JobCategories.Data.Contracts;
-using DFC.App.JobCategories.Data.Models;
+﻿using DFC.Compui.Cosmos.Contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
@@ -16,8 +15,8 @@ using System.Threading.Tasks;
 namespace DFC.App.JobCategories.Repository.CosmosDb
 {
     [ExcludeFromCodeCoverage]
-    public class CosmosRepository<T> : ICosmosRepository<T>
-        where T : class, IDataModel
+    public class CosmosRepository<T> : Data.Contracts.ICosmosRepository<T>
+        where T : class, IDocumentModel
     {
         private readonly CosmosDbConnection cosmosDbConnection;
         private readonly IDocumentClient documentClient;
@@ -136,7 +135,7 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
         {
             var documentUri = CreateDocumentUri(documentId);
 
-            var model = await GetAsync(d => d.DocumentId == documentId).ConfigureAwait(false);
+            var model = await GetAsync(d => d.Id == documentId).ConfigureAwait(false);
 
             if (model != null)
             {
@@ -166,7 +165,7 @@ namespace DFC.App.JobCategories.Repository.CosmosDb
 
             foreach (var result in models)
             {
-                await DeleteAsync(result.DocumentId!.Value).ConfigureAwait(false);
+                await DeleteAsync(result.Id).ConfigureAwait(false);
             }
 
             return HttpStatusCode.OK;

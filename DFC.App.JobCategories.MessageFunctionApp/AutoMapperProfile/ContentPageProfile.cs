@@ -1,9 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics.CodeAnalysis;
+using AutoMapper;
 using DFC.App.JobCategories.Data.Models;
 using DFC.App.JobCategories.Data.ServiceBusModels;
 
 namespace DFC.App.JobCategories.MessageFunctionApp.AutoMapperProfile
 {
+    [ExcludeFromCodeCoverage]
     public class ContentPageProfile : Profile
     {
         public ContentPageProfile()

@@ -45,7 +45,7 @@ namespace DFC.App.JobCategories.MessageFunctionApp.Services
                     return result;
 
                 case MessageAction.Deleted:
-                    return await httpClientService.DeleteAsync(contentPageModel.DocumentId.Value).ConfigureAwait(false);
+                    return await httpClientService.DeleteAsync(contentPageModel.Id).ConfigureAwait(false);
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(messageAction), $"Invalid message action '{messageAction}' received, should be one of '{string.Join(",", Enum.GetNames(typeof(MessageAction)))}'");

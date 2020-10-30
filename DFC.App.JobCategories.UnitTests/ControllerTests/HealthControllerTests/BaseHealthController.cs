@@ -1,6 +1,6 @@
 ﻿using DFC.App.JobCategories.Controllers;
 using DFC.App.JobCategories.Data.Models;
-using DFC.App.JobCategories.PageService;
+using DFC.Compui.Cosmos.Contracts;
 using FakeItEasy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +14,11 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.HealthControllerTests
     {
         public BaseHealthController()
         {
-            FakeContentPageService = A.Fake<IContentPageService<JobCategory>>();
+            FakeDocumentService = A.Fake<IDocumentService<JobCategory>>();
             FakeLogger = A.Fake<ILogger<HealthController>>();
         }
 
-        protected IContentPageService<JobCategory> FakeContentPageService { get; }
+        protected IDocumentService<JobCategory> FakeDocumentService { get; }
 
         protected ILogger<HealthController> FakeLogger { get; }
 
@@ -28,7 +28,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.HealthControllerTests
 
             httpContext.Request.Headers[HeaderNames.Accept] = MediaTypeNames.Application.Json;
 
-            var controller = new HealthController(FakeLogger, FakeContentPageService)
+            var controller = new HealthController(FakeLogger, FakeDocumentService)
             {
                 ControllerContext = new ControllerContext()
                 {

@@ -4,12 +4,13 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace DFC.App.JobCategories.Data.Converters
 {
+    [ExcludeFromCodeCoverage]
     public class DynamicKeyJsonConverter : JsonConverter
     {
         public override bool CanWrite => false;

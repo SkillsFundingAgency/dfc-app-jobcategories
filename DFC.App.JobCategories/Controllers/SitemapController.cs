@@ -2,6 +2,7 @@
 using DFC.App.JobCategories.Extensions;
 using DFC.App.JobCategories.Models;
 using DFC.App.JobCategories.PageService;
+using DFC.Compui.Cosmos.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,12 +15,12 @@ namespace DFC.App.JobCategories.Controllers
     public class SitemapController : Controller
     {
         private readonly ILogger<SitemapController> logger;
-        private readonly IContentPageService<JobCategory> contentPageService;
+        private readonly IDocumentService<JobCategory> documentService;
 
-        public SitemapController(ILogger<SitemapController> logger, IContentPageService<JobCategory> contentPageService)
+        public SitemapController(ILogger<SitemapController> logger, IDocumentService<JobCategory> documentService)
         {
             this.logger = logger;
-            this.contentPageService = contentPageService;
+            this.documentService = documentService;
         }
 
         [HttpGet]
@@ -40,7 +41,7 @@ namespace DFC.App.JobCategories.Controllers
                     Priority = 1,
                 });
 
-                var contentPageModels = await contentPageService.GetAllAsync().ConfigureAwait(false);
+                var contentPageModels = await documentService.GetAllAsync().ConfigureAwait(false);
 
                 if (contentPageModels != null)
                 {

@@ -1,15 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.JobCategories.Data.Models
 {
+    [ExcludeFromCodeCoverage]
     public class OccupationLabel
     {
-        public OccupationLabel(string title, Uri uri)
-        {
-            Title = title;
-            Uri = uri;
-        }
-
+        public Guid? ItemId { get; set; }
         public string? Title { get; set; }
         public Uri? Uri { get; set; }
     }

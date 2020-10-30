@@ -19,17 +19,17 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             const HttpStatusCode expectedResponse = HttpStatusCode.Created;
             JobCategory? expectedResult = null;
             var contentPageModel = A.Fake<JobCategory>();
-            contentPageModel.DocumentId = Guid.NewGuid();
+            contentPageModel.Id = Guid.NewGuid();
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeJobCategoryContentPageService.GetByIdAsync(A<Guid>.Ignored)).Returns(expectedResult);
-            A.CallTo(() => FakeJobCategoryContentPageService.UpsertAsync(A<JobCategory>.Ignored)).Returns(expectedResponse);
+            A.CallTo(() => FakeDocumentService.GetByIdAsync(A<Guid>.Ignored, null)).Returns(expectedResult);
+            A.CallTo(() => FakeDocumentService.UpsertAsync(A<JobCategory>.Ignored)).Returns(expectedResponse);
 
             // Act
             var result = await controller.Create(contentPageModel).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeJobCategoryContentPageService.UpsertAsync(A<JobCategory>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeDocumentService.UpsertAsync(A<JobCategory>.Ignored)).MustHaveHappenedOnceExactly();
             var okResult = Assert.IsType<StatusCodeResult>(result);
 
             Assert.Equal((int)expectedResponse, okResult.StatusCode);
@@ -45,17 +45,17 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             const HttpStatusCode expectedResponse = HttpStatusCode.AlreadyReported;
             var existingModel = A.Fake<JobCategory>();
             var contentPageModel = A.Fake<JobCategory>();
-            contentPageModel.DocumentId = Guid.NewGuid();
+            contentPageModel.Id = Guid.NewGuid();
             var controller = BuildPagesController(mediaTypeName);
 
-            A.CallTo(() => FakeJobCategoryContentPageService.GetByIdAsync(A<Guid>.Ignored)).Returns(existingModel);
+            A.CallTo(() => FakeDocumentService.GetByIdAsync(A<Guid>.Ignored, null)).Returns(existingModel);
 
             // Act
             var result = await controller.Create(contentPageModel).ConfigureAwait(false);
 
             // Assert
-            A.CallTo(() => FakeJobCategoryContentPageService.GetByIdAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => FakeJobCategoryContentPageService.UpsertAsync(A<JobCategory>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => FakeDocumentService.GetByIdAsync(A<Guid>.Ignored, null)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeDocumentService.UpsertAsync(A<JobCategory>.Ignored)).MustNotHaveHappened();
             var statusCodeResult = Assert.IsType<StatusCodeResult>(result);
             Assert.Equal((int)expectedResponse, statusCodeResult.StatusCode);
 

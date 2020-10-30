@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace DFC.App.JobCategories.PageService.Extensions
 {
@@ -11,7 +12,7 @@ namespace DFC.App.JobCategories.PageService.Extensions
                 throw new InvalidOperationException($"{nameof(value)} is null");
             }
 
-            return value.Segments[1].ToString().TrimEnd('/');
+            return value.Segments[value.Segments.Length - 2].ToString().TrimEnd('/');
         }
 
         public static Guid GetContentItemId(this Uri value)
@@ -21,7 +22,7 @@ namespace DFC.App.JobCategories.PageService.Extensions
                 throw new InvalidOperationException($"{nameof(value)} is null");
             }
 
-            return Guid.Parse(value.Segments[2]);
+            return Guid.Parse(value.Segments.Last().Trim('/'));
         }
     }
 }
