@@ -80,7 +80,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.EventProcessorServiceTests
             var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService, fakeEventGridService);
 
             //Act
-            var result = await eventProcessingService.AddOrUpdateAsync(new Uri($"http://somehost.com/occupation/{Guid.NewGuid()}")).ConfigureAwait(false);
+            var result = await eventProcessingService.AddOrUpdateAsync(new Uri("http://somehost.com/occupation/54288fad-2f99-43cb-8df0-d10d29977a4b")).ConfigureAwait(false);
 
             //Assert
             Assert.Equal(HttpStatusCode.OK, result);
@@ -104,7 +104,7 @@ namespace DFC.App.JobCategories.PageService.UnitTests.EventProcessorServiceTests
             var eventProcessingService = new EventProcessingService(A.Fake<ILogger<EventProcessingService>>(), fakeDocumentService, fakeApiService, fakeEventGridService);
 
             //Act
-            var result = await eventProcessingService.AddOrUpdateAsync(new Uri($"http://somehost.com/occupationlabel/{Guid.NewGuid()}")).ConfigureAwait(false);
+            var result = await eventProcessingService.AddOrUpdateAsync(new Uri("http://somehost.com/occupationlabel/7032300f-bf9d-4b65-b4b5-604979573216")).ConfigureAwait(false);
 
             //Assert
             Assert.Equal(HttpStatusCode.OK, result);
