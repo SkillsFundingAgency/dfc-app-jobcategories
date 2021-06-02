@@ -46,6 +46,9 @@
         },
         "ServiceTaxonomyApiClientOptionsBaseAddress": {
             "value": "bar"
+        },
+        "ApplicationName": {
+            "value": "applicationname"
         }
     }
 }
