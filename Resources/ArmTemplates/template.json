@@ -74,6 +74,9 @@
             "metadata": {
                 "description": "Enable or disable alerting"
             }
+        },
+        "ApplicationName": {
+            "type": "string"
         }
     },
     "variables": {
@@ -234,7 +237,7 @@
                             },
                             {
                                 "name": "Configuration__ApplicationName",
-                                "value": "DFC-App-JobCategories"
+                                "value": "[parameters('ApplicationName')]"
                             }
                         ]
                     }
