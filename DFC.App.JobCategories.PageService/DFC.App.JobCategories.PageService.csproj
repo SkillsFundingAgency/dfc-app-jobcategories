@@ -12,19 +12,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="CorrelationId" Version="2.1.0" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="CorrelationId" Version="3.0.1" />
     <PackageReference Include="DFC.Compui.Telemetry" Version="1.0.31" />
     <PackageReference Include="DFC.Logger.AppInsights" Version="1.0.8" />
 	<PackageReference Include="DFC.Compui.Subscriptions" Version="1.0.96" />
-	<PackageReference Include="DFC.Content.Pkg.Netcore" Version="1.0.76" />
+	<PackageReference Include="DFC.Content.Pkg.Netcore" Version="1.0.87" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.8" />
-    <PackageReference Include="Polly" Version="7.2.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.21" />
+    <PackageReference Include="Polly" Version="7.2.2" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

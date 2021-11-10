@@ -1,4 +1,4 @@
-﻿using CorrelationId;
+﻿using CorrelationId.Abstractions;
 using DFC.Logger.AppInsights.Contracts;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
@@ -23,7 +23,7 @@ namespace DFC.App.JobCategories.ClientHandlers
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (this.correlationContextAccessor.CorrelationContext != null &&
+            if (correlationContextAccessor.CorrelationContext != null &&
                 request != null &&
                 !request.Headers.Contains(correlationContextAccessor.CorrelationContext.Header))
             {
