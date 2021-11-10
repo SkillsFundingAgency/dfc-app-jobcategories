@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CorrelationId;
+using CorrelationId.DependencyInjection;
 using DFC.App.JobCategories.ClientHandlers;
 using DFC.App.JobCategories.Data.Contracts;
 using DFC.App.JobCategories.Data.Models;
@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -80,7 +81,8 @@ namespace DFC.App.JobCategories
             });
 
             var cosmosDbConnection = configuration.GetSection(CosmosDbConfigAppSettings).Get<CosmosDbConnection>();
-            services.AddDocumentServices<JobCategory>(cosmosDbConnection, env.IsDevelopment());
+            var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
+            services.AddDocumentServices<JobCategory>(cosmosDbConnection, env.IsDevelopment(), cosmosRetryOptions);
 
             services.AddDFCLogging(configuration["ApplicationInsights:InstrumentationKey"]);
             services.AddSingleton(configuration.GetSection(nameof(ServiceTaxonomyApiClientOptions)).Get<ServiceTaxonomyApiClientOptions>());
