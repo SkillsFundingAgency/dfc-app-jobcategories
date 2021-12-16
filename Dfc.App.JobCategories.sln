@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solutio
 		..\dfc-app-contentpages\DFC.Digital.CodeAnalysis.ruleset = ..\dfc-app-contentpages\DFC.Digital.CodeAnalysis.ruleset
 		..\dfc-app-contentpages\LICENSE = ..\dfc-app-contentpages\LICENSE
 		..\dfc-app-contentpages\README.md = ..\dfc-app-contentpages\README.md
+		Resources\PageRegistration\registration.json = Resources\PageRegistration\registration.json
 		..\dfc-app-contentpages\stylecop.json = ..\dfc-app-contentpages\stylecop.json
 		..\dfc-app-contentpages\UnitTests.CodeAnalysis.ruleset = ..\dfc-app-contentpages\UnitTests.CodeAnalysis.ruleset
 	EndProjectSection

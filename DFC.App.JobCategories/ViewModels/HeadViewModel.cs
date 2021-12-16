@@ -2,7 +2,7 @@
 
 namespace DFC.App.JobCategories.ViewModels
 {
-    public class HtmlHeadViewModel
+    public class HeadViewModel
     {
         public string? Title { get; set; }
 
