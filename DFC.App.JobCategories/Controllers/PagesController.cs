@@ -78,11 +78,11 @@ namespace DFC.App.JobCategories.Controllers
         }
 
         [HttpGet]
-        [Route("pages/{article}/htmlhead")]
-        [Route("pages/htmlhead")]
-        public async Task<IActionResult> HtmlHead(string? article)
+        [Route("pages/{article}/head")]
+        [Route("pages/head")]
+        public async Task<IActionResult> Head(string? article)
         {
-            var viewModel = new HtmlHeadViewModel();
+            var viewModel = new HeadViewModel();
             var contentPageModel = await GetContentPageAsync(article).ConfigureAwait(false);
 
             if (contentPageModel != null)
@@ -92,7 +92,7 @@ namespace DFC.App.JobCategories.Controllers
                 viewModel.CanonicalUrl = new Uri($"{Request.GetBaseAddress()}{RegistrationPath}/{contentPageModel.CanonicalName}", UriKind.RelativeOrAbsolute);
             }
 
-            logger.LogInformation($"{nameof(HtmlHead)} has returned content for: {article}");
+            logger.LogInformation($"{nameof(Head)} has returned content for: {article}");
 
             return this.NegotiateContentResult(viewModel);
         }

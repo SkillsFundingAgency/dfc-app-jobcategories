@@ -36,7 +36,7 @@ namespace DFC.App.JobCategories.AutoMapperProfiles
                 .ForMember(d => d.JobProfiles, s => s.Ignore())
                 ;
 
-            CreateMap<JobCategory, HtmlHeadViewModel>()
+            CreateMap<JobCategory, HeadViewModel>()
                 .ForMember(d => d.CanonicalUrl, s => s.MapFrom(a => a.CanonicalName))
                 .ForMember(d => d.Title, s => s.MapFrom(a => a.Title))
                 .ForMember(d => d.Description, s => s.MapFrom(a => a.Description))

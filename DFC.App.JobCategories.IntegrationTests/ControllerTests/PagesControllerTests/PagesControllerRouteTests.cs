@@ -26,9 +26,9 @@ namespace DFC.App.JobCategories.IntegrationTests.ControllerTests.PagesController
             new object[] { "/" },
             new object[] { "/pages" },
             new object[] { $"/pages/{DataSeeding.DefaultArticleName}" },
-            new object[] { $"/pages/htmlhead" },
+            new object[] { $"/pages/head" },
             new object[] { $"/pages/breadcrumb" },
-            new object[] { $"/pages/{DataSeeding.DefaultArticleName}/htmlhead" },
+            new object[] { $"/pages/{DataSeeding.DefaultArticleName}/head" },
             new object[] { $"/pages/{DataSeeding.DefaultArticleName}/breadcrumb" },
             new object[] { $"/pages/{DataSeeding.DefaultArticleName}/body" },
         };

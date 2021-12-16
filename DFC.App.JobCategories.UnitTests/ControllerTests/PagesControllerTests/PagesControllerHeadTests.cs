@@ -13,11 +13,11 @@ using Xunit;
 namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 {
     [Trait("Category", "Pages Controller Unit Tests")]
-    public class PagesControllerHtmlHeadTests : BasePagesController
+    public class PagesControllerHeadTests : BasePagesController
     {
         [Theory]
         [MemberData(nameof(HtmlMediaTypes))]
-        public async Task PagesControllerHtmlHeadHtmlReturnsSuccess(string mediaTypeName)
+        public async Task PagesControllerHeadHtmlReturnsSuccess(string mediaTypeName)
         {
             // Arrange
             const string article = "an-article-name";
@@ -25,17 +25,17 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             var controller = BuildPagesController(mediaTypeName);
 
             A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
-            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).Returns(A.Fake<HtmlHeadViewModel>());
+            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HeadViewModel>.Ignored)).Returns(A.Fake<HeadViewModel>());
 
             // Act
-            var result = await controller.HtmlHead(article).ConfigureAwait(false);
+            var result = await controller.Head(article).ConfigureAwait(false);
 
             // Assert
             A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HeadViewModel>.Ignored)).MustHaveHappenedOnceExactly();
 
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<HtmlHeadViewModel>(viewResult.ViewData.Model);
+            var model = Assert.IsAssignableFrom<HeadViewModel>(viewResult.ViewData.Model);
 
             model.CanonicalUrl.Should().NotBeNull();
 
@@ -44,7 +44,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
         [Theory]
         [MemberData(nameof(JsonMediaTypes))]
-        public async Task PagesControllerHtmlHeadJsonReturnsSuccess(string mediaTypeName)
+        public async Task PagesControllerHeadJsonReturnsSuccess(string mediaTypeName)
         {
             // Arrange
             const string article = "an-article-name";
@@ -52,17 +52,17 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             var controller = BuildPagesController(mediaTypeName);
 
             A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
-            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).Returns(A.Fake<HtmlHeadViewModel>());
+            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HeadViewModel>.Ignored)).Returns(A.Fake<HeadViewModel>());
 
             // Act
-            var result = await controller.HtmlHead(article).ConfigureAwait(false);
+            var result = await controller.Head(article).ConfigureAwait(false);
 
             // Assert
             A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HeadViewModel>.Ignored)).MustHaveHappenedOnceExactly();
 
             var jsonResult = Assert.IsType<OkObjectResult>(result);
-            var model = Assert.IsAssignableFrom<HtmlHeadViewModel>(jsonResult.Value);
+            var model = Assert.IsAssignableFrom<HeadViewModel>(jsonResult.Value);
 
             model.CanonicalUrl.Should().NotBeNull();
 
@@ -71,7 +71,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
         [Theory]
         [MemberData(nameof(HtmlMediaTypes))]
-        public async Task PagesControllerHtmlHeadWithNullArticleHtmlReturnsSuccess(string mediaTypeName)
+        public async Task PagesControllerHeadWithNullArticleHtmlReturnsSuccess(string mediaTypeName)
         {
             // Arrange
             const string? article = null;
@@ -79,23 +79,23 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             var controller = BuildPagesController(mediaTypeName);
 
             A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
-            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).Returns(A.Fake<HtmlHeadViewModel>());
+            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HeadViewModel>.Ignored)).Returns(A.Fake<HeadViewModel>());
 
             // Act
-            var result = await controller.HtmlHead(article).ConfigureAwait(false);
+            var result = await controller.Head(article).ConfigureAwait(false);
 
             // Assert
             A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
 
             var viewResult = Assert.IsType<ViewResult>(result);
-            _ = Assert.IsAssignableFrom<HtmlHeadViewModel>(viewResult.ViewData.Model);
+            _ = Assert.IsAssignableFrom<HeadViewModel>(viewResult.ViewData.Model);
 
             controller.Dispose();
         }
 
         [Theory]
         [MemberData(nameof(JsonMediaTypes))]
-        public async Task PagesControllerHtmlHeadHtmlWithNullArticleJsonReturnsSuccess(string mediaTypeName)
+        public async Task PagesControllerHeadHtmlWithNullArticleJsonReturnsSuccess(string mediaTypeName)
         {
             // Arrange
             const string? article = null;
@@ -103,23 +103,23 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             var controller = BuildPagesController(mediaTypeName);
 
             A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
-            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).Returns(A.Fake<HtmlHeadViewModel>());
+            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HeadViewModel>.Ignored)).Returns(A.Fake<HeadViewModel>());
 
             // Act
-            var result = await controller.HtmlHead(article).ConfigureAwait(false);
+            var result = await controller.Head(article).ConfigureAwait(false);
 
             // Assert
             A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
 
             var jsonResult = Assert.IsType<OkObjectResult>(result);
-            _ = Assert.IsAssignableFrom<HtmlHeadViewModel>(jsonResult.Value);
+            _ = Assert.IsAssignableFrom<HeadViewModel>(jsonResult.Value);
 
             controller.Dispose();
         }
 
         [Theory]
         [MemberData(nameof(HtmlMediaTypes))]
-        public async Task PagesControllerHtmlHeadHtmlReturnsSuccessWhenNoData(string mediaTypeName)
+        public async Task PagesControllerHeadHtmlReturnsSuccessWhenNoData(string mediaTypeName)
         {
             // Arrange
             const string article = "an-article-name";
@@ -129,13 +129,13 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
             // Act
-            var result = await controller.HtmlHead(article).ConfigureAwait(false);
+            var result = await controller.Head(article).ConfigureAwait(false);
 
             // Assert
             A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
 
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<HtmlHeadViewModel>(viewResult.ViewData.Model);
+            var model = Assert.IsAssignableFrom<HeadViewModel>(viewResult.ViewData.Model);
 
             model.CanonicalUrl.Should().BeNull();
 
@@ -144,7 +144,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
         [Theory]
         [MemberData(nameof(JsonMediaTypes))]
-        public async Task PagesControllerHtmlHeadJsonReturnsSuccessWhenNoData(string mediaTypeName)
+        public async Task PagesControllerHeadJsonReturnsSuccessWhenNoData(string mediaTypeName)
         {
             // Arrange
             const string article = "an-article-name";
@@ -154,13 +154,13 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
 
             // Act
-            var result = await controller.HtmlHead(article).ConfigureAwait(false);
+            var result = await controller.Head(article).ConfigureAwait(false);
 
             // Assert
             A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
 
             var jsonResult = Assert.IsType<OkObjectResult>(result);
-            var model = Assert.IsAssignableFrom<HtmlHeadViewModel>(jsonResult.Value);
+            var model = Assert.IsAssignableFrom<HeadViewModel>(jsonResult.Value);
 
             model.CanonicalUrl.Should().BeNull();
 
@@ -169,7 +169,7 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
 
         [Theory]
         [MemberData(nameof(InvalidMediaTypes))]
-        public async Task PagesControllerHtmlHeadReturnsNotAcceptable(string mediaTypeName)
+        public async Task PagesControllerHeadReturnsNotAcceptable(string mediaTypeName)
         {
             // Arrange
             const string article = "an-article-name";
@@ -177,14 +177,14 @@ namespace DFC.App.JobCategories.UnitTests.ControllerTests.PagesControllerTests
             var controller = BuildPagesController(mediaTypeName);
 
             A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).Returns(expectedResult);
-            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).Returns(A.Fake<HtmlHeadViewModel>());
+            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HeadViewModel>.Ignored)).Returns(A.Fake<HeadViewModel>());
 
             // Act
-            var result = await controller.HtmlHead(article).ConfigureAwait(false);
+            var result = await controller.Head(article).ConfigureAwait(false);
 
             // Assert
             A.CallTo(() => FakeDocumentService.GetAsync(A<Expression<Func<JobCategory, bool>>>.Ignored)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HtmlHeadViewModel>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => FakeMapper.Map(A<JobCategory>.Ignored, A<HeadViewModel>.Ignored)).MustHaveHappenedOnceExactly();
 
             var statusResult = Assert.IsType<StatusCodeResult>(result);
 
